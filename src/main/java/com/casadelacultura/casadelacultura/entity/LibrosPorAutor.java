@@ -1,28 +1,27 @@
 package com.casadelacultura.casadelacultura.entity;
 
-import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
-@RequiredArgsConstructor
-public class Rol {
+@Entity
+public class LibrosPorAutor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idRol;
+    private Integer idAutor;
 
-    @NonNull
-    private String nombreRol;
+    @OneToOne
+    @JoinColumn(name = "idAutorF", nullable = false)
+    private Autor autor;
 
-    @NonNull
-    private Boolean activo;
+    @OneToOne
+    @JoinColumn(name = "idLibro", nullable = false)
+    private Libro libro;
 }
-
-

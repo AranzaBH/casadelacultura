@@ -1,28 +1,28 @@
 package com.casadelacultura.casadelacultura.entity;
 
-import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
-@Entity
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
-public class Rol {
+@NoArgsConstructor
+public class TipoLibro {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idRol;
+    private Integer idTipoLibro;
 
     @NonNull
-    private String nombreRol;
+    private String nombreTipoLibro;
 
     @NonNull
-    private Boolean activo;
+    private String descripcion;
 }
-
-
