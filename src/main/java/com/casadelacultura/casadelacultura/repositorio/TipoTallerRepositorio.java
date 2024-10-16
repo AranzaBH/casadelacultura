@@ -16,5 +16,4 @@ import com.casadelacultura.casadelacultura.entity.TipoTaller;
  */
 public interface TipoTallerRepositorio extends CrudRepository<TipoTaller, Integer> {
     
-    
 }
