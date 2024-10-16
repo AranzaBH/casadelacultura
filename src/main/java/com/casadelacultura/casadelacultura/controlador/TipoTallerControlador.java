@@ -73,5 +73,4 @@ public class TipoTallerControlador {
     public void delate(@PathVariable Integer idTipoTaller){
         tipoTallerServicio.delate(idTipoTaller); 
     }
-
 }
