@@ -1,66 +1,77 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import java.time.LocalDateTime;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
-import com.casadelacultura.casadelacultura.repositorio.TipoTallerRepositorio;
+import com.casadelacultura.casadelacultura.servicio.TipoTallerServicio;
 
-//Clase controlador JSON colecciones de objetos
-@RestController
-//Rutas Api
-@RequestMapping("/api/tipotaller")
+import lombok.AllArgsConstructor;
+
+import org.springframework.web.bind.annotation.*;
+/**
+ * Controlador REST para manejar las solicitudes HTTP relacionadas con la entidad TipoTaller.
+ * Este controlador se encarga de las operaciones CRUD mediante los métodos expuestos.
+ */
+@AllArgsConstructor
+@RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
+@RequestMapping("/api/tipotaller") // Define la ruta base para acceder a este controlador.
 public class TipoTallerControlador {
     
-    @Autowired
-    private TipoTallerRepositorio tipoTallerRepositorio;
+    // Servicio que contiene la lógica de negocio para la entidad TipoTaller.
+    private final TipoTallerServicio tipoTallerServicio;
 
+    /**
+     * Obtiene todos los tipos de talleres.
+     * @return Una lista de todas las entidades TipoTaller almacenadas en la base de datos.
+     */
     @GetMapping()
-    Iterable<TipoTaller> list() {
-        return tipoTallerRepositorio.findAll();
+    public Iterable<TipoTaller> list() {
+        return tipoTallerServicio.findAll();
+
 
     }
 
-    //Metodo para optener un solo tipodetaller
+    /**
+     * Obtiene un solo tipo de taller por su ID.
+     * @param idTipoTaller ID del tipo de taller que se desea obtener.
+     * @return La entidad TipoTaller si se encuentra, de lo contrario, null.
+     */
     @GetMapping("{idTipoTaller}")
     public TipoTaller get(@PathVariable Integer idTipoTaller){
-        return tipoTallerRepositorio.findById(idTipoTaller).orElse(null);
+        return tipoTallerServicio.findById(idTipoTaller);
 
     }
 
-    //creacion de un nuevo tipo taller
-    @ResponseStatus(HttpStatus.CREATED)
+    /**
+     * Crea un nuevo tipo de taller.
+     * @param tipoTaller La información del nuevo tipo de taller en formato JSON.
+     * @return La entidad TipoTaller creada y almacenada en la base de datos.
+     */
+    @ResponseStatus(HttpStatus.CREATED) // Indica que, si se crea correctamente, se devuelve el código de estado 201.
     @PostMapping
     public TipoTaller create(@RequestBody TipoTaller tipoTaller){
-        tipoTaller.setFechaCreacion(LocalDateTime.now()); //Se le asigna una fecha de creacion
-        return tipoTallerRepositorio.save(tipoTaller); 
-
+        return tipoTallerServicio.create(tipoTaller); 
     }
  
-    @PutMapping("{idTipoTaller}") //Actualizacion
+    /**
+     * Actualiza un tipo de taller existente.
+     * @param idTipoTaller ID del tipo de taller a actualizar.
+     * @param formulario Contiene los nuevos datos del tipo de taller.
+     * @return La entidad TipoTaller actualizada.
+     */
+    @PutMapping("{idTipoTaller}") // Se utiliza para actualizaciones completas de entidades existentes.
     public TipoTaller update(@PathVariable Integer idTipoTaller, @RequestBody TipoTaller formulario){
-        TipoTaller tipoTallerFromDB = tipoTallerRepositorio.findById(idTipoTaller).orElse(null);
-        tipoTallerFromDB.setNombreTipoTaller(formulario.getNombreTipoTaller()); //Se va a establecer el nombre del tipo de taller para actualizar
-        tipoTallerFromDB.setDescripcion(formulario.getDescripcion()); //Tambien se atualiza contacto
-        return tipoTallerRepositorio.save(tipoTallerFromDB); 
+        return tipoTallerServicio.update(idTipoTaller,formulario); 
 
     }
 
-    //Eliminar
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("{idTipoTaller}") //Eliminar
+    /**
+     * Elimina un tipo de taller por su ID.
+     * @param idTipoTaller ID del tipo de taller que se desea eliminar.
+     */
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
+    @DeleteMapping("{idTipoTaller}") // Se utiliza para eliminar una entidad.
     public void delate(@PathVariable Integer idTipoTaller){
-        TipoTaller tipoTallerFromDB = tipoTallerRepositorio.findById(idTipoTaller).orElse(null);
-        tipoTallerRepositorio.delete(tipoTallerFromDB); 
+        tipoTallerServicio.delate(idTipoTaller); 
     }
 
 }

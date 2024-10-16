@@ -1,15 +1,15 @@
 package com.casadelacultura.casadelacultura;
 
-import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.List;
+//import java.time.LocalDateTime;
+//import java.util.Arrays;
+//import java.util.List;
 
-import org.springframework.boot.CommandLineRunner;
+//import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.annotation.Bean;
-import com.casadelacultura.casadelacultura.entity.TipoTaller;
-import com.casadelacultura.casadelacultura.repositorio.TipoTallerRepositorio;
+//import org.springframework.context.annotation.Bean;
+//import com.casadelacultura.casadelacultura.entity.TipoTaller;
+//import com.casadelacultura.casadelacultura.repositorio.TipoTallerRepositorio;
 
 @SpringBootApplication
 public class CasadelaculturaApplication {
@@ -19,6 +19,8 @@ public class CasadelaculturaApplication {
 
     }
 
+
+    /* 
     @Bean
     CommandLineRunner runner(TipoTallerRepositorio tipoTallerRepositorio) {
         return args -> {
@@ -32,5 +34,5 @@ public class CasadelaculturaApplication {
 
         };
 
-    }
+    }*/
 }
