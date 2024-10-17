@@ -10,9 +10,10 @@ import org.springframework.web.bind.annotation.*;
  * Controlador REST para manejar las solicitudes HTTP relacionadas con la entidad Usuario.
  * Este controlador se encarga de las operaciones CRUD mediante los métodos expuestos.
  */
+@CrossOrigin
 @AllArgsConstructor
 @RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
-@RequestMapping("/api/usuarios") // Define la ruta base para acceder a este controlador.
+@RequestMapping("/api/usuario") // Define la ruta base para acceder a este controlador.
 public class UsuarioControlador {
     
     // Servicio que contiene la lógica de negocio para la entidad Usuario.
@@ -68,5 +69,7 @@ public class UsuarioControlador {
     public void delete(@PathVariable Integer idUsuario){
         usuarioServicio.delete(idUsuario); 
     }
+
+    
 }
 

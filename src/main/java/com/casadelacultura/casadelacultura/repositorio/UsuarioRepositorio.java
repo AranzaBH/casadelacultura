@@ -1,6 +1,6 @@
 package com.casadelacultura.casadelacultura.repositorio;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.casadelacultura.casadelacultura.entity.Usuario;
 
@@ -14,6 +14,6 @@ import com.casadelacultura.casadelacultura.entity.Usuario;
  * @param Usuario La entidad sobre la cual se realizarán las operaciones CRUD.
  * @param Integer El tipo de dato de la clave primaria de la entidad Usuario.
  */
-public interface UsuarioRepositorio extends CrudRepository<Usuario, Integer> {
+public interface UsuarioRepositorio extends JpaRepository<Usuario, Integer> {
     
 }

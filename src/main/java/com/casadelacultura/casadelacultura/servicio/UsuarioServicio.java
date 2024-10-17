@@ -79,5 +79,7 @@ public class UsuarioServicio {
         Usuario usuarioFromDB = findById(idUsuario); // Busca el usuario a eliminar.
         usuarioRepositorio.delete(usuarioFromDB);
     }
+
+    
 }
 

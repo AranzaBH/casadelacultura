@@ -21,6 +21,6 @@ public class Modulo {
     private Integer idModulo;
 
     @NonNull
-    private String nombreTModulo;
+    private String nombreModulo;
 }
 
