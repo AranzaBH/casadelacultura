@@ -1,13 +1,16 @@
 package com.casadelacultura.casadelacultura.entity;
 
+import javax.persistence.*;
+/* 
 import io.micrometer.common.lang.NonNull;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToOne;*/
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -45,6 +48,6 @@ public class Taller {
     @JoinColumn(name = "idTipoTaller", nullable = false)
     private TipoTaller tipoTaller;
 
-    @NonNull
+    
     private boolean estaActivo;
 }

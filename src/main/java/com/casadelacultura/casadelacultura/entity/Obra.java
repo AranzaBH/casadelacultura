@@ -2,14 +2,10 @@ package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDateTime;
 
-import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+
+import javax.persistence.*;
 import lombok.Getter;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
@@ -22,10 +18,10 @@ public class Obra {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer idObra;
 
-    @NonNull
+    @lombok.NonNull
     private String nombreObra;
 
-    @NonNull
+   
     private boolean estadoActivo;
 
     @NonNull
