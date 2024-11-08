@@ -19,7 +19,7 @@ public class ObrasFonograficasServicio {
     }
 
     // Obtener una obra fonográfica por ID
-    public Optional<ObrasFonograficas> obtenerObraFonograficaPorId(Integer idObrasFonograficas) {
+    public Optional<ObrasFonograficas> obtenerObraFonograficaPorId(Long idObrasFonograficas) {
         return obrasFonograficasRepositorio.findById(idObrasFonograficas);
     }
 
@@ -29,7 +29,7 @@ public class ObrasFonograficasServicio {
     }
 
     // Actualizar una obra fonográfica existente
-    public Optional<ObrasFonograficas> actualizarObraFonografica(Integer idObrasFonograficas, ObrasFonograficas formulario) {
+    public Optional<ObrasFonograficas> actualizarObraFonografica(Long idObrasFonograficas, ObrasFonograficas formulario) {
         return obrasFonograficasRepositorio.findById(idObrasFonograficas).map(obraFonograficaExistente -> {
             obraFonograficaExistente.setTituloObraFonografica(formulario.getTituloObraFonografica());
             obraFonograficaExistente.setDuracion(formulario.getDuracion());
@@ -42,7 +42,7 @@ public class ObrasFonograficasServicio {
     }
 
     // Eliminar una obra fonográfica
-    public boolean eliminarObraFonografica(Integer idObrasFonograficas) {
+    public boolean eliminarObraFonografica(Long idObrasFonograficas) {
         Optional<ObrasFonograficas> obraFonografica = obrasFonograficasRepositorio.findById(idObrasFonograficas);
         if (obraFonografica.isPresent()) {
             obrasFonograficasRepositorio.delete(obraFonografica.get());

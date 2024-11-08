@@ -25,7 +25,7 @@ public class ConvocatoriasControlador {
 
     // Obtener una convocatoria por ID
     @GetMapping("{idConvocatorias}")
-    public ResponseEntity<Convocatorias> get(@PathVariable Integer idConvocatorias) {
+    public ResponseEntity<Convocatorias> get(@PathVariable Long idConvocatorias) {
         Optional<Convocatorias> convocatoria = convocatoriasRepositorio.findById(idConvocatorias);
         return convocatoria.map(ResponseEntity::ok)
                            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,15 +40,14 @@ public class ConvocatoriasControlador {
 
     // Actualizar una convocatoria existente
     @PutMapping("{idConvocatorias}")
-    public ResponseEntity<Convocatorias> update(@PathVariable Integer idConvocatorias, @RequestBody Convocatorias formulario) {
+    public ResponseEntity<Convocatorias> update(@PathVariable Long idConvocatorias, @RequestBody Convocatorias formulario) {
         Optional<Convocatorias> optionalConvocatoria = convocatoriasRepositorio.findById(idConvocatorias);
         if (optionalConvocatoria.isPresent()) {
             Convocatorias convocatoriaFromDB = optionalConvocatoria.get();
-            convocatoriaFromDB.setNombreConvocatoria(formulario.getNombreConvocatoria());
-            convocatoriaFromDB.setDescripcion(formulario.getDescripcion());
-            convocatoriaFromDB.setFechaPublicacion(formulario.getFechaPublicacion());
-            convocatoriaFromDB.setFechaInicio(formulario.getFechaInicio());
-            convocatoriaFromDB.setFechaFinalizacion(formulario.getFechaFinalizacion());
+            convocatoriaFromDB.setFechaInicioInscripcion(formulario.getFechaInicioInscripcion());
+            convocatoriaFromDB.setFechaFinInscripcion(formulario.getFechaFinInscripcion());
+            convocatoriaFromDB.setEstaActiva(formulario.isEstaActiva());
+            //convocatoriaFromDB.setTaller(formulario.getTaller());
             return ResponseEntity.ok(convocatoriasRepositorio.save(convocatoriaFromDB));
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Convocatoria no encontrada
@@ -56,7 +55,7 @@ public class ConvocatoriasControlador {
 
     // Eliminar una convocatoria
     @DeleteMapping("{idConvocatorias}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idConvocatorias) {
+    public ResponseEntity<Void> delete(@PathVariable Long idConvocatorias) {
         Optional<Convocatorias> optionalConvocatoria = convocatoriasRepositorio.findById(idConvocatorias);
         if (optionalConvocatoria.isPresent()) {
             convocatoriasRepositorio.delete(optionalConvocatoria.get());

@@ -24,7 +24,7 @@ public class MusicaControlador {
 
     // Obtener una música por ID
     @GetMapping("{idMusica}")
-    public ResponseEntity<Musica> get(@PathVariable Integer idMusica) {
+    public ResponseEntity<Musica> get(@PathVariable Long idMusica) {
         Optional<Musica> musica = musicaServicio.obtenerMusicaPorId(idMusica);
         return musica.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -39,7 +39,7 @@ public class MusicaControlador {
 
     // Actualizar una música existente
     @PutMapping("{idMusica}")
-    public ResponseEntity<Musica> update(@PathVariable Integer idMusica, @RequestBody Musica formulario) {
+    public ResponseEntity<Musica> update(@PathVariable Long idMusica, @RequestBody Musica formulario) {
         Optional<Musica> updatedMusica = musicaServicio.actualizarMusica(idMusica, formulario);
         return updatedMusica.map(ResponseEntity::ok)
                            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -47,7 +47,7 @@ public class MusicaControlador {
 
     // Eliminar una música
     @DeleteMapping("{idMusica}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idMusica) {
+    public ResponseEntity<Void> delete(@PathVariable Long idMusica) {
         boolean deleted = musicaServicio.eliminarMusica(idMusica);
         return deleted ? ResponseEntity.status(HttpStatus.NO_CONTENT).build()
                        : ResponseEntity.status(HttpStatus.NOT_FOUND).build();

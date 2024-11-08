@@ -15,8 +15,8 @@ import lombok.Setter;
 @RequiredArgsConstructor
 public class Obra {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idObra;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idObra;
 
     @lombok.NonNull
     private String nombreObra;

@@ -18,7 +18,7 @@ public class AudioLibroServicio {
     }
 
     // Buscar un audiolibro por su ID
-    public Optional<AudioLibro> findById(Integer idAudioLibro) {
+    public Optional<AudioLibro> findById(Long idAudioLibro) {
         return audioLibroRepositorio.findById(idAudioLibro);
     }
 
@@ -33,7 +33,7 @@ public class AudioLibroServicio {
     }
 
     // Eliminar un audiolibro por su ID
-    public void delete(Integer idAudioLibro) {
+    public void delete(Long idAudioLibro) {
         audioLibroRepositorio.deleteById(idAudioLibro);
     }
 }

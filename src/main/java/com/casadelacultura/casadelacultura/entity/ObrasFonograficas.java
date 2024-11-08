@@ -15,8 +15,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class ObrasFonograficas {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idObrasFonograficas;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idObrasFonograficas;
 
     @NonNull
     private String tituloObraFonografica;

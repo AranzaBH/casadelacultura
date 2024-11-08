@@ -25,7 +25,7 @@ public class TipoLibroControlador {
 
     // Obtener un tipo de libro por su ID
     @GetMapping("{idTipoLibro}")
-    public ResponseEntity<TipoLibro> get(@PathVariable Integer idTipoLibro) {
+    public ResponseEntity<TipoLibro> get(@PathVariable Long idTipoLibro) {
         Optional<TipoLibro> tipoLibro = tipoLibroRepositorio.findById(idTipoLibro);
         return tipoLibro.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class TipoLibroControlador {
 
     // Actualizar un tipo de libro existente
     @PutMapping("{idTipoLibro}")
-    public ResponseEntity<TipoLibro> update(@PathVariable Integer idTipoLibro, @RequestBody TipoLibro formulario) {
+    public ResponseEntity<TipoLibro> update(@PathVariable Long idTipoLibro, @RequestBody TipoLibro formulario) {
         Optional<TipoLibro> optionalTipoLibro = tipoLibroRepositorio.findById(idTipoLibro);
         if (optionalTipoLibro.isPresent()) {
             TipoLibro tipoLibroFromDB = optionalTipoLibro.get();
@@ -53,7 +53,7 @@ public class TipoLibroControlador {
 
     // Eliminar un tipo de libro
     @DeleteMapping("{idTipoLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idTipoLibro) {
+    public ResponseEntity<Void> delete(@PathVariable Long idTipoLibro) {
         Optional<TipoLibro> optionalTipoLibro = tipoLibroRepositorio.findById(idTipoLibro);
         if (optionalTipoLibro.isPresent()) {
             tipoLibroRepositorio.delete(optionalTipoLibro.get());

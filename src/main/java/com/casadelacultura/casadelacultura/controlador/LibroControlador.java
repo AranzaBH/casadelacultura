@@ -25,7 +25,7 @@ public class LibroControlador {
 
     // Obtener un libro por ID
     @GetMapping("{idLibro}")
-    public ResponseEntity<Libro> get(@PathVariable Integer idLibro) {
+    public ResponseEntity<Libro> get(@PathVariable Long idLibro) {
         Optional<Libro> libro = libroRepositorio.findById(idLibro);
         return libro.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class LibroControlador {
 
     // Actualizar un libro existente
     @PutMapping("{idLibro}")
-    public ResponseEntity<Libro> update(@PathVariable Integer idLibro, @RequestBody Libro formulario) {
+    public ResponseEntity<Libro> update(@PathVariable Long idLibro, @RequestBody Libro formulario) {
         Optional<Libro> optionalLibro = libroRepositorio.findById(idLibro);
         if (optionalLibro.isPresent()) {
             Libro libroFromDB = optionalLibro.get();
@@ -62,7 +62,7 @@ public class LibroControlador {
 
     // Eliminar un libro
     @DeleteMapping("{idLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idLibro) {
+    public ResponseEntity<Void> delete(@PathVariable Long idLibro) {
         Optional<Libro> optionalLibro = libroRepositorio.findById(idLibro);
         if (optionalLibro.isPresent()) {
             libroRepositorio.delete(optionalLibro.get());

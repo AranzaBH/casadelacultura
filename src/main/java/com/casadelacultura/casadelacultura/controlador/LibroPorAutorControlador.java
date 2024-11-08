@@ -25,7 +25,7 @@ public class LibroPorAutorControlador {
 
     // Obtener una relación libro-autor por ID
     @GetMapping("{idAutor}")
-    public ResponseEntity<LibrosPorAutor> get(@PathVariable Integer idAutor) {
+    public ResponseEntity<LibrosPorAutor> get(@PathVariable Long idAutor) {
         Optional<LibrosPorAutor> libroPorAutor = librosPorAutorRepositorio.findById(idAutor);
         return libroPorAutor.map(ResponseEntity::ok)
                             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class LibroPorAutorControlador {
 
     // Actualizar una relación libro-autor existente
     @PutMapping("{idAutor}")
-    public ResponseEntity<LibrosPorAutor> update(@PathVariable Integer idAutor, @RequestBody LibrosPorAutor formulario) {
+    public ResponseEntity<LibrosPorAutor> update(@PathVariable Long idAutor, @RequestBody LibrosPorAutor formulario) {
         Optional<LibrosPorAutor> optionalLibroPorAutor = librosPorAutorRepositorio.findById(idAutor);
         if (optionalLibroPorAutor.isPresent()) {
             LibrosPorAutor libroPorAutorFromDB = optionalLibroPorAutor.get();
@@ -53,7 +53,7 @@ public class LibroPorAutorControlador {
 
     // Eliminar una relación libro-autor
     @DeleteMapping("{idAutor}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idAutor) {
+    public ResponseEntity<Void> delete(@PathVariable Long idAutor) {
         Optional<LibrosPorAutor> optionalLibroPorAutor = librosPorAutorRepositorio.findById(idAutor);
         if (optionalLibroPorAutor.isPresent()) {
             librosPorAutorRepositorio.delete(optionalLibroPorAutor.get());

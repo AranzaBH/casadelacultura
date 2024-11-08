@@ -19,7 +19,7 @@ public class MusicaServicio {
     }
 
     // Obtener una música por ID
-    public Optional<Musica> obtenerMusicaPorId(Integer idMusica) {
+    public Optional<Musica> obtenerMusicaPorId(Long idMusica) {
         return musicaRepositorio.findById(idMusica);
     }
 
@@ -29,7 +29,7 @@ public class MusicaServicio {
     }
 
     // Actualizar una música existente
-    public Optional<Musica> actualizarMusica(Integer idMusica, Musica formulario) {
+    public Optional<Musica> actualizarMusica(Long idMusica, Musica formulario) {
         return musicaRepositorio.findById(idMusica).map(musicaExistente -> {
             musicaExistente.setDescripcion(formulario.getDescripcion());
             musicaExistente.setObrasFonograficas(formulario.getObrasFonograficas());
@@ -38,7 +38,7 @@ public class MusicaServicio {
     }
 
     // Eliminar una música
-    public boolean eliminarMusica(Integer idMusica) {
+    public boolean eliminarMusica(Long idMusica) {
         Optional<Musica> musica = musicaRepositorio.findById(idMusica);
         if (musica.isPresent()) {
             musicaRepositorio.delete(musica.get());

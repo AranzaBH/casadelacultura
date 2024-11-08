@@ -25,7 +25,7 @@ public class ObrasFonograficasPorAutorControlador {
 
     // Obtener una relación por ID de autor
     @GetMapping("{idAutor}")
-    public ResponseEntity<ObrasFonograficasPorAutor> get(@PathVariable Integer idAutor) {
+    public ResponseEntity<ObrasFonograficasPorAutor> get(@PathVariable Long idAutor) {
         Optional<ObrasFonograficasPorAutor> obrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
         return obrasPorAutor.map(ResponseEntity::ok)
                             .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class ObrasFonograficasPorAutorControlador {
 
     // Actualizar una relación existente
     @PutMapping("{idAutor}")
-    public ResponseEntity<ObrasFonograficasPorAutor> update(@PathVariable Integer idAutor, @RequestBody ObrasFonograficasPorAutor formulario) {
+    public ResponseEntity<ObrasFonograficasPorAutor> update(@PathVariable Long idAutor, @RequestBody ObrasFonograficasPorAutor formulario) {
         Optional<ObrasFonograficasPorAutor> optionalObrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
         if (optionalObrasPorAutor.isPresent()) {
             ObrasFonograficasPorAutor obrasPorAutorFromDB = optionalObrasPorAutor.get();
@@ -53,7 +53,7 @@ public class ObrasFonograficasPorAutorControlador {
 
     // Eliminar una relación
     @DeleteMapping("{idAutor}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idAutor) {
+    public ResponseEntity<Void> delete(@PathVariable Long idAutor) {
         Optional<ObrasFonograficasPorAutor> optionalObrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
         if (optionalObrasPorAutor.isPresent()) {
             obrasFonograficasPorAutorRepositorio.delete(optionalObrasPorAutor.get());

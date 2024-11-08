@@ -4,7 +4,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.casadelacultura.casadelacultura.entity.Autor;
 
-public interface AutorRepositorio extends CrudRepository<Autor, Integer> {
+public interface AutorRepositorio extends CrudRepository<Autor, Long> {
     
     
 }

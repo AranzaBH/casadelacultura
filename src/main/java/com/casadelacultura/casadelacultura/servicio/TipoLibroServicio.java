@@ -19,7 +19,7 @@ public class TipoLibroServicio {
     }
 
     // Obtener un tipo de libro por su ID
-    public Optional<TipoLibro> obtenerTipoLibroPorId(Integer idTipoLibro) {
+    public Optional<TipoLibro> obtenerTipoLibroPorId(Long idTipoLibro) {
         return tipoLibroRepositorio.findById(idTipoLibro);
     }
 
@@ -29,7 +29,7 @@ public class TipoLibroServicio {
     }
 
     // Actualizar un tipo de libro existente
-    public Optional<TipoLibro> actualizarTipoLibro(Integer idTipoLibro, TipoLibro formulario) {
+    public Optional<TipoLibro> actualizarTipoLibro(Long idTipoLibro, TipoLibro formulario) {
         return tipoLibroRepositorio.findById(idTipoLibro).map(tipoLibroExistente -> {
             tipoLibroExistente.setNombreTipoLibro(formulario.getNombreTipoLibro());
             tipoLibroExistente.setDescripcion(formulario.getDescripcion());
@@ -38,7 +38,7 @@ public class TipoLibroServicio {
     }
 
     // Eliminar un tipo de libro
-    public boolean eliminarTipoLibro(Integer idTipoLibro) {
+    public boolean eliminarTipoLibro(Long idTipoLibro) {
         Optional<TipoLibro> tipoLibro = tipoLibroRepositorio.findById(idTipoLibro);
         if (tipoLibro.isPresent()) {
             tipoLibroRepositorio.delete(tipoLibro.get());

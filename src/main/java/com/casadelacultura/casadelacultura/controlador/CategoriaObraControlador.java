@@ -25,7 +25,7 @@ public class CategoriaObraControlador {
 
     // Obtener una categoría de obra por ID
     @GetMapping("{idCategoriaObra}")
-    public ResponseEntity<CategoriaObra> get(@PathVariable Integer idCategoriaObra) {
+    public ResponseEntity<CategoriaObra> get(@PathVariable Long idCategoriaObra) {
         Optional<CategoriaObra> categoria = categoriaObraRepositorio.findById(idCategoriaObra);
         return categoria.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class CategoriaObraControlador {
 
     // Actualizar una categoría de obra existente
     @PutMapping("{idCategoriaObra}")
-    public ResponseEntity<CategoriaObra> update(@PathVariable Integer idCategoriaObra, @RequestBody CategoriaObra formulario) {
+    public ResponseEntity<CategoriaObra> update(@PathVariable Long idCategoriaObra, @RequestBody CategoriaObra formulario) {
         Optional<CategoriaObra> optionalCategoria = categoriaObraRepositorio.findById(idCategoriaObra);
         if (optionalCategoria.isPresent()) {
             CategoriaObra categoriaFromDB = optionalCategoria.get();
@@ -53,7 +53,7 @@ public class CategoriaObraControlador {
 
     // Eliminar una categoría de obra
     @DeleteMapping("{idCategoriaObra}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idCategoriaObra) {
+    public ResponseEntity<Void> delete(@PathVariable Long idCategoriaObra) {
         Optional<CategoriaObra> optionalCategoria = categoriaObraRepositorio.findById(idCategoriaObra);
         if (optionalCategoria.isPresent()) {
             categoriaObraRepositorio.delete(optionalCategoria.get());

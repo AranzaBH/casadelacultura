@@ -37,7 +37,7 @@ public class TipoTallerServicio {
      * @param idTipoTaller Identificador del tipo de taller que se desea buscar.
      * @return TipoTaller El tipo de taller encontrado o null si no existe.
      */
-    public TipoTaller findById(Integer idTipoTaller){
+    public TipoTaller findById(Long idTipoTaller){
         return tipoTallerRepositorio.findById(idTipoTaller).orElse(null);
 
     }
@@ -61,7 +61,7 @@ public class TipoTallerServicio {
      * @param formulario Datos actualizados del TipoTaller.
      * @return TipoTaller El objeto actualizado.
      */
-    public TipoTaller update(Integer idTipoTaller,TipoTaller formulario){
+    public TipoTaller update(Long idTipoTaller,TipoTaller formulario){
         TipoTaller tipoTallerFromDB = findById(idTipoTaller);// Busca el tipo de taller existente.
         tipoTallerFromDB.setNombreTipoTaller(formulario.getNombreTipoTaller()); // Actualiza el nombre.
         tipoTallerFromDB.setDescripcion(formulario.getDescripcion()); // Actualiza la descripción.
@@ -74,7 +74,7 @@ public class TipoTallerServicio {
      * 
      * @param idTipoTaller Identificador del tipo de taller que se desea eliminar.
      */
-    public void delate(Integer idTipoTaller){
+    public void delate(Long idTipoTaller){
         TipoTaller tipoTallerFromDB = findById(idTipoTaller);// Busca el tipo de taller a eliminar.
         tipoTallerRepositorio.delete(tipoTallerFromDB); 
     }

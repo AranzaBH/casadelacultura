@@ -1,11 +1,7 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -15,8 +11,8 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class Libro {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idLibro;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idLibro;
 
     @NonNull
     private String asin;

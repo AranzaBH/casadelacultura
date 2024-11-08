@@ -22,7 +22,7 @@ public class AutorServicio {
     }
 
     // Obtener un autor por ID
-    public Optional<Autor> obtenerAutorPorId(Integer idAutor) {
+    public Optional<Autor> obtenerAutorPorId(Long idAutor) {
         return autorRepositorio.findById(idAutor);
     }
 
@@ -32,7 +32,7 @@ public class AutorServicio {
     }
 
     // Actualizar un autor existente
-    public Optional<Autor> actualizarAutor(Integer idAutor, Autor formulario) {
+    public Optional<Autor> actualizarAutor(Long idAutor, Autor formulario) {
         return autorRepositorio.findById(idAutor).map(autorExistente -> {
             autorExistente.setNombreAutor(formulario.getNombreAutor());
             autorExistente.setApellidoPaterno(formulario.getApellidoPaterno());
@@ -44,7 +44,7 @@ public class AutorServicio {
     }
 
     // Eliminar un autor por ID
-    public boolean eliminarAutor(Integer idAutor) {
+    public boolean eliminarAutor(Long idAutor) {
         Optional<Autor> autor = autorRepositorio.findById(idAutor);
         if (autor.isPresent()) {
             autorRepositorio.delete(autor.get());

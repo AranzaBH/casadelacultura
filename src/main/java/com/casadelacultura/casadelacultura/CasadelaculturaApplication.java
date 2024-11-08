@@ -29,12 +29,13 @@ public class CasadelaculturaApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+        /* 
         Usuario usuario = new Usuario();
 
         usuario.setNombre("administrador");
         usuario.setApellido("Ramirez");
         usuario.setUsername("administrador");
-        usuario.setPassword(bCryptPasswordEncoder.encode("$dam789dam"));
+        usuario.setPassword(bCryptPasswordEncoder.encode("administrador"));
         usuario.setEmail("damianbautista@gmail.com");
         usuario.setTelefono("9531166328");
         usuario.setPerfil("foto.png");
@@ -51,5 +52,6 @@ public class CasadelaculturaApplication implements CommandLineRunner {
 
         Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario, usuariosRoles);
         System.out.println(usuarioGuardado.getUsername());
+        */
     }
 }

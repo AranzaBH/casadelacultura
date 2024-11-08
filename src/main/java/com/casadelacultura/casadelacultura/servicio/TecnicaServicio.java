@@ -19,7 +19,7 @@ public class TecnicaServicio {
     }
 
     // Obtener una técnica por su ID
-    public Optional<Tecnica> obtenerTecnicaPorId(Integer idTecnica) {
+    public Optional<Tecnica> obtenerTecnicaPorId(Long idTecnica) {
         return tecnicaRepositorio.findById(idTecnica);
     }
 
@@ -29,7 +29,7 @@ public class TecnicaServicio {
     }
 
     // Actualizar una técnica existente
-    public Optional<Tecnica> actualizarTecnica(Integer idTecnica, Tecnica formulario) {
+    public Optional<Tecnica> actualizarTecnica(Long idTecnica, Tecnica formulario) {
         return tecnicaRepositorio.findById(idTecnica).map(tecnicaExistente -> {
             tecnicaExistente.setNombreTecnica(formulario.getNombreTecnica());
             tecnicaExistente.setDescripcionTecnica(formulario.getDescripcionTecnica());
@@ -38,7 +38,7 @@ public class TecnicaServicio {
     }
 
     // Eliminar una técnica
-    public boolean eliminarTecnica(Integer idTecnica) {
+    public boolean eliminarTecnica(Long idTecnica) {
         Optional<Tecnica> tecnica = tecnicaRepositorio.findById(idTecnica);
         if (tecnica.isPresent()) {
             tecnicaRepositorio.delete(tecnica.get());

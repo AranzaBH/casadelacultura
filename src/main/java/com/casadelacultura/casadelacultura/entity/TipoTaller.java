@@ -2,16 +2,8 @@ package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDateTime;
 import javax.persistence.*;
-/* 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;*/
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.NonNull;
+import lombok.*;
+
 
 /**
  * Entidad que representa un tipo de taller dentro del sistema.
@@ -34,8 +26,8 @@ public class TipoTaller {
      * @GeneratedValue(strategy = GenerationType.AUTO) Indica que el valor de esta columna será generado automáticamente.
      */
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO) // Autogenera el valor del ID.
-    private Integer idTipoTaller;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Autogenera el valor del ID.
+    private Long idTipoTaller;
 
     /**
      * Nombre del tipo de taller.

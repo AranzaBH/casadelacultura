@@ -25,7 +25,7 @@ public class CategoriaLibroControlador {
 
     // Obtener una categoría de libro por ID
     @GetMapping("{idCategoriaLibro}")
-    public ResponseEntity<CategoriaLibro> get(@PathVariable Integer idCategoriaLibro) {
+    public ResponseEntity<CategoriaLibro> get(@PathVariable Long idCategoriaLibro) {
         Optional<CategoriaLibro> categoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
         return categoria.map(ResponseEntity::ok)
                         .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class CategoriaLibroControlador {
 
     // Actualizar una categoría de libro existente
     @PutMapping("{idCategoriaLibro}")
-    public ResponseEntity<CategoriaLibro> update(@PathVariable Integer idCategoriaLibro, @RequestBody CategoriaLibro formulario) {
+    public ResponseEntity<CategoriaLibro> update(@PathVariable Long idCategoriaLibro, @RequestBody CategoriaLibro formulario) {
         Optional<CategoriaLibro> optionalCategoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
         if (optionalCategoria.isPresent()) {
             CategoriaLibro categoriaFromDB = optionalCategoria.get();
@@ -53,7 +53,7 @@ public class CategoriaLibroControlador {
 
     // Eliminar una categoría de libro
     @DeleteMapping("{idCategoriaLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idCategoriaLibro) {
+    public ResponseEntity<Void> delete(@PathVariable Long idCategoriaLibro) {
         Optional<CategoriaLibro> optionalCategoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
         if (optionalCategoria.isPresent()) {
             categoriaLibroRepositorio.delete(optionalCategoria.get());

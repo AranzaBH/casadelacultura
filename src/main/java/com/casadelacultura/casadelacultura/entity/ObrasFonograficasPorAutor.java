@@ -9,8 +9,8 @@ import lombok.Setter;
 @Entity
 public class ObrasFonograficasPorAutor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAutor;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idAutor;
 
     @OneToOne
     @JoinColumn(name = "idAutorFK", nullable = false)

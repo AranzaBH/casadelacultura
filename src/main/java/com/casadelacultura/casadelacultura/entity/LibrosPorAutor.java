@@ -1,16 +1,15 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Entity
 public class LibrosPorAutor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAutor;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idAutor;
 
     @OneToOne
     @JoinColumn(name = "idAutorF", nullable = false)

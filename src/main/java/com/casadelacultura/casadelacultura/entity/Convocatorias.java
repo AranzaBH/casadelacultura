@@ -1,12 +1,9 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 
 @Entity
 @Getter
@@ -14,22 +11,20 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class Convocatorias {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idConvocatorias;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idConvocatorias;
 
     @NonNull
-    private String nombreConvocatoria;
+    private LocalDateTime fechaInicioInscripcion;
 
     @NonNull
-    private String descripcion;
+    private LocalDateTime fechaFinInscripcion;
 
-    @NonNull
-    private LocalDateTime  fechaPublicacion;
+    
 
-    @NonNull
-    private LocalDateTime  fechaInicio;
 
-    @NonNull
-    private LocalDateTime  fechaFinalizacion;
+    private boolean estaActiva;
+
+    
 
 }

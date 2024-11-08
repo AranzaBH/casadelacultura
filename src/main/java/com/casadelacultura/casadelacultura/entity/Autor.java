@@ -1,16 +1,8 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.NonNull;
-
-
-
+import lombok.*;
 
 @Getter
 @Setter
@@ -19,8 +11,8 @@ import lombok.NonNull;
 @NoArgsConstructor
 public class Autor {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAutor;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idAutor;
 
     @NonNull
     private String nombreAutor;

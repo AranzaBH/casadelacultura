@@ -25,7 +25,7 @@ public class MaterialControlador {
 
     // Obtener un material por ID
     @GetMapping("{idMaterial}")
-    public ResponseEntity<Material> get(@PathVariable Integer idMaterial) {
+    public ResponseEntity<Material> get(@PathVariable Long idMaterial) {
         Optional<Material> material = materialRepositorio.findById(idMaterial);
         return material.map(ResponseEntity::ok)
                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class MaterialControlador {
 
     // Actualizar un material existente
     @PutMapping("{idMaterial}")
-    public ResponseEntity<Material> update(@PathVariable Integer idMaterial, @RequestBody Material formulario) {
+    public ResponseEntity<Material> update(@PathVariable Long idMaterial, @RequestBody Material formulario) {
         Optional<Material> optionalMaterial = materialRepositorio.findById(idMaterial);
         if (optionalMaterial.isPresent()) {
             Material materialFromDB = optionalMaterial.get();
@@ -53,7 +53,7 @@ public class MaterialControlador {
 
     // Eliminar un material
     @DeleteMapping("{idMaterial}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idMaterial) {
+    public ResponseEntity<Void> delete(@PathVariable Long idMaterial) {
         Optional<Material> optionalMaterial = materialRepositorio.findById(idMaterial);
         if (optionalMaterial.isPresent()) {
             materialRepositorio.delete(optionalMaterial.get());

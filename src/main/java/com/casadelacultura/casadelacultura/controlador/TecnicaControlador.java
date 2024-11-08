@@ -25,7 +25,7 @@ public class TecnicaControlador {
 
     // Obtener una técnica por su ID
     @GetMapping("{idTecnica}")
-    public ResponseEntity<Tecnica> get(@PathVariable Integer idTecnica) {
+    public ResponseEntity<Tecnica> get(@PathVariable Long idTecnica) {
         Optional<Tecnica> tecnica = tecnicaRepositorio.findById(idTecnica);
         return tecnica.map(ResponseEntity::ok)
                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class TecnicaControlador {
 
     // Actualizar una técnica existente
     @PutMapping("{idTecnica}")
-    public ResponseEntity<Tecnica> update(@PathVariable Integer idTecnica, @RequestBody Tecnica formulario) {
+    public ResponseEntity<Tecnica> update(@PathVariable Long idTecnica, @RequestBody Tecnica formulario) {
         Optional<Tecnica> optionalTecnica = tecnicaRepositorio.findById(idTecnica);
         if (optionalTecnica.isPresent()) {
             Tecnica tecnicaFromDB = optionalTecnica.get();
@@ -53,7 +53,7 @@ public class TecnicaControlador {
 
     // Eliminar una técnica
     @DeleteMapping("{idTecnica}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idTecnica) {
+    public ResponseEntity<Void> delete(@PathVariable Long idTecnica) {
         Optional<Tecnica> optionalTecnica = tecnicaRepositorio.findById(idTecnica);
         if (optionalTecnica.isPresent()) {
             tecnicaRepositorio.delete(optionalTecnica.get());

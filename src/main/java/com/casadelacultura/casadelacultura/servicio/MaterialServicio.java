@@ -23,7 +23,7 @@ public class MaterialServicio {
     }
 
     // Obtener un material por ID
-    public Optional<Material> obtenerMaterialPorId(Integer idMaterial) {
+    public Optional<Material> obtenerMaterialPorId(Long idMaterial) {
         return materialRepositorio.findById(idMaterial);
     }
 
@@ -33,7 +33,7 @@ public class MaterialServicio {
     }
 
     // Actualizar un material existente
-    public Optional<Material> actualizarMaterial(Integer idMaterial, Material formulario) {
+    public Optional<Material> actualizarMaterial(Long idMaterial, Material formulario) {
         return materialRepositorio.findById(idMaterial).map(materialExistente -> {
             materialExistente.setNombreMaterial(formulario.getNombreMaterial());
             materialExistente.setDescripcionMaterial(formulario.getDescripcionMaterial());
@@ -42,7 +42,7 @@ public class MaterialServicio {
     }
 
     // Eliminar un material
-    public boolean eliminarMaterial(Integer idMaterial) {
+    public boolean eliminarMaterial(Long idMaterial) {
         Optional<Material> material = materialRepositorio.findById(idMaterial);
         if (material.isPresent()) {
             materialRepositorio.delete(material.get());

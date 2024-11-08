@@ -3,20 +3,17 @@ package com.casadelacultura.casadelacultura.entity;
 import javax.persistence.*;
 import lombok.*;
 
-
+@Entity
 @Getter
 @Setter
-@Entity
 @RequiredArgsConstructor
-@NoArgsConstructor
-public class CategoriaLibro {
+public class Video {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer idCategoriaLibro;
-
-    @NonNull
-    private String nombreCategoria;
-
-    @NonNull
-    private String descripcionCategoria;
+    private Long id;
+    private String url;
+    private String titulo;
+    @ManyToOne
+    @JoinColumn(name = "taller_id", nullable = false)
+    private Taller taller;
 }

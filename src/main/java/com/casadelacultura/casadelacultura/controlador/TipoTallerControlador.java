@@ -7,10 +7,7 @@ import com.casadelacultura.casadelacultura.servicio.TipoTallerServicio;
 import lombok.AllArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
-/**
- * Controlador REST para manejar las solicitudes HTTP relacionadas con la entidad TipoTaller.
- * Este controlador se encarga de las operaciones CRUD mediante los métodos expuestos.
- */
+
 @AllArgsConstructor
 @RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
 @RequestMapping("/api/tipotaller") // Define la ruta base para acceder a este controlador.
@@ -36,7 +33,7 @@ public class TipoTallerControlador {
      * @return La entidad TipoTaller si se encuentra, de lo contrario, null.
      */
     @GetMapping("{idTipoTaller}")
-    public TipoTaller get(@PathVariable Integer idTipoTaller){
+    public TipoTaller get(@PathVariable Long idTipoTaller){
         return tipoTallerServicio.findById(idTipoTaller);
 
     }
@@ -59,7 +56,7 @@ public class TipoTallerControlador {
      * @return La entidad TipoTaller actualizada.
      */
     @PutMapping("{idTipoTaller}") // Se utiliza para actualizaciones completas de entidades existentes.
-    public TipoTaller update(@PathVariable Integer idTipoTaller, @RequestBody TipoTaller formulario){
+    public TipoTaller update(@PathVariable Long idTipoTaller, @RequestBody TipoTaller formulario){
         return tipoTallerServicio.update(idTipoTaller,formulario); 
 
     }
@@ -70,7 +67,7 @@ public class TipoTallerControlador {
      */
     @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
     @DeleteMapping("{idTipoTaller}") // Se utiliza para eliminar una entidad.
-    public void delate(@PathVariable Integer idTipoTaller){
+    public void delate(@PathVariable Long idTipoTaller){
         tipoTallerServicio.delate(idTipoTaller); 
     }
 }

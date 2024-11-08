@@ -19,7 +19,7 @@ public class ObraServicio {
     }
 
     // Obtener una obra por ID
-    public Optional<Obra> obtenerObraPorId(Integer idObra) {
+    public Optional<Obra> obtenerObraPorId(Long idObra) {
         return obraRepositorio.findById(idObra);
     }
 
@@ -29,7 +29,7 @@ public class ObraServicio {
     }
 
     // Actualizar una obra existente
-    public Optional<Obra> actualizarObra(Integer idObra, Obra formulario) {
+    public Optional<Obra> actualizarObra(Long idObra, Obra formulario) {
         return obraRepositorio.findById(idObra).map(obraExistente -> {
             obraExistente.setNombreObra(formulario.getNombreObra());
             obraExistente.setEstadoActivo(formulario.isEstadoActivo());
@@ -45,7 +45,7 @@ public class ObraServicio {
     }
 
     // Eliminar una obra
-    public boolean eliminarObra(Integer idObra) {
+    public boolean eliminarObra(Long idObra) {
         Optional<Obra> obra = obraRepositorio.findById(idObra);
         if (obra.isPresent()) {
             obraRepositorio.delete(obra.get());

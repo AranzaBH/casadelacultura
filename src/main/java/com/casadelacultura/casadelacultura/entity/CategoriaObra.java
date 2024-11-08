@@ -1,11 +1,7 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
@@ -14,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class CategoriaObra {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idCategoriaObra;
 
     @NonNull

@@ -18,8 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Tecnica {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idTecnica;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTecnica;
 
     @NonNull
     private String nombreTecnica;

@@ -14,6 +14,6 @@ import com.casadelacultura.casadelacultura.entity.TipoTaller;
  * @param TipoTaller La entidad sobre la cual se realizarán las operaciones CRUD.
  * @param Integer El tipo de dato de la clave primaria de la entidad TipoTaller.
  */
-public interface TipoTallerRepositorio extends CrudRepository<TipoTaller, Integer> {
+public interface TipoTallerRepositorio extends CrudRepository<TipoTaller, Long> {
     
 }

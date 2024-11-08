@@ -23,7 +23,7 @@ public class LibroPorAutorServicio {
     }
 
     // Obtener una relación libro-autor por ID
-    public Optional<LibrosPorAutor> obtenerLibroPorAutorPorId(Integer idAutor) {
+    public Optional<LibrosPorAutor> obtenerLibroPorAutorPorId(Long idAutor) {
         return librosPorAutorRepositorio.findById(idAutor);
     }
 
@@ -33,7 +33,7 @@ public class LibroPorAutorServicio {
     }
 
     // Actualizar una relación libro-autor existente
-    public Optional<LibrosPorAutor> actualizarLibroPorAutor(Integer idAutor, LibrosPorAutor formulario) {
+    public Optional<LibrosPorAutor> actualizarLibroPorAutor(Long idAutor, LibrosPorAutor formulario) {
         return librosPorAutorRepositorio.findById(idAutor).map(libroPorAutorExistente -> {
             libroPorAutorExistente.setAutor(formulario.getAutor());
             libroPorAutorExistente.setLibro(formulario.getLibro());
@@ -42,7 +42,7 @@ public class LibroPorAutorServicio {
     }
 
     // Eliminar una relación libro-autor
-    public boolean eliminarLibroPorAutor(Integer idAutor) {
+    public boolean eliminarLibroPorAutor(Long idAutor) {
         Optional<LibrosPorAutor> libroPorAutor = librosPorAutorRepositorio.findById(idAutor);
         if (libroPorAutor.isPresent()) {
             librosPorAutorRepositorio.delete(libroPorAutor.get());

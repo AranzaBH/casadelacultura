@@ -24,7 +24,7 @@ public class AutorControlador {
 
     // Método para obtener un solo autor por su id
     @GetMapping("{idAutor}")
-    public ResponseEntity<Autor> get(@PathVariable Integer idAutor) {
+    public ResponseEntity<Autor> get(@PathVariable Long idAutor) {
         Optional<Autor> autor = autorRepositorio.findById(idAutor);
         return autor.map(ResponseEntity::ok)
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -39,7 +39,7 @@ public class AutorControlador {
 
     // Actualización de un autor
     @PutMapping("{idAutor}")
-    public ResponseEntity<Autor> update(@PathVariable Integer idAutor, @RequestBody Autor formulario) {
+    public ResponseEntity<Autor> update(@PathVariable Long idAutor, @RequestBody Autor formulario) {
         Optional<Autor> optionalAutor = autorRepositorio.findById(idAutor);
         if (optionalAutor.isPresent()) {
             Autor autorFromDB = optionalAutor.get();
@@ -55,7 +55,7 @@ public class AutorControlador {
 
     // Eliminar un autor
     @DeleteMapping("{idAutor}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idAutor) {
+    public ResponseEntity<Void> delete(@PathVariable Long idAutor) {
         Optional<Autor> optionalAutor = autorRepositorio.findById(idAutor);
         if (optionalAutor.isPresent()) {
             autorRepositorio.delete(optionalAutor.get());

@@ -1,19 +1,7 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-/* 
-import io.micrometer.common.lang.NonNull;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;*/
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-
+import lombok.*;
 import java.time.LocalDateTime;
 
 @Entity
@@ -22,15 +10,14 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class Taller {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idTaller;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTaller;
 
     @NonNull
     private String tituloTaller;
 
     @NonNull
     private String clave;
-
 
     @NonNull
     private String descripcion;
@@ -47,7 +34,6 @@ public class Taller {
     @OneToOne
     @JoinColumn(name = "idTipoTaller", nullable = false)
     private TipoTaller tipoTaller;
-
     
     private boolean estaActivo;
 }

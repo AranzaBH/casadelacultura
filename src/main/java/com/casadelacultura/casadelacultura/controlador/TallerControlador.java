@@ -25,7 +25,7 @@ public class TallerControlador {
 
     // Obtener un taller por su ID
     @GetMapping("{idTaller}")
-    public ResponseEntity<Taller> get(@PathVariable Integer idTaller) {
+    public ResponseEntity<Taller> get(@PathVariable Long idTaller) {
         Optional<Taller> taller = tallerRepositorio.findById(idTaller);
         return taller.map(ResponseEntity::ok)
                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class TallerControlador {
 
     // Actualizar un taller existente
     @PutMapping("{idTaller}")
-    public ResponseEntity<Taller> update(@PathVariable Integer idTaller, @RequestBody Taller formulario) {
+    public ResponseEntity<Taller> update(@PathVariable Long idTaller, @RequestBody Taller formulario) {
         Optional<Taller> optionalTaller = tallerRepositorio.findById(idTaller);
         if (optionalTaller.isPresent()) {
             Taller tallerFromDB = optionalTaller.get();
@@ -59,7 +59,7 @@ public class TallerControlador {
 
     // Eliminar un taller
     @DeleteMapping("{idTaller}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idTaller) {
+    public ResponseEntity<Void> delete(@PathVariable Long idTaller) {
         Optional<Taller> optionalTaller = tallerRepositorio.findById(idTaller);
         if (optionalTaller.isPresent()) {
             tallerRepositorio.delete(optionalTaller.get());

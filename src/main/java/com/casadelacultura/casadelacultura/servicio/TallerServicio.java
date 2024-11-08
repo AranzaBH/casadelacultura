@@ -19,7 +19,7 @@ public class TallerServicio {
     }
 
     // Obtener un taller por su ID
-    public Optional<Taller> obtenerTallerPorId(Integer idTaller) {
+    public Optional<Taller> obtenerTallerPorId(Long idTaller) {
         return tallerRepositorio.findById(idTaller);
     }
 
@@ -29,7 +29,7 @@ public class TallerServicio {
     }
 
     // Actualizar un taller existente
-    public Optional<Taller> actualizarTaller(Integer idTaller, Taller formulario) {
+    public Optional<Taller> actualizarTaller(Long idTaller, Taller formulario) {
         return tallerRepositorio.findById(idTaller).map(tallerExistente -> {
             tallerExistente.setTituloTaller(formulario.getTituloTaller());
             tallerExistente.setClave(formulario.getClave());
@@ -44,7 +44,7 @@ public class TallerServicio {
     }
 
     // Eliminar un taller
-    public boolean eliminarTaller(Integer idTaller) {
+    public boolean eliminarTaller(Long idTaller) {
         Optional<Taller> taller = tallerRepositorio.findById(idTaller);
         if (taller.isPresent()) {
             tallerRepositorio.delete(taller.get());

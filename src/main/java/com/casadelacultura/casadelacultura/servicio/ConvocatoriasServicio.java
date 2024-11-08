@@ -23,7 +23,7 @@ public class ConvocatoriasServicio {
     }
 
     // Obtener una convocatoria por ID
-    public Optional<Convocatorias> obtenerConvocatoriaPorId(Integer idConvocatorias) {
+    public Optional<Convocatorias> obtenerConvocatoriaPorId(Long idConvocatorias) {
         return convocatoriasRepositorio.findById(idConvocatorias);
     }
 
@@ -33,19 +33,18 @@ public class ConvocatoriasServicio {
     }
 
     // Actualizar una convocatoria existente
-    public Optional<Convocatorias> actualizarConvocatoria(Integer idConvocatorias, Convocatorias formulario) {
+    public Optional<Convocatorias> actualizarConvocatoria(Long idConvocatorias, Convocatorias formulario) {
         return convocatoriasRepositorio.findById(idConvocatorias).map(convocatoriaExistente -> {
-            convocatoriaExistente.setNombreConvocatoria(formulario.getNombreConvocatoria());
-            convocatoriaExistente.setDescripcion(formulario.getDescripcion());
-            convocatoriaExistente.setFechaPublicacion(formulario.getFechaPublicacion());
-            convocatoriaExistente.setFechaInicio(formulario.getFechaInicio());
-            convocatoriaExistente.setFechaFinalizacion(formulario.getFechaFinalizacion());
+            convocatoriaExistente.setFechaInicioInscripcion(formulario.getFechaInicioInscripcion());
+            convocatoriaExistente.setFechaFinInscripcion(formulario.getFechaFinInscripcion());
+            convocatoriaExistente.setEstaActiva(formulario.isEstaActiva());
+            //convocatoriaExistente.setTaller(formulario.getTaller());
             return convocatoriasRepositorio.save(convocatoriaExistente);
         });
     }
 
     // Eliminar una convocatoria
-    public boolean eliminarConvocatoria(Integer idConvocatorias) {
+    public boolean eliminarConvocatoria(Long idConvocatorias) {
         Optional<Convocatorias> convocatoria = convocatoriasRepositorio.findById(idConvocatorias);
         if (convocatoria.isPresent()) {
             convocatoriasRepositorio.delete(convocatoria.get());

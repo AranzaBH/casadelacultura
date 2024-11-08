@@ -23,7 +23,7 @@ public class CategoriaLibroServicio {
     }
 
     // Obtener una categoría de libro por ID
-    public Optional<CategoriaLibro> obtenerCategoriaPorId(Integer idCategoriaLibro) {
+    public Optional<CategoriaLibro> obtenerCategoriaPorId(Long idCategoriaLibro) {
         return categoriaLibroRepositorio.findById(idCategoriaLibro);
     }
 
@@ -33,7 +33,7 @@ public class CategoriaLibroServicio {
     }
 
     // Actualizar una categoría de libro existente
-    public Optional<CategoriaLibro> actualizarCategoria(Integer idCategoriaLibro, CategoriaLibro formulario) {
+    public Optional<CategoriaLibro> actualizarCategoria(Long idCategoriaLibro, CategoriaLibro formulario) {
         return categoriaLibroRepositorio.findById(idCategoriaLibro).map(categoriaExistente -> {
             categoriaExistente.setNombreCategoria(formulario.getNombreCategoria());
             categoriaExistente.setDescripcionCategoria(formulario.getDescripcionCategoria());
@@ -42,7 +42,7 @@ public class CategoriaLibroServicio {
     }
 
     // Eliminar una categoría de libro
-    public boolean eliminarCategoria(Integer idCategoriaLibro) {
+    public boolean eliminarCategoria(Long idCategoriaLibro) {
         Optional<CategoriaLibro> categoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
         if (categoria.isPresent()) {
             categoriaLibroRepositorio.delete(categoria.get());

@@ -14,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Musica {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idMusica;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idMusica;
 
     @NonNull
     private String descripcion;

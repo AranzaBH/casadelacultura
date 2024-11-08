@@ -23,7 +23,7 @@ public class CategoriaObraServicio {
     }
 
     // Obtener una categoría de obra por ID
-    public Optional<CategoriaObra> obtenerCategoriaPorId(Integer idCategoriaObra) {
+    public Optional<CategoriaObra> obtenerCategoriaPorId(Long idCategoriaObra) {
         return categoriaObraRepositorio.findById(idCategoriaObra);
     }
 
@@ -33,7 +33,7 @@ public class CategoriaObraServicio {
     }
 
     // Actualizar una categoría de obra existente
-    public Optional<CategoriaObra> actualizarCategoria(Integer idCategoriaObra, CategoriaObra formulario) {
+    public Optional<CategoriaObra> actualizarCategoria(Long idCategoriaObra, CategoriaObra formulario) {
         return categoriaObraRepositorio.findById(idCategoriaObra).map(categoriaExistente -> {
             categoriaExistente.setNombreCategoria(formulario.getNombreCategoria());
             categoriaExistente.setDescripcionCategoria(formulario.getDescripcionCategoria());
@@ -42,7 +42,7 @@ public class CategoriaObraServicio {
     }
 
     // Eliminar una categoría de obra
-    public boolean eliminarCategoria(Integer idCategoriaObra) {
+    public boolean eliminarCategoria(Long idCategoriaObra) {
         Optional<CategoriaObra> categoria = categoriaObraRepositorio.findById(idCategoriaObra);
         if (categoria.isPresent()) {
             categoriaObraRepositorio.delete(categoria.get());

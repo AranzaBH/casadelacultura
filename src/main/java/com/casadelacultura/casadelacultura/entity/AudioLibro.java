@@ -14,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class AudioLibro {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idAudioLibro;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idAudioLibro;
 
     @NonNull
     private String asin;

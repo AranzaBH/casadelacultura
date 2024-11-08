@@ -23,7 +23,7 @@ public class AudioLibroControlador {
 
     // Obtener un audiolibro por su ID
     @GetMapping("{idAudioLibro}")
-    public ResponseEntity<AudioLibro> get(@PathVariable Integer idAudioLibro) {
+    public ResponseEntity<AudioLibro> get(@PathVariable Long idAudioLibro) {
         Optional<AudioLibro> audioLibro = audioLibroServicio.findById(idAudioLibro);
         return audioLibro.map(ResponseEntity::ok)
                          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -38,7 +38,7 @@ public class AudioLibroControlador {
 
     // Actualizar un audiolibro existente
     @PutMapping("{idAudioLibro}")
-    public ResponseEntity<AudioLibro> update(@PathVariable Integer idAudioLibro, @RequestBody AudioLibro audioLibro) {
+    public ResponseEntity<AudioLibro> update(@PathVariable Long idAudioLibro, @RequestBody AudioLibro audioLibro) {
         Optional<AudioLibro> optionalAudioLibro = audioLibroServicio.findById(idAudioLibro);
         if (optionalAudioLibro.isPresent()) {
             audioLibro.setIdAudioLibro(idAudioLibro); // Establece el ID correcto
@@ -49,7 +49,7 @@ public class AudioLibroControlador {
 
     // Eliminar un audiolibro por su ID
     @DeleteMapping("{idAudioLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idAudioLibro) {
+    public ResponseEntity<Void> delete(@PathVariable Long idAudioLibro) {
         Optional<AudioLibro> optionalAudioLibro = audioLibroServicio.findById(idAudioLibro);
         if (optionalAudioLibro.isPresent()) {
             audioLibroServicio.delete(idAudioLibro);

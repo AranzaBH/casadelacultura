@@ -14,8 +14,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Material {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idMaterial;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idMaterial;
 
     @NonNull
     private String nombreMaterial;

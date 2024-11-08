@@ -23,7 +23,7 @@ public class LibroServicio {
     }
 
     // Obtener un libro por ID
-    public Optional<Libro> obtenerLibroPorId(Integer idLibro) {
+    public Optional<Libro> obtenerLibroPorId(Long idLibro) {
         return libroRepositorio.findById(idLibro);
     }
 
@@ -33,7 +33,7 @@ public class LibroServicio {
     }
 
     // Actualizar un libro existente
-    public Optional<Libro> actualizarLibro(Integer idLibro, Libro formulario) {
+    public Optional<Libro> actualizarLibro(Long idLibro, Libro formulario) {
         return libroRepositorio.findById(idLibro).map(libroExistente -> {
             libroExistente.setAsin(formulario.getAsin());
             libroExistente.setTituloLibro(formulario.getTituloLibro());
@@ -51,7 +51,7 @@ public class LibroServicio {
     }
 
     // Eliminar un libro
-    public boolean eliminarLibro(Integer idLibro) {
+    public boolean eliminarLibro(Long idLibro) {
         Optional<Libro> libro = libroRepositorio.findById(idLibro);
         if (libro.isPresent()) {
             libroRepositorio.delete(libro.get());

@@ -19,8 +19,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class TipoLibro {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer idTipoLibro;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long idTipoLibro;
 
     @NonNull
     private String nombreTipoLibro;

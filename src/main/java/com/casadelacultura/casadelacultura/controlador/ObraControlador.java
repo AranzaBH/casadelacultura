@@ -25,7 +25,7 @@ public class ObraControlador {
 
     // Obtener una obra por ID
     @GetMapping("{idObra}")
-    public ResponseEntity<Obra> get(@PathVariable Integer idObra) {
+    public ResponseEntity<Obra> get(@PathVariable Long idObra) {
         Optional<Obra> obra = obraRepositorio.findById(idObra);
         return obra.map(ResponseEntity::ok)
                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
@@ -40,7 +40,7 @@ public class ObraControlador {
 
     // Actualizar una obra existente
     @PutMapping("{idObra}")
-    public ResponseEntity<Obra> update(@PathVariable Integer idObra, @RequestBody Obra formulario) {
+    public ResponseEntity<Obra> update(@PathVariable Long idObra, @RequestBody Obra formulario) {
         Optional<Obra> optionalObra = obraRepositorio.findById(idObra);
         if (optionalObra.isPresent()) {
             Obra obraFromDB = optionalObra.get();
@@ -60,7 +60,7 @@ public class ObraControlador {
 
     // Eliminar una obra
     @DeleteMapping("{idObra}")
-    public ResponseEntity<Void> delete(@PathVariable Integer idObra) {
+    public ResponseEntity<Void> delete(@PathVariable Long idObra) {
         Optional<Obra> optionalObra = obraRepositorio.findById(idObra);
         if (optionalObra.isPresent()) {
             obraRepositorio.delete(optionalObra.get());

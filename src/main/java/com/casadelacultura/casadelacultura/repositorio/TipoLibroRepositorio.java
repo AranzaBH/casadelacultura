@@ -3,5 +3,5 @@ package com.casadelacultura.casadelacultura.repositorio;
 import org.springframework.data.repository.CrudRepository;
 import com.casadelacultura.casadelacultura.entity.TipoLibro;
 
-public interface TipoLibroRepositorio extends CrudRepository<TipoLibro, Integer> {
+public interface TipoLibroRepositorio extends CrudRepository<TipoLibro, Long> {
 }

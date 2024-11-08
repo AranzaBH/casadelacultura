@@ -19,7 +19,7 @@ public class ObrasFonograficasPorAutorServicio {
     }
 
     // Obtener una relación entre obra fonográfica y autor por ID
-    public Optional<ObrasFonograficasPorAutor> obtenerRelacionPorId(Integer idAutor) {
+    public Optional<ObrasFonograficasPorAutor> obtenerRelacionPorId(Long idAutor) {
         return obrasFonograficasPorAutorRepositorio.findById(idAutor);
     }
 
@@ -29,7 +29,7 @@ public class ObrasFonograficasPorAutorServicio {
     }
 
     // Actualizar una relación existente entre obra fonográfica y autor
-    public Optional<ObrasFonograficasPorAutor> actualizarRelacion(Integer idAutor, ObrasFonograficasPorAutor formulario) {
+    public Optional<ObrasFonograficasPorAutor> actualizarRelacion(Long idAutor, ObrasFonograficasPorAutor formulario) {
         return obrasFonograficasPorAutorRepositorio.findById(idAutor).map(relacionExistente -> {
             relacionExistente.setAutor(formulario.getAutor());
             relacionExistente.setObrasFonograficas(formulario.getObrasFonograficas());
@@ -38,7 +38,7 @@ public class ObrasFonograficasPorAutorServicio {
     }
 
     // Eliminar una relación entre obra fonográfica y autor
-    public boolean eliminarRelacion(Integer idAutor) {
+    public boolean eliminarRelacion(Long idAutor) {
         Optional<ObrasFonograficasPorAutor> relacion = obrasFonograficasPorAutorRepositorio.findById(idAutor);
         if (relacion.isPresent()) {
             obrasFonograficasPorAutorRepositorio.delete(relacion.get());
