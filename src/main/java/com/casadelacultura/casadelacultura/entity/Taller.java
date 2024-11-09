@@ -35,5 +35,10 @@ public class Taller {
     @JoinColumn(name = "idTipoTaller", nullable = false)
     private TipoTaller tipoTaller;
     
-    private boolean estaActivo;
+    private boolean estaActivo = false;
+
+
+    public Taller() {
+        
+    }
 }

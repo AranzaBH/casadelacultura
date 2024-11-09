@@ -1,5 +1,5 @@
 package com.casadelacultura.casadelacultura.entity;
-
+/* 
 import javax.persistence.*;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -26,4 +26,4 @@ public class Inscripciones {
     private Taller taller;
 
     private LocalDateTime fechaInscripcion;
-}
+}*/

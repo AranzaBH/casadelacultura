@@ -13,7 +13,8 @@ public class Video {
     private Long id;
     private String url;
     private String titulo;
+    /* 
     @ManyToOne
     @JoinColumn(name = "taller_id", nullable = false)
-    private Taller taller;
+    private Taller taller;*/
 }

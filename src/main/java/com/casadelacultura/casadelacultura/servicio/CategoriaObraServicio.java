@@ -9,7 +9,6 @@ import java.util.Optional;
 
 @Service
 public class CategoriaObraServicio {
-
     @Autowired
     private final CategoriaObraRepositorio categoriaObraRepositorio;
 

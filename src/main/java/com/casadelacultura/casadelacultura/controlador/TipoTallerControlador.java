@@ -23,8 +23,6 @@ public class TipoTallerControlador {
     @GetMapping()
     public Iterable<TipoTaller> list() {
         return tipoTallerServicio.findAll();
-
-
     }
 
     /**

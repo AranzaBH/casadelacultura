@@ -24,6 +24,7 @@ public class Tecnica {
     @NonNull
     private String nombreTecnica;
 
+    
     @NonNull
     private String descripcionTecnica;
 }
