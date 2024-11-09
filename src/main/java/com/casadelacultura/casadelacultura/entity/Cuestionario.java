@@ -7,14 +7,12 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
-public class Video {
+public class Cuestionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idVideo;
+    private Long idCuestionario;
 
     @NonNull
-    private String titulo;
+    private String Calificacion;
 
-    @NonNull
-    private String urlVideo;
 }

@@ -51,6 +51,7 @@ public class TallerControlador {
             tallerFromDB.setFechaFinal(formulario.getFechaFinal());
             tallerFromDB.setFechaCreacion(formulario.getFechaCreacion());
             tallerFromDB.setTipoTaller(formulario.getTipoTaller());
+            tallerFromDB.setUrlImagenPortadaTaller(formulario.getUrlImagenPortadaTaller());
             tallerFromDB.setEstaActivo(formulario.isEstaActivo());
             return ResponseEntity.ok(tallerRepositorio.save(tallerFromDB));
         }

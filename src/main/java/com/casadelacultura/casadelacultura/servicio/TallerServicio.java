@@ -38,6 +38,7 @@ public class TallerServicio {
             tallerExistente.setFechaFinal(formulario.getFechaFinal());
             tallerExistente.setFechaCreacion(formulario.getFechaCreacion());
             tallerExistente.setTipoTaller(formulario.getTipoTaller());
+            tallerExistente.setUrlImagenPortadaTaller(formulario.getUrlImagenPortadaTaller());
             tallerExistente.setEstaActivo(formulario.isEstaActivo());
             return tallerRepositorio.save(tallerExistente);
         });

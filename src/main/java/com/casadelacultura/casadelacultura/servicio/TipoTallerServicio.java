@@ -6,19 +6,10 @@ import com.casadelacultura.casadelacultura.entity.TipoTaller;
 import com.casadelacultura.casadelacultura.repositorio.TipoTallerRepositorio;
 import lombok.AllArgsConstructor;
 
-/**
- * Servicio encargado de gestionar las operaciones CRUD (Crear, Leer, Actualizar, Eliminar)
- * para la entidad TipoTaller.
- * 
- * @Service Indica que esta clase es un servicio gestionado por Spring.
- * @AllArgsConstructor Se genera automáticamente un constructor con todas las dependencias.
- */
+
 @AllArgsConstructor
 @Service
 public class TipoTallerServicio {
-    /**
-     * Repositorio que permite realizar operaciones de persistencia para TipoTaller.
-     */
     private final TipoTallerRepositorio tipoTallerRepositorio;
 
     /**

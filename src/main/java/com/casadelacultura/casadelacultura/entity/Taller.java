@@ -16,11 +16,12 @@ public class Taller {
     @NonNull
     private String tituloTaller;
 
-    @NonNull
-    private String clave;
-
-    @NonNull
     private String descripcion;
+
+    @OneToOne
+    @JoinColumn(name = "idTipoTaller", nullable = false)
+    private TipoTaller tipoTaller;
+
 
     @NonNull
     private LocalDateTime  fechaInico;
@@ -29,14 +30,15 @@ public class Taller {
     private LocalDateTime  fechaFinal;
 
     @NonNull
-    private LocalDateTime  fechaCreacion;
+    private String clave;
 
-    @OneToOne
-    @JoinColumn(name = "idTipoTaller", nullable = false)
-    private TipoTaller tipoTaller;
+    @NonNull
+    private LocalDateTime  fechaCreacion;
     
     private boolean estaActivo = false;
 
+    @NonNull
+    private String urlImagenPortadaTaller;
 
     public Taller() {
         
