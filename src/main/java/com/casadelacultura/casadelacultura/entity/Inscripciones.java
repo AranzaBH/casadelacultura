@@ -1,29 +1,31 @@
 package com.casadelacultura.casadelacultura.entity;
-/* 
-import javax.persistence.*;
-import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Entity
+import javax.persistence.*;
+
+import lombok.*;
+
 @Getter
 @Setter
+@Entity
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Inscripciones {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idInscripcion;
+    private Long idInscripciones;
 
-    @ManyToOne
-    @JoinColumn(name = "convocatoria_id")
-    private Convocatorias convocatoria;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id")
+    @OneToOne
+    @JoinColumn(name = "idusuarios", nullable = false)
     private Usuario usuario;
 
-    @ManyToOne
-    @JoinColumn(name = "taller_id")
-    private Taller taller;
-
+    @NonNull
     private LocalDateTime fechaInscripcion;
-}*/
+
+    @OneToOne
+    @JoinColumn(name = "idTalleres", nullable = false)
+    private  Taller taller;
+
+    private int avanceGeneral;
+}
