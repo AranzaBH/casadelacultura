@@ -1,0 +1,46 @@
+<div class = "text-end"> 
+    <button class ="btn btn-primary" routerLink="/crearUsuario">
+        Crear usuario
+    </button>
+</div>
+<h2 class="mb-5"> Mis usuarios</h2>
+
+
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Apellido Paterno </th>
+            <th>Apellido materno</th>
+            <th>Correo Electronico</th>
+            <th>Contraseña</th>
+            <th>Fecha Creacion</th>
+            <th>Id rol</th>
+            <th></th>
+
+        </tr>
+    </thead>
+
+    <tbody>
+        @for (usuario of usuario; track usuario.idUsuario) {
+            <tr>
+                <td> {{ usuario.idUsuario}}</td>
+                <td> {{usuario.nombre}}</td>
+                <td> {{ usuario.apellidoPaterno}}</td>
+                <td> {{ usuario.apellidoMaterno}}</td>
+                <td> {{ usuario.correoElectronico}}</td>
+                <td> {{ usuario.password}}</td>
+                <td> {{ usuario.password}}</td>
+                <td>{{usuario.fechaCreacion |date: 'dd/mm/yyyy hh:mm a'}}</td>
+                <td>{{usuario.rol}}</td>
+
+
+                
+                
+            </tr>
+        }
+    </tbody>
+
+</table>

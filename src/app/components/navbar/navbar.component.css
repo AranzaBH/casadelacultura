@@ -1,0 +1,68 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.navbar-brand {
+  font-weight: bold;
+}
+
+.offcanvas-end {
+  background-color: #9D2449; /* Cambia el color de fondo del menú */
+  color: #ffffff;
+}
+
+.offcanvas-body a {
+  color: #ffffff;
+  font-size: 1.2rem;
+}
+
+.offcanvas-body a:hover {
+  color: #ffc107; /* Color al pasar el ratón */
+}
+
+.example-spacer {
+  flex-grow: 1;
+}
+
+.mr20 {
+  margin-right: 20px;
+}
+
+.ml70 {
+  margin-left: 70px;
+}
+
+nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
+    /* Imágenes laterales */
+    .left-image, .right-image {
+      position: fixed;
+      top: 0;
+      width: 150px; /* Ajusta el tamaño de las imágenes */
+      height: 100%;
+      object-fit: cover;
+      z-index: 500; /* Asegúrate de que las imágenes no cubran el contenido */
+    }
+
+    .left-image {
+      left: 0;
+    }
+
+    .right-image {
+      right: 0;
+    }
+
+    /* Contenido principal */
+    .content {
+      margin-top: 70px; /* Ajusta el espacio para que el contenido no quede debajo del menú */
+      margin-left: 170px; /* Evitar que el contenido se superponga con la imagen izquierda */
+      margin-right: 170px; /* Evitar que el contenido se superponga con la imagen derecha */
+      padding: 20px;
+    }

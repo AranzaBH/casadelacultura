@@ -1,0 +1,45 @@
+.profile-image{
+    max-width: 150px;
+    max-height: 150px;
+    border: 2px solid gainsboro;
+    border-radius: 50%;
+  }
+  
+  .table{
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .table tr td{
+    padding: 15px 10px;
+    border: 0.5px solid gainsboro;
+  }
+/* Imagen de perfil responsiva y centrada */
+.profile-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* Contenedor de la imagen */
+.profile-image-container {
+  margin-bottom: 20px;
+}
+
+/* Tarjeta con sombra y bordes redondeados */
+mat-card {
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 20px;
+}
+
+/* Botones de acción con un poco de espacio entre ellos */
+mat-card-actions button {
+  font-weight: bold;
+  padding: 10px 20px;
+}
+.responsive-image {
+  width: 100%; /* Ajusta la imagen al ancho del contenedor */
+  height: auto; /* Mantiene la relación de aspecto */
+}

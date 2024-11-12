@@ -1,0 +1,57 @@
+<div class="bootstrap-wrapper">
+  <div class="container d-flex justify-content-center vh-100 pt-10">
+    <div><!-- Responsivo: cambia de tamaño según la pantalla -->
+      <!-- Tarjeta centrada -->
+      <mat-card class="text-center">
+        <h2>Detalles del Perfil</h2>
+        
+        <mat-card-content>
+          <div class="row justify-content-center">
+            <!-- Columna para la imagen del perfil -->
+            <div class="col-12 col-md-4 mb-3 mb-md-0 text-center">
+              
+              <img src='../../../../../assets/icon.png' class="responsive-image" />
+
+                
+                
+              
+              <h3>{{ user.nombre }} {{ user.apellido }}</h3>
+            </div>
+
+            <!-- Columna para la tabla de detalles del usuario -->
+            <div class="col-12 col-md-8">
+              <table class="table table-striped">
+                <tr>
+                  <td><strong>Nombre de usuario</strong></td>
+                  <td>{{ user.username }}</td>
+                </tr>
+                <tr>
+                  <td><strong>ID</strong></td>
+                  <td>{{ user.id }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Teléfono</strong></td>
+                  <td>{{ user.telefono }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Rol</strong></td>
+                  <td>{{ user.authorities[0].authority }}</td>
+                </tr>
+                <tr>
+                  <td><strong>Estado</strong></td>
+                  <td>{{ user.enabled ? "Activo" : "No activo" }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </mat-card-content>
+
+        <!-- Botones de acción -->
+        <mat-card-actions class="d-flex justify-content-center mb-3">
+          <button mat-raised-button color="primary" class="mx-2">Actualizar</button>
+          
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

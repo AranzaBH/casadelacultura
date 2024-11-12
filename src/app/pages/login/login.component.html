@@ -1,0 +1,39 @@
+<div class="bootstrap-wrapper">
+  <div class="container">
+    <div class="row mt20">
+      
+      <!-- Columna de la imagen -->
+      <div class="col-md-5 text-center d-flex align-items-center justify-content-center">
+        <img src="../../../assets/logo_circular.png" width="300" height="300" alt="Logo Casa de la Cultura">
+      </div>
+
+      <!-- Columna del formulario -->
+      <div class="col-md-5 d-flex align-items-center">
+        <mat-card class="p-4 w-100" style="box-shadow: none;">
+          <form (ngSubmit)="formSubmit()">
+            <mat-form-field class="full-width mb-3" appearance="outline">
+              <mat-label>Nombre usuario</mat-label>
+              <input [(ngModel)]="loginData.username" name="username" required matInput placeholder="Correo electrónico">
+            </mat-form-field>
+            <mat-form-field class="full-width mb-3" appearance="outline">
+              <mat-label>Contraseña</mat-label>
+              <input [(ngModel)]="loginData.password" name="password" required type="password" matInput placeholder="Contraseña">
+            </mat-form-field>
+
+            <div class="text-center">
+              <button type="submit" mat-raised-button color="primary" class="mb-2">Iniciar sesión</button>
+            </div>
+            
+            <div class="text-center mb-2">
+              <a href="#">¿Olvidaste tu contraseña?</a>
+            </div>
+            
+            <div class="text-center">
+              <p>¿No tienes una cuenta? <a href="#">Regístrate</a></p>
+            </div>
+          </form>
+        </mat-card>
+      </div>
+    </div>
+  </div>
+</div>
