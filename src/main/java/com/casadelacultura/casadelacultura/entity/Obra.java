@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Obra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

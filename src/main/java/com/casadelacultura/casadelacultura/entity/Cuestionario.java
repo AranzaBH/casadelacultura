@@ -7,6 +7,7 @@ import lombok.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Cuestionario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

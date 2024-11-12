@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Taller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,5 @@ public class Taller {
     @NonNull
     private String urlImagenPortadaTaller;
 
-    public Taller() {
-        
-    }
+    
 }
