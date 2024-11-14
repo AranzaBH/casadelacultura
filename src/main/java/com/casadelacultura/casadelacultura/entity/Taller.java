@@ -38,7 +38,7 @@ public class Taller {
     
     private boolean estaActivo = false;
 
-    @NonNull
+    @Transient
     private String urlImagenPortadaTaller;
 
     

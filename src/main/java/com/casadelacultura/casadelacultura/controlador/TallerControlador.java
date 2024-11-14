@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Taller;
 import com.casadelacultura.casadelacultura.repositorio.TallerRepositorio;
+import com.casadelacultura.casadelacultura.servicio.S3Service;
 
 import java.util.Optional;
 
@@ -16,6 +17,9 @@ public class TallerControlador {
 
     @Autowired
     private TallerRepositorio tallerRepositorio;
+
+    @Autowired
+    private S3Service s3Service;
 
     // Obtener todos los talleres
     @GetMapping
