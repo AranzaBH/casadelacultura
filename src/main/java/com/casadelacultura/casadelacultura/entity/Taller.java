@@ -38,6 +38,8 @@ public class Taller {
     
     private boolean estaActivo = false;
 
+    private String imagenPath;
+
     @Transient
     private String urlImagenPortadaTaller;
 

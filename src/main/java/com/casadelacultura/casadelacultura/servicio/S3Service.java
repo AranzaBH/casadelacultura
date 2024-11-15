@@ -31,11 +31,11 @@ public class S3Service {
         objectMetadata.setContentType(multipartFile.getContentType());
 
         try {
-            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(), objectMetadata);
+            PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKET, key, multipartFile.getInputStream(), objectMetadata).withCannedAcl(CannedAccessControlList.PublicRead);
             //.withCannedAcl(CannedAccessControlList.PublicRead);
 
             s3Client.putObject(putObjectRequest);
-
+            //s3Client.setObjectAcl(BUCKET, key, CannedAccessControlList.PublicRead);
             return key;
         } catch (IOException ex) { // Captura la excepción IOException
             throw new RuntimeException(ex);
@@ -61,7 +61,8 @@ public class S3Service {
     }
 
     public String getObjectUrl(String key){
-        return String.format("http://%s.s3.amazonaws/%s", BUCKET, key);
+        return String.format("https://%s.s3.us-east-1.amazonaws.com/%s", BUCKET, key);
+        //return String.format("https://%s.s3.amazonaws.com/%s", BUCKET, key);
     }
 }
 
