@@ -2,16 +2,12 @@ package com.casadelacultura.casadelacultura.controlador;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Taller;
-import com.casadelacultura.casadelacultura.repositorio.TallerRepositorio;
 import com.casadelacultura.casadelacultura.servicio.S3Service;
 import com.casadelacultura.casadelacultura.servicio.TallerServicio;
 
 import lombok.AllArgsConstructor;
-
-import java.util.Optional;
 
 // Controlador para manejar las operaciones CRUD de Taller
 @AllArgsConstructor

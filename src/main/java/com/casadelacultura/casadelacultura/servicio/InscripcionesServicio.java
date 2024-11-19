@@ -4,14 +4,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
 import com.casadelacultura.casadelacultura.repositorio.InscripcionesRepositorio;
+import lombok.*;
+import java.time.LocalDateTime;
 
-import java.util.Optional;
-
+@AllArgsConstructor
 @Service
 public class InscripcionesServicio {
 
     @Autowired
-    private InscripcionesRepositorio inscripcionesRepositorio;
+    private final InscripcionesRepositorio inscripcionesRepositorio;
 
     // Obtener todas las inscripciones
     public Iterable<Inscripciones> listarInscripciones() {
@@ -19,33 +20,30 @@ public class InscripcionesServicio {
     }
 
     // Obtener una inscripción por ID
-    public Optional<Inscripciones> obtenerInscripcionPorId(Long idInscripcion) {
-        return inscripcionesRepositorio.findById(idInscripcion);
+    public Inscripciones obtenerInscripcionPorId(Long idInscripcion) {
+        return inscripcionesRepositorio.findById(idInscripcion).orElse(null);
     }
 
     // Crear una nueva inscripción
     public Inscripciones crearInscripcion(Inscripciones inscripcion) {
+        inscripcion.setFechaInscripcion(LocalDateTime.now());
         return inscripcionesRepositorio.save(inscripcion);
     }
 
     // Actualizar una inscripción existente
-    public Optional<Inscripciones> actualizarInscripcion(Long idInscripcion, Inscripciones formulario) {
-        return inscripcionesRepositorio.findById(idInscripcion).map(inscripcionExistente -> {
-            inscripcionExistente.setUsuario(formulario.getUsuario());
-            inscripcionExistente.setFechaInscripcion(formulario.getFechaInscripcion());
-            inscripcionExistente.setTaller(formulario.getTaller());
-            inscripcionExistente.setAvanceGeneral(formulario.getAvanceGeneral());
-            return inscripcionesRepositorio.save(inscripcionExistente);
-        });
+    public Inscripciones actualizarInscripcion(Long idInscripcion, Inscripciones formulario) {
+        Inscripciones inscripcionesFromDB = obtenerInscripcionPorId(idInscripcion);
+        inscripcionesFromDB.setUsuario(formulario.getUsuario());
+        //inscripcionesFromDB.setFechaInscripcion(formulario.getFechaInscripcion());
+        inscripcionesFromDB.setTaller(formulario.getTaller());
+        inscripcionesFromDB.setAvanceGeneral(formulario.getAvanceGeneral());
+        return inscripcionesRepositorio.save(inscripcionesFromDB);
+        
     }
 
     // Eliminar una inscripción por ID
-    public boolean eliminarInscripcion(Long idInscripcion) {
-        Optional<Inscripciones> inscripcion = inscripcionesRepositorio.findById(idInscripcion);
-        if (inscripcion.isPresent()) {
-            inscripcionesRepositorio.delete(inscripcion.get());
-            return true;
-        }
-        return false;
+    public void eliminarInscripcion(Long idInscripcion) {
+        Inscripciones inscripcionesFromDB = obtenerInscripcionPorId(idInscripcion);
+        inscripcionesRepositorio.delete(inscripcionesFromDB);
     }
 }

@@ -8,50 +8,45 @@ import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
 import com.casadelacultura.casadelacultura.servicio.InscripcionesServicio;
 
+import lombok.*;
+
 import java.util.Optional;
 
-@RestController
-@RequestMapping("/inscripciones")
+@AllArgsConstructor
+@RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
+@RequestMapping("api/inscripciones")
 public class InscripcionesControlador {
-
-    @Autowired
-    private InscripcionesServicio inscripcionesServicio;
+    private final InscripcionesServicio inscripcionesServicio;
 
     // Obtener todas las inscripciones
     @GetMapping
-    public ResponseEntity<Iterable<Inscripciones>> obtenerTodasLasInscripciones() {
-        Iterable<Inscripciones> inscripciones = inscripcionesServicio.listarInscripciones();
-        return new ResponseEntity<>(inscripciones, HttpStatus.OK);
+    public Iterable<Inscripciones> obtenerTodasLasInscripciones() {
+        return inscripcionesServicio.listarInscripciones();
     }
 
     // Obtener una inscripción por su ID
-    @GetMapping("/{idInscripcion}")
-    public ResponseEntity<Inscripciones> obtenerInscripcionPorId(@PathVariable Long idInscripcion) {
-        Optional<Inscripciones> inscripcion = inscripcionesServicio.obtenerInscripcionPorId(idInscripcion);
-        return inscripcion.map(ResponseEntity::ok)
-                          .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("{idInscripcion}")
+    public  Inscripciones obtenerInscripcionPorId(@PathVariable Long idInscripcion) {
+        return inscripcionesServicio.obtenerInscripcionPorId(idInscripcion);
     }
 
     // Crear una nueva inscripción
+    @ResponseStatus(HttpStatus.CREATED) // Indica que, si se crea correctamente, se devuelve el código de estado 201.
     @PostMapping
-    public ResponseEntity<Inscripciones> crearInscripcion(@RequestBody Inscripciones inscripcion) {
-        Inscripciones nuevaInscripcion = inscripcionesServicio.crearInscripcion(inscripcion);
-        return new ResponseEntity<>(nuevaInscripcion, HttpStatus.CREATED);
+    public Inscripciones crearInscripcion(@RequestBody Inscripciones inscripcion) {
+        return inscripcionesServicio.crearInscripcion(inscripcion);
     }
 
     // Actualizar una inscripción existente
-    @PutMapping("/{idInscripcion}")
-    public ResponseEntity<Inscripciones> actualizarInscripcion(@PathVariable Long idInscripcion, @RequestBody Inscripciones formulario) {
-        Optional<Inscripciones> inscripcionActualizada = inscripcionesServicio.actualizarInscripcion(idInscripcion, formulario);
-        return inscripcionActualizada.map(ResponseEntity::ok)
-                                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PutMapping("{idInscripcion}")
+    public Inscripciones actualizarInscripcion(@PathVariable Long idInscripcion, @RequestBody Inscripciones formulario) {
+        return inscripcionesServicio.actualizarInscripcion(idInscripcion, formulario);
     }
 
     // Eliminar una inscripción por su ID
-    @DeleteMapping("/{idInscripcion}")
-    public ResponseEntity<Void> eliminarInscripcion(@PathVariable Long idInscripcion) {
-        boolean eliminado = inscripcionesServicio.eliminarInscripcion(idInscripcion);
-        return eliminado ? ResponseEntity.noContent().build()
-                         : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
+    @DeleteMapping("{idInscripcion}")
+    public void eliminarInscripcion(@PathVariable Long idInscripcion) {
+        inscripcionesServicio.eliminarInscripcion(idInscripcion);
     }
 }
