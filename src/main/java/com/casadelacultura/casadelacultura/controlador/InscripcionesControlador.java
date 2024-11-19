@@ -1,16 +1,12 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
 import com.casadelacultura.casadelacultura.servicio.InscripcionesServicio;
 
 import lombok.*;
-
-import java.util.Optional;
 
 @AllArgsConstructor
 @RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.

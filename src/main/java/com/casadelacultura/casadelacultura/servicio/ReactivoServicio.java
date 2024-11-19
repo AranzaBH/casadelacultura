@@ -1,17 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Reactivo;
 import com.casadelacultura.casadelacultura.repositorio.ReactivoRepositorio;
 
-import java.util.Optional;
+import lombok.*;
 
+@AllArgsConstructor
 @Service
 public class ReactivoServicio {
-
-    @Autowired
-    private ReactivoRepositorio reactivoRepositorio;
+    private final ReactivoRepositorio reactivoRepositorio;
 
     // Obtener todos los reactivos
     public Iterable<Reactivo> listarReactivos() {
@@ -19,8 +17,8 @@ public class ReactivoServicio {
     }
 
     // Obtener un reactivo por ID
-    public Optional<Reactivo> obtenerReactivoPorId(Long idReactivo) {
-        return reactivoRepositorio.findById(idReactivo);
+    public Reactivo obtenerReactivoPorId(Long idReactivo) {
+        return reactivoRepositorio.findById(idReactivo).orElse(null);
     }
 
     // Crear un nuevo reactivo
@@ -29,26 +27,23 @@ public class ReactivoServicio {
     }
 
     // Actualizar un reactivo existente
-    public Optional<Reactivo> actualizarReactivo(Long idReactivo, Reactivo formulario) {
-        return reactivoRepositorio.findById(idReactivo).map(reactivoExistente -> {
-            reactivoExistente.setPregunta(formulario.getPregunta());
-            reactivoExistente.setRespuestaCorrecta(formulario.getRespuestaCorrecta());
-            reactivoExistente.setRespuesta1(formulario.getRespuesta1());
-            reactivoExistente.setRespuesta2(formulario.getRespuesta2());
-            reactivoExistente.setRespuesta3(formulario.getRespuesta3());
-            reactivoExistente.setRespuesta4(formulario.getRespuesta4());
-            reactivoExistente.setRespuesta5(formulario.getRespuesta5());
-            return reactivoRepositorio.save(reactivoExistente);
-        });
+    public Reactivo actualizarReactivo(Long idReactivo, Reactivo formulario) {
+        Reactivo reactivoFromDB = obtenerReactivoPorId(idReactivo);
+        reactivoFromDB.setPregunta(formulario.getPregunta());
+        reactivoFromDB.setRespuestaCorrecta(formulario.getRespuestaCorrecta());
+        reactivoFromDB.setRespuesta1(formulario.getRespuesta1());
+        reactivoFromDB.setRespuesta2(formulario.getRespuesta2());
+        reactivoFromDB.setRespuesta3(formulario.getRespuesta3());
+        reactivoFromDB.setRespuesta4(formulario.getRespuesta4());
+        reactivoFromDB.setRespuesta5(formulario.getRespuesta5());
+        return reactivoRepositorio.save(reactivoFromDB);
+        
     }
 
     // Eliminar un reactivo por ID
-    public boolean eliminarReactivo(Long idReactivo) {
-        Optional<Reactivo> reactivo = reactivoRepositorio.findById(idReactivo);
-        if (reactivo.isPresent()) {
-            reactivoRepositorio.delete(reactivo.get());
-            return true;
-        }
-        return false;
+    public void eliminarReactivo(Long idReactivo) {
+        Reactivo reactivoFromDB = obtenerReactivoPorId(idReactivo);
+        reactivoRepositorio.delete(reactivoFromDB);
     }
+
 }

@@ -1,57 +1,48 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.casadelacultura.casadelacultura.entity.Reactivo;
 import com.casadelacultura.casadelacultura.servicio.ReactivoServicio;
 
-import java.util.Optional;
+import lombok.*;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("/reactivos")
+@RequestMapping("/api/reactivos")
 public class ReactivoControlador {
-
-    @Autowired
-    private ReactivoServicio reactivoServicio;
+    private final ReactivoServicio reactivoServicio;
 
     // Obtener todos los reactivos
     @GetMapping
-    public ResponseEntity<Iterable<Reactivo>> obtenerTodosLosReactivos() {
-        Iterable<Reactivo> reactivos = reactivoServicio.listarReactivos();
-        return new ResponseEntity<>(reactivos, HttpStatus.OK);
+    public Iterable<Reactivo> obtenerTodosLosReactivos() {
+        return reactivoServicio.listarReactivos();
     }
 
     // Obtener un reactivo por su ID
-    @GetMapping("/{idReactivo}")
-    public ResponseEntity<Reactivo> obtenerReactivoPorId(@PathVariable Long idReactivo) {
-        Optional<Reactivo> reactivo = reactivoServicio.obtenerReactivoPorId(idReactivo);
-        return reactivo.map(ResponseEntity::ok)
-                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("{idReactivo}")
+    public Reactivo obtenerReactivoPorId(@PathVariable Long idReactivo) {
+        return reactivoServicio.obtenerReactivoPorId(idReactivo);
     }
 
     // Crear un nuevo reactivo
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Reactivo> crearReactivo(@RequestBody Reactivo reactivo) {
-        Reactivo nuevoReactivo = reactivoServicio.crearReactivo(reactivo);
-        return new ResponseEntity<>(nuevoReactivo, HttpStatus.CREATED);
+    public Reactivo crearReactivo(@RequestBody Reactivo reactivo) {
+        return reactivoServicio.crearReactivo(reactivo);
     }
 
     // Actualizar un reactivo existente
-    @PutMapping("/{idReactivo}")
-    public ResponseEntity<Reactivo> actualizarReactivo(@PathVariable Long idReactivo, @RequestBody Reactivo formulario) {
-        Optional<Reactivo> reactivoActualizado = reactivoServicio.actualizarReactivo(idReactivo, formulario);
-        return reactivoActualizado.map(ResponseEntity::ok)
-                                  .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PutMapping("{idReactivo}")
+    public Reactivo actualizarReactivo(@PathVariable Long idReactivo, @RequestBody Reactivo formulario) {
+        return reactivoServicio.actualizarReactivo(idReactivo, formulario);
     }
 
     // Eliminar un reactivo por su ID
-    @DeleteMapping("/{idReactivo}")
-    public ResponseEntity<Void> eliminarReactivo(@PathVariable Long idReactivo) {
-        boolean eliminado = reactivoServicio.eliminarReactivo(idReactivo);
-        return eliminado ? ResponseEntity.noContent().build()
-                         : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{idReactivo}")
+    public void eliminarReactivo(@PathVariable Long idReactivo) {
+        reactivoServicio.eliminarReactivo(idReactivo);
     }
 }
