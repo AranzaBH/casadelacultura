@@ -1,57 +1,46 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import com.casadelacultura.casadelacultura.entity.Actividades;
 import com.casadelacultura.casadelacultura.servicio.ActividadesServicio;
+import lombok.AllArgsConstructor;
 
-import java.util.Optional;
-
+@AllArgsConstructor
 @RestController
-@RequestMapping("/actividades")
+@RequestMapping("/api/actividades")
 public class ActividadesControlador {
-
-    @Autowired
-    private ActividadesServicio actividadesServicio;
+    private final ActividadesServicio actividadesServicio;
 
     // Obtener todas las actividades
     @GetMapping
-    public ResponseEntity<Iterable<Actividades>> obtenerTodasLasActividades() {
-        Iterable<Actividades> actividades = actividadesServicio.listarActividades();
-        return new ResponseEntity<>(actividades, HttpStatus.OK);
+    public Iterable<Actividades> obtenerTodasLasActividades() {
+        return actividadesServicio.listarActividades();
     }
 
     // Obtener una actividad por su ID
-    @GetMapping("/{idActividad}")
-    public ResponseEntity<Actividades> obtenerActividadPorId(@PathVariable Long idActividad) {
-        Optional<Actividades> actividad = actividadesServicio.obtenerActividadPorId(idActividad);
-        return actividad.map(ResponseEntity::ok)
-                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("{idActividad}")
+    public Actividades obtenerActividadPorId(@PathVariable Long idActividad) {
+        return actividadesServicio.obtenerActividadPorId(idActividad);
     }
 
     // Crear una nueva actividad
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Actividades> crearActividad(@RequestBody Actividades actividad) {
-        Actividades nuevaActividad = actividadesServicio.crearActividad(actividad);
-        return new ResponseEntity<>(nuevaActividad, HttpStatus.CREATED);
+    public Actividades crearActividad(@RequestBody Actividades actividad) {
+        return actividadesServicio.crearActividad(actividad);
     }
 
     // Actualizar una actividad existente
-    @PutMapping("/{idActividad}")
-    public ResponseEntity<Actividades> actualizarActividad(@PathVariable Long idActividad, @RequestBody Actividades formulario) {
-        Optional<Actividades> actividadActualizada = actividadesServicio.actualizarActividad(idActividad, formulario);
-        return actividadActualizada.map(ResponseEntity::ok)
-                                   .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PutMapping("{idActividad}")
+    public Actividades actualizarActividad(@PathVariable Long idActividad, @RequestBody Actividades formulario) {
+        return actividadesServicio.actualizarActividad(idActividad, formulario);
     }
 
     // Eliminar una actividad por su ID
-    @DeleteMapping("/{idActividad}")
-    public ResponseEntity<Void> eliminarActividad(@PathVariable Long idActividad) {
-        boolean eliminado = actividadesServicio.eliminarActividad(idActividad);
-        return eliminado ? ResponseEntity.noContent().build()
-                         : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{idActividad}")
+    public void eliminarActividad(@PathVariable Long idActividad) {
+        actividadesServicio.eliminarActividad(idActividad);
     }
 }

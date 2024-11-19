@@ -21,11 +21,11 @@ public class Actividades {
     @JoinColumn(name = "idCuestionario", nullable = false)
     private Cuestionario cuestionario;
 
+    @NonNull
     @OneToOne
     @JoinColumn(name = "idTaller", nullable = false)
     private Taller taller;
-
-    @NonNull
+    
     private int modulo;
 
     private int avance;
