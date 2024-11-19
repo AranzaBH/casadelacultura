@@ -1,17 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Video;
 import com.casadelacultura.casadelacultura.repositorio.VideoRepositorio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class VideoServicio {
-
-    @Autowired
-    private VideoRepositorio videoRepositorio;
+    private final VideoRepositorio videoRepositorio;
 
     // Obtener todos los videos
     public Iterable<Video> listarVideos() {
@@ -19,8 +17,8 @@ public class VideoServicio {
     }
 
     // Obtener un video por ID
-    public Optional<Video> obtenerVideoPorId(Long idVideo) {
-        return videoRepositorio.findById(idVideo);
+    public Video obtenerVideoPorId(Long idVideo) {
+        return videoRepositorio.findById(idVideo).orElse(null);
     }
 
     // Crear un nuevo video
@@ -29,21 +27,16 @@ public class VideoServicio {
     }
 
     // Actualizar un video existente
-    public Optional<Video> actualizarVideo(Long idVideo, Video formulario) {
-        return videoRepositorio.findById(idVideo).map(videoExistente -> {
-            videoExistente.setTitulo(formulario.getTitulo());
-            videoExistente.setUrlVideo(formulario.getUrlVideo());
-            return videoRepositorio.save(videoExistente);
-        });
+    public Video actualizarVideo(Long idVideo, Video formulario) {
+        Video videoFronmDB = obtenerVideoPorId(idVideo);
+        videoFronmDB.setTitulo(formulario.getTitulo());
+        videoFronmDB.setUrlVideo(formulario.getUrlVideo());
+        return videoRepositorio.save(videoFronmDB);
     }
 
     // Eliminar un video por ID
-    public boolean eliminarVideo(Long idVideo) {
-        Optional<Video> video = videoRepositorio.findById(idVideo);
-        if (video.isPresent()) {
-            videoRepositorio.delete(video.get());
-            return true;
-        }
-        return false;
+    public void eliminarVideo(Long idVideo) {
+        Video videoFromDB = obtenerVideoPorId(idVideo);
+        videoRepositorio.delete(videoFromDB);
     }
 }
