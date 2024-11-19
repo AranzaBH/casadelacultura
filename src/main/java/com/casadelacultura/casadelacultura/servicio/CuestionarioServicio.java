@@ -1,17 +1,14 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Cuestionario;
 import com.casadelacultura.casadelacultura.repositorio.CuestionarioRepositorio;
+import lombok.*;
 
-import java.util.Optional;
-
+@AllArgsConstructor
 @Service
 public class CuestionarioServicio {
-
-    @Autowired
-    private CuestionarioRepositorio cuestionarioRepositorio;
+    private final CuestionarioRepositorio cuestionarioRepositorio;
 
     // Obtener todos los cuestionarios
     public Iterable<Cuestionario> listarCuestionarios() {
@@ -19,30 +16,37 @@ public class CuestionarioServicio {
     }
 
     // Obtener un cuestionario por ID
-    public Optional<Cuestionario> obtenerCuestionarioPorId(Long idCuestionario) {
-        return cuestionarioRepositorio.findById(idCuestionario);
+    public Cuestionario obtenerCuestionarioPorId(Long idCuestionario) {
+        return cuestionarioRepositorio.findById(idCuestionario).orElse(null);
     }
 
-    // Crear un nuevo cuestionario
+    /**
+     * Crea un nuevo Cuestionario y lo guarda en la base de datos.
+     * 
+     * @param cuestionario Objeto Cuestionario a ser creado.
+     * @return Cuestionario El objeto guardado en la base de datos.
+     */
     public Cuestionario crearCuestionario(Cuestionario cuestionario) {
         return cuestionarioRepositorio.save(cuestionario);
     }
 
-    // Actualizar un cuestionario existente
-    public Optional<Cuestionario> actualizarCuestionario(Long idCuestionario, Cuestionario formulario) {
-        return cuestionarioRepositorio.findById(idCuestionario).map(cuestionarioExistente -> {
-            cuestionarioExistente.setCalificacion(formulario.getCalificacion());
-            return cuestionarioRepositorio.save(cuestionarioExistente);
-        });
+    /**
+     * Actualiza un Cuestionario existente en la base de datos.
+     * 
+     * @param idCuestionario ID del cuestionario que se desea actualizar.
+     * @param formulario Datos actualizados del Cuestionario.
+     * @return Cuestionario El objeto actualizado.
+     */
+    public Cuestionario actualizarCuestionario(Long idCuestionario, Cuestionario formulario) {
+        Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
+        cuestionarioFromDB.setCalificacion(formulario.getCalificacion());
+        return cuestionarioRepositorio.save(cuestionarioFromDB);
+
     }
 
     // Eliminar un cuestionario por ID
-    public boolean eliminarCuestionario(Long idCuestionario) {
-        Optional<Cuestionario> cuestionario = cuestionarioRepositorio.findById(idCuestionario);
-        if (cuestionario.isPresent()) {
-            cuestionarioRepositorio.delete(cuestionario.get());
-            return true;
-        }
-        return false;
+    public void eliminarCuestionario(Long idCuestionario) {
+        Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
+        cuestionarioRepositorio.delete(cuestionarioFromDB);
     }
 }

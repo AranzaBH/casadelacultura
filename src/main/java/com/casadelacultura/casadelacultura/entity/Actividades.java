@@ -28,10 +28,7 @@ public class Actividades {
     @NonNull
     private int modulo;
 
-    
     private int avance;
 
     private boolean estatus;
-
-
 }
