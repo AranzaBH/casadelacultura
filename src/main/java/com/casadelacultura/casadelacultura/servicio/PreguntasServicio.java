@@ -1,17 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Preguntas;
 import com.casadelacultura.casadelacultura.repositorio.PreguntasRepositorio;
 
-import java.util.Optional;
+import lombok.*;
 
+@AllArgsConstructor
 @Service
 public class PreguntasServicio {
-
-    @Autowired
-    private PreguntasRepositorio preguntasRepositorio;
+    private final PreguntasRepositorio preguntasRepositorio;
 
     // Obtener todas las preguntas
     public Iterable<Preguntas> listarPreguntas() {
@@ -19,8 +17,8 @@ public class PreguntasServicio {
     }
 
     // Obtener una pregunta por ID
-    public Optional<Preguntas> obtenerPreguntaPorId(Long idPregunta) {
-        return preguntasRepositorio.findById(idPregunta);
+    public Preguntas obtenerPreguntaPorId(Long idPregunta) {
+        return preguntasRepositorio.findById(idPregunta).orElse(null);
     }
 
     // Crear una nueva pregunta
@@ -29,21 +27,17 @@ public class PreguntasServicio {
     }
 
     // Actualizar una pregunta existente
-    public Optional<Preguntas> actualizarPregunta(Long idPregunta, Preguntas formulario) {
-        return preguntasRepositorio.findById(idPregunta).map(preguntaExistente -> {
-            preguntaExistente.setCuestionario(formulario.getCuestionario());
-            preguntaExistente.setReactivo(formulario.getReactivo());
-            return preguntasRepositorio.save(preguntaExistente);
-        });
+    public Preguntas actualizarPregunta(Long idPregunta, Preguntas formulario) {
+        Preguntas preguntasFromDB = obtenerPreguntaPorId(idPregunta);
+        preguntasFromDB.setCuestionario(formulario.getCuestionario());
+        preguntasFromDB.setReactivo(formulario.getReactivo());
+        return preguntasRepositorio.save(preguntasFromDB);
+        
     }
 
     // Eliminar una pregunta por ID
-    public boolean eliminarPregunta(Long idPregunta) {
-        Optional<Preguntas> pregunta = preguntasRepositorio.findById(idPregunta);
-        if (pregunta.isPresent()) {
-            preguntasRepositorio.delete(pregunta.get());
-            return true;
-        }
-        return false;
+    public void eliminarPregunta(Long idPregunta) {
+        Preguntas preguntasFromDB = obtenerPreguntaPorId(idPregunta);
+        preguntasRepositorio.delete(preguntasFromDB);
     }
 }

@@ -1,57 +1,47 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.casadelacultura.casadelacultura.entity.Preguntas;
 import com.casadelacultura.casadelacultura.servicio.PreguntasServicio;
 
-import java.util.Optional;
+import lombok.*;
 
+@AllArgsConstructor
 @RestController
-@RequestMapping("/preguntas")
+@RequestMapping("api/pregunta")
 public class PreguntasControlador {
-
-    @Autowired
-    private PreguntasServicio preguntasServicio;
+    private final PreguntasServicio preguntasServicio;
 
     // Obtener todas las preguntas
     @GetMapping
-    public ResponseEntity<Iterable<Preguntas>> obtenerTodasLasPreguntas() {
-        Iterable<Preguntas> preguntas = preguntasServicio.listarPreguntas();
-        return new ResponseEntity<>(preguntas, HttpStatus.OK);
+    public Iterable<Preguntas> obtenerTodasLasPreguntas() {
+        return preguntasServicio.listarPreguntas();
     }
 
     // Obtener una pregunta por su ID
-    @GetMapping("/{idPregunta}")
-    public ResponseEntity<Preguntas> obtenerPreguntaPorId(@PathVariable Long idPregunta) {
-        Optional<Preguntas> pregunta = preguntasServicio.obtenerPreguntaPorId(idPregunta);
-        return pregunta.map(ResponseEntity::ok)
-                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("{idPregunta}")
+    public Preguntas obtenerPreguntaPorId(@PathVariable Long idPregunta) {
+        return preguntasServicio.obtenerPreguntaPorId(idPregunta);
     }
 
     // Crear una nueva pregunta
+    @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ResponseEntity<Preguntas> crearPregunta(@RequestBody Preguntas pregunta) {
-        Preguntas nuevaPregunta = preguntasServicio.crearPregunta(pregunta);
-        return new ResponseEntity<>(nuevaPregunta, HttpStatus.CREATED);
+    public Preguntas crearPregunta(@RequestBody Preguntas pregunta) {
+        return preguntasServicio.crearPregunta(pregunta);
     }
 
     // Actualizar una pregunta existente
-    @PutMapping("/{idPregunta}")
-    public ResponseEntity<Preguntas> actualizarPregunta(@PathVariable Long idPregunta, @RequestBody Preguntas formulario) {
-        Optional<Preguntas> preguntaActualizada = preguntasServicio.actualizarPregunta(idPregunta, formulario);
-        return preguntaActualizada.map(ResponseEntity::ok)
-                                  .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @PutMapping("{idPregunta}")
+    public Preguntas actualizarPregunta(@PathVariable Long idPregunta, @RequestBody Preguntas formulario) {
+        return preguntasServicio.actualizarPregunta(idPregunta, formulario);
     }
 
     // Eliminar una pregunta por su ID
-    @DeleteMapping("/{idPregunta}")
-    public ResponseEntity<Void> eliminarPregunta(@PathVariable Long idPregunta) {
-        boolean eliminado = preguntasServicio.eliminarPregunta(idPregunta);
-        return eliminado ? ResponseEntity.noContent().build()
-                         : ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    @DeleteMapping("{idPregunta}")
+    public void eliminarPregunta(@PathVariable Long idPregunta) {
+        preguntasServicio.eliminarPregunta(idPregunta);
     }
 }

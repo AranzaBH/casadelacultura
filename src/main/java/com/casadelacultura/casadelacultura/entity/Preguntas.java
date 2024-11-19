@@ -3,7 +3,6 @@ package com.casadelacultura.casadelacultura.entity;
 import javax.persistence.*;
 import lombok.*;
 
-
 @Getter
 @Setter
 @Entity 
