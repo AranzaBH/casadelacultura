@@ -2,7 +2,7 @@ package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
+import java.time.*;
 
 @Entity
 @Getter
@@ -25,10 +25,10 @@ public class Taller {
 
 
     @NonNull
-    private LocalDateTime  fechaInico;
+    private LocalDate  fechaInico;
 
     @NonNull
-    private LocalDateTime  fechaFinal;
+    private LocalDate  fechaFinal;
 
     @NonNull
     private String clave;

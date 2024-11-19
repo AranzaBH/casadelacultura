@@ -1,17 +1,19 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Taller;
 import com.casadelacultura.casadelacultura.repositorio.TallerRepositorio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+import java.time.LocalDateTime;
+
+
+@AllArgsConstructor
 @Service
 public class TallerServicio {
-
-    @Autowired
-    private TallerRepositorio tallerRepositorio;
+    private final TallerRepositorio tallerRepositorio;
 
     // Obtener todos los talleres
     public Iterable<Taller> obtenerTodosTalleres() {
@@ -19,38 +21,34 @@ public class TallerServicio {
     }
 
     // Obtener un taller por su ID
-    public Optional<Taller> obtenerTallerPorId(Long idTaller) {
-        return tallerRepositorio.findById(idTaller);
+    public Taller obtenerTallerPorId(Long idTaller) {
+        return tallerRepositorio.findById(idTaller).orElse(null);
     }
 
     // Crear un nuevo taller
     public Taller crearTaller(Taller taller) {
+        taller.setFechaCreacion(LocalDateTime.now());
         return tallerRepositorio.save(taller);
     }
 
     // Actualizar un taller existente
-    public Optional<Taller> actualizarTaller(Long idTaller, Taller formulario) {
-        return tallerRepositorio.findById(idTaller).map(tallerExistente -> {
-            tallerExistente.setTituloTaller(formulario.getTituloTaller());
-            tallerExistente.setClave(formulario.getClave());
-            tallerExistente.setDescripcion(formulario.getDescripcion());
-            tallerExistente.setFechaInico(formulario.getFechaInico());
-            tallerExistente.setFechaFinal(formulario.getFechaFinal());
-            tallerExistente.setFechaCreacion(formulario.getFechaCreacion());
-            tallerExistente.setTipoTaller(formulario.getTipoTaller());
-            tallerExistente.setUrlImagenPortadaTaller(formulario.getUrlImagenPortadaTaller());
-            tallerExistente.setEstaActivo(formulario.isEstaActivo());
-            return tallerRepositorio.save(tallerExistente);
-        });
+    public Taller actualizarTaller(Long idTaller, Taller formulario) {
+        Taller tallerFromDB = obtenerTallerPorId(idTaller);
+        tallerFromDB.setTituloTaller(formulario.getTituloTaller());
+        tallerFromDB.setClave(formulario.getClave());
+        tallerFromDB.setDescripcion(formulario.getDescripcion());
+        tallerFromDB.setFechaInico(formulario.getFechaInico());
+        tallerFromDB.setFechaFinal(formulario.getFechaFinal());
+        tallerFromDB.setTipoTaller(formulario.getTipoTaller());
+        tallerFromDB.setUrlImagenPortadaTaller(formulario.getUrlImagenPortadaTaller());
+        tallerFromDB.setEstaActivo(formulario.isEstaActivo());
+        return tallerRepositorio.save(tallerFromDB);
+        
     }
 
     // Eliminar un taller
-    public boolean eliminarTaller(Long idTaller) {
-        Optional<Taller> taller = tallerRepositorio.findById(idTaller);
-        if (taller.isPresent()) {
-            tallerRepositorio.delete(taller.get());
-            return true;
-        }
-        return false;
+    public void eliminarTaller(Long idTaller) {
+        Taller tallerFromDB = obtenerTallerPorId(idTaller);
+        tallerRepositorio.delete(tallerFromDB);
     }
 }
