@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/pregunta")
+@CrossOrigin("*")
 public class PreguntasControlador {
     private final PreguntasServicio preguntasServicio;
 

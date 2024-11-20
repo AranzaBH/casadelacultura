@@ -11,6 +11,7 @@ import lombok.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/reactivos")
+@CrossOrigin("*")
 public class ReactivoControlador {
     private final ReactivoServicio reactivoServicio;
 

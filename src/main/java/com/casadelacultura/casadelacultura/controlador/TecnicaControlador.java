@@ -1,64 +1,48 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Tecnica;
-import com.casadelacultura.casadelacultura.repositorio.TecnicaRepositorio;
+import com.casadelacultura.casadelacultura.servicio.TecnicaServicio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
-// Controlador para manejar las operaciones CRUD de Tecnica
-@RestController
-@RequestMapping("/api/tecnica")
+@AllArgsConstructor
+@RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
+@RequestMapping("/api/tecnica") // Define la ruta base para acceder a este controlador.
+@CrossOrigin("*")
 public class TecnicaControlador {
-
-    @Autowired
-    private TecnicaRepositorio tecnicaRepositorio;
+    private final TecnicaServicio tecnicaServicio;
 
     // Obtener todas las técnicas
     @GetMapping
-    public ResponseEntity<Iterable<Tecnica>> list() {
-        return ResponseEntity.ok(tecnicaRepositorio.findAll());
+    public Iterable<Tecnica> listarTecnica() {
+        return tecnicaServicio.obtenerTodasTecnicas();
     }
 
     // Obtener una técnica por su ID
     @GetMapping("{idTecnica}")
-    public ResponseEntity<Tecnica> get(@PathVariable Long idTecnica) {
-        Optional<Tecnica> tecnica = tecnicaRepositorio.findById(idTecnica);
-        return tecnica.map(ResponseEntity::ok)
-                      .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Tecnica motrarTecnicaPorId(@PathVariable Long idTecnica) {
+        return tecnicaServicio.obtenerTecnicaPorId(idTecnica);
     }
 
     // Crear una nueva técnica
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Tecnica create(@RequestBody Tecnica tecnica) {
-        return tecnicaRepositorio.save(tecnica);
+        return tecnicaServicio.crearTecnica(tecnica);
     }
 
     // Actualizar una técnica existente
     @PutMapping("{idTecnica}")
-    public ResponseEntity<Tecnica> update(@PathVariable Long idTecnica, @RequestBody Tecnica formulario) {
-        Optional<Tecnica> optionalTecnica = tecnicaRepositorio.findById(idTecnica);
-        if (optionalTecnica.isPresent()) {
-            Tecnica tecnicaFromDB = optionalTecnica.get();
-            tecnicaFromDB.setNombreTecnica(formulario.getNombreTecnica());
-            tecnicaFromDB.setDescripcionTecnica(formulario.getDescripcionTecnica());
-            return ResponseEntity.ok(tecnicaRepositorio.save(tecnicaFromDB));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Técnica no encontrada
+    public Tecnica actualizarTecnica(@PathVariable Long idTecnica, @RequestBody Tecnica formulario) {
+        return tecnicaServicio.actualizarTecnica(idTecnica, formulario);
     }
 
     // Eliminar una técnica
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idTecnica}")
-    public ResponseEntity<Void> delete(@PathVariable Long idTecnica) {
-        Optional<Tecnica> optionalTecnica = tecnicaRepositorio.findById(idTecnica);
-        if (optionalTecnica.isPresent()) {
-            tecnicaRepositorio.delete(optionalTecnica.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Técnica no encontrada
+    public void delete(@PathVariable Long idTecnica) {
+        tecnicaServicio.eliminarTecnica(idTecnica);
     }
 }

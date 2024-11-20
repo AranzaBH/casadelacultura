@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/actividades")
+@CrossOrigin("*")
 public class ActividadesControlador {
     private final ActividadesServicio actividadesServicio;
 

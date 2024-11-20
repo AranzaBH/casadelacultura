@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
 @RequestMapping("/api/tipotaller") // Define la ruta base para acceder a este controlador.
+@CrossOrigin("*")
 public class TipoTallerControlador {
     
     // Servicio que contiene la lógica de negocio para la entidad TipoTaller.

@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de Material
 @RestController
 @RequestMapping("/api/material")
+@CrossOrigin("*")
 public class MaterialControlador {
 
     @Autowired

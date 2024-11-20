@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/video")
+@CrossOrigin("*")
 public class VideoControlador {
     private final VideoServicio videoServicio;
 

@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de CategoriaLibro
 @RestController
 @RequestMapping("/api/categoriaLibro")
+@CrossOrigin("*")
 public class CategoriaLibroControlador {
 
     @Autowired

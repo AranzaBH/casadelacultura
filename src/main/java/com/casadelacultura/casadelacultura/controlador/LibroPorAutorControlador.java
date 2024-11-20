@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de LibrosPorAutor
 @RestController
 @RequestMapping("/api/librosPorAutor")
+@CrossOrigin("*")
 public class LibroPorAutorControlador {
 
     @Autowired

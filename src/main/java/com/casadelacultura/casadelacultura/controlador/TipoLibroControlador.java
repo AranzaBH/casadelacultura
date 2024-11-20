@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de TipoLibro
 @RestController
 @RequestMapping("/api/tipoLibro")
+@CrossOrigin("*")
 public class TipoLibroControlador {
 
     @Autowired

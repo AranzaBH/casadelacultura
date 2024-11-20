@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de CategoriaObra
 @RestController
 @RequestMapping("/api/categoriaObra")
+@CrossOrigin("*")
 public class CategoriaObraControlador {
 
     @Autowired

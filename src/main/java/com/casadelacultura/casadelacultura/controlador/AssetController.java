@@ -14,6 +14,7 @@ import com.casadelacultura.casadelacultura.servicio.S3Service;
 
 @RestController
 @RequestMapping("api/assets")
+@CrossOrigin("*")
 public class AssetController {
     @Autowired
     private S3Service s3Service;

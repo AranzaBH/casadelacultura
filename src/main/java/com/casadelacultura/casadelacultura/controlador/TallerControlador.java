@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/taller")
+@CrossOrigin("*")
 public class TallerControlador {
 
     @Autowired

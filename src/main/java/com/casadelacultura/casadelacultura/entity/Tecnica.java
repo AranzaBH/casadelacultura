@@ -22,6 +22,7 @@ public class Tecnica {
     private Long idTecnica;
 
     @NonNull
+    @Column(nullable = false)
     private String nombreTecnica;
 
     

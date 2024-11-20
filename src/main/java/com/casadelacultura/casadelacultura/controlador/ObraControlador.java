@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de Obra
 @RestController
 @RequestMapping("/api/obra")
+@CrossOrigin("*")
 public class ObraControlador {
 
     @Autowired

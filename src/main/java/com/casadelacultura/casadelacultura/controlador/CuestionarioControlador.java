@@ -10,6 +10,7 @@ import lombok.*;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/api/cuestionario")
+@CrossOrigin("*")
 public class CuestionarioControlador {
     private final CuestionarioServicio cuestionarioServicio;
 

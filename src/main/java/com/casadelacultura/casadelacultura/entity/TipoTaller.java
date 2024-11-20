@@ -16,6 +16,7 @@ public class TipoTaller {
     private Long idTipoTaller;
 
     @NonNull
+    @Column(nullable = false)
     private String nombreTipoTaller;
 
     

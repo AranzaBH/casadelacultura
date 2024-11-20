@@ -10,6 +10,7 @@ import com.casadelacultura.casadelacultura.servicio.AudioLibroServicio;
 
 @RestController
 @RequestMapping("/api/audiolibro")
+@CrossOrigin("*")
 public class AudioLibroControlador {
 
     @Autowired

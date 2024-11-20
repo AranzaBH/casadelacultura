@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
 import com.casadelacultura.casadelacultura.repositorio.TipoTallerRepositorio;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 
 @AllArgsConstructor

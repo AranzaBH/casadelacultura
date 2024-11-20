@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 @RestController
 // Rutas API
 @RequestMapping("/api/autor")
+@CrossOrigin("*")
 public class AutorControlador {
     private final AutorServicio autorServicio;
 

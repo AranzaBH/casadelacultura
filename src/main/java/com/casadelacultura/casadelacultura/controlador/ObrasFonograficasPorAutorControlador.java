@@ -12,6 +12,7 @@ import java.util.Optional;
 // Controlador para manejar las operaciones CRUD de ObrasFonograficasPorAutor
 @RestController
 @RequestMapping("/api/obrasFonograficasPorAutor")
+@CrossOrigin("*")
 public class ObrasFonograficasPorAutorControlador {
 
     @Autowired
