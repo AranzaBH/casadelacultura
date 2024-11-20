@@ -1,20 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Autor;
 import com.casadelacultura.casadelacultura.repositorio.AutorRepositorio;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 @Service
 public class AutorServicio {
-
-    @Autowired
     private final AutorRepositorio autorRepositorio;
-
-    public AutorServicio(AutorRepositorio autorRepositorio) {
-        this.autorRepositorio = autorRepositorio;
-    }
 
     // Obtener todos los autores
     public Iterable<Autor> listarAutores() {
@@ -22,8 +17,8 @@ public class AutorServicio {
     }
 
     // Obtener un autor por ID
-    public Optional<Autor> obtenerAutorPorId(Long idAutor) {
-        return autorRepositorio.findById(idAutor);
+    public Autor obtenerAutorPorId(Long idAutor) {
+        return autorRepositorio.findById(idAutor).orElse(null);
     }
 
     // Crear un nuevo autor
@@ -32,24 +27,20 @@ public class AutorServicio {
     }
 
     // Actualizar un autor existente
-    public Optional<Autor> actualizarAutor(Long idAutor, Autor formulario) {
-        return autorRepositorio.findById(idAutor).map(autorExistente -> {
-            autorExistente.setNombreAutor(formulario.getNombreAutor());
-            autorExistente.setApellidoPaterno(formulario.getApellidoPaterno());
-            autorExistente.setApellidoMaterno(formulario.getApellidoMaterno());
-            autorExistente.setFechaNacimiento(formulario.getFechaNacimiento());
-            autorExistente.setFechaFallecimiento(formulario.getFechaFallecimiento());
-            return autorRepositorio.save(autorExistente);
-        });
+    public Autor actualizarAutor(Long idAutor, Autor formulario) {
+        Autor autorFromDB = obtenerAutorPorId(idAutor);
+        autorFromDB.setNombreAutor(formulario.getNombreAutor());
+        autorFromDB.setApellidoPaterno(formulario.getApellidoPaterno());
+        autorFromDB.setApellidoMaterno(formulario.getApellidoMaterno());
+        autorFromDB.setFechaNacimiento(formulario.getFechaNacimiento());
+        autorFromDB.setFechaFallecimiento(formulario.getFechaFallecimiento());
+        return autorRepositorio.save(autorFromDB);
+        
     }
 
     // Eliminar un autor por ID
-    public boolean eliminarAutor(Long idAutor) {
-        Optional<Autor> autor = autorRepositorio.findById(idAutor);
-        if (autor.isPresent()) {
-            autorRepositorio.delete(autor.get());
-            return true;
-        }
-        return false;
+    public void eliminarAutor(Long idAutor) {
+        Autor autorFromDB = obtenerAutorPorId(idAutor);
+        autorRepositorio.delete(autorFromDB);
     }
 }

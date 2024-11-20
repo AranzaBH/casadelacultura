@@ -1,66 +1,48 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Autor;
-import com.casadelacultura.casadelacultura.repositorio.AutorRepositorio;
+import com.casadelacultura.casadelacultura.servicio.AutorServicio;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 // Clase controlador JSON para colecciones de objetos Autor
 @RestController
 // Rutas API
 @RequestMapping("/api/autor")
 public class AutorControlador {
-
-    @Autowired
-    private AutorRepositorio autorRepositorio;
+    private final AutorServicio autorServicio;
 
     @GetMapping
-    public ResponseEntity<Iterable<Autor>> list() {
-        return ResponseEntity.ok(autorRepositorio.findAll());
+    public Iterable<Autor> list() {
+        return autorServicio.listarAutores();
     }
 
     // Método para obtener un solo autor por su id
     @GetMapping("{idAutor}")
-    public ResponseEntity<Autor> get(@PathVariable Long idAutor) {
-        Optional<Autor> autor = autorRepositorio.findById(idAutor);
-        return autor.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Autor obtenerAutorPorId(@PathVariable Long idAutor) {
+        return autorServicio.obtenerAutorPorId(idAutor);
     }
 
     // Creación de un nuevo autor
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Autor create(@RequestBody Autor autor) {
-        return autorRepositorio.save(autor);
+    public Autor createAutor(@RequestBody Autor autor) {
+        return autorServicio.crearAutor(autor);
     }
 
     // Actualización de un autor
     @PutMapping("{idAutor}")
-    public ResponseEntity<Autor> update(@PathVariable Long idAutor, @RequestBody Autor formulario) {
-        Optional<Autor> optionalAutor = autorRepositorio.findById(idAutor);
-        if (optionalAutor.isPresent()) {
-            Autor autorFromDB = optionalAutor.get();
-            autorFromDB.setNombreAutor(formulario.getNombreAutor());
-            autorFromDB.setApellidoPaterno(formulario.getApellidoPaterno());
-            autorFromDB.setApellidoMaterno(formulario.getApellidoMaterno());
-            autorFromDB.setFechaNacimiento(formulario.getFechaNacimiento());
-            autorFromDB.setFechaFallecimiento(formulario.getFechaFallecimiento());
-            return ResponseEntity.ok(autorRepositorio.save(autorFromDB));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Autor no encontrado
+    public Autor actualizarAutor(@PathVariable Long idAutor, @RequestBody Autor formulario) {
+        return autorServicio.actualizarAutor(idAutor, formulario);
     }
 
     // Eliminar un autor
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idAutor}")
-    public ResponseEntity<Void> delete(@PathVariable Long idAutor) {
-        Optional<Autor> optionalAutor = autorRepositorio.findById(idAutor);
-        if (optionalAutor.isPresent()) {
-            autorRepositorio.delete(optionalAutor.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Autor no encontrado
+    public void delete(@PathVariable Long idAutor) {
+        autorServicio.eliminarAutor(idAutor);
     }
 }

@@ -1,6 +1,6 @@
 package com.casadelacultura.casadelacultura.entity;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.*;
 
@@ -15,19 +15,21 @@ public class Autor {
     private Long idAutor;
 
     @NonNull
+    @Column(nullable = false)
     private String nombreAutor;
 
     @NonNull
+    @Column(nullable = false)
     private String apellidoPaterno;
 
-    @NonNull
+    
     private String apellidoMaterno;
 
-    @NonNull
-    private LocalDateTime fechaNacimiento;
+    
+    private LocalDate fechaNacimiento;
 
-    @NonNull
-    private LocalDateTime fechaFallecimiento;
+    
+    private LocalDate fechaFallecimiento;
 
 
 }
