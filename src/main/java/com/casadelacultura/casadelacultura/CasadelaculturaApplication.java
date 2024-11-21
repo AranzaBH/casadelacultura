@@ -30,7 +30,7 @@ public class CasadelaculturaApplication implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         
-        
+        /* 
         Usuario usuario = new Usuario();
 
         usuario.setNombre("administrador");
@@ -54,6 +54,6 @@ public class CasadelaculturaApplication implements CommandLineRunner {
         Usuario usuarioGuardado = usuarioService.guardarUsuario(usuario, usuariosRoles);
         System.out.println(usuarioGuardado.getUsername());
         
-        
+        */
     }
 }

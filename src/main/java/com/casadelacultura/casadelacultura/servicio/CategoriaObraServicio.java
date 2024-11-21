@@ -5,16 +5,13 @@ import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.CategoriaObra;
 import com.casadelacultura.casadelacultura.repositorio.CategoriaObraRepositorio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class CategoriaObraServicio {
     @Autowired
     private final CategoriaObraRepositorio categoriaObraRepositorio;
-
-    public CategoriaObraServicio(CategoriaObraRepositorio categoriaObraRepositorio) {
-        this.categoriaObraRepositorio = categoriaObraRepositorio;
-    }
 
     // Obtener todas las categorías de obras
     public Iterable<CategoriaObra> listarCategorias() {
@@ -22,8 +19,8 @@ public class CategoriaObraServicio {
     }
 
     // Obtener una categoría de obra por ID
-    public Optional<CategoriaObra> obtenerCategoriaPorId(Long idCategoriaObra) {
-        return categoriaObraRepositorio.findById(idCategoriaObra);
+    public CategoriaObra obtenerCategoriaPorId(Long idCategoriaObra) {
+        return categoriaObraRepositorio.findById(idCategoriaObra).orElse(null);
     }
 
     // Crear una nueva categoría de obra
@@ -32,21 +29,17 @@ public class CategoriaObraServicio {
     }
 
     // Actualizar una categoría de obra existente
-    public Optional<CategoriaObra> actualizarCategoria(Long idCategoriaObra, CategoriaObra formulario) {
-        return categoriaObraRepositorio.findById(idCategoriaObra).map(categoriaExistente -> {
-            categoriaExistente.setNombreCategoria(formulario.getNombreCategoria());
-            categoriaExistente.setDescripcionCategoria(formulario.getDescripcionCategoria());
-            return categoriaObraRepositorio.save(categoriaExistente);
-        });
+    public CategoriaObra actualizarCategoria(Long idCategoriaObra, CategoriaObra formulario) {
+        CategoriaObra categoriaObraFromDB = obtenerCategoriaPorId(idCategoriaObra);
+        categoriaObraFromDB.setNombreCategoria(formulario.getNombreCategoria());
+        categoriaObraFromDB.setDescripcionCategoria(formulario.getDescripcionCategoria());
+        return categoriaObraRepositorio.save(categoriaObraFromDB);
+        
     }
 
     // Eliminar una categoría de obra
-    public boolean eliminarCategoria(Long idCategoriaObra) {
-        Optional<CategoriaObra> categoria = categoriaObraRepositorio.findById(idCategoriaObra);
-        if (categoria.isPresent()) {
-            categoriaObraRepositorio.delete(categoria.get());
-            return true;
-        }
-        return false;
+    public void eliminarCategoria(Long idCategoriaObra) {
+        CategoriaObra categoriaObraFromDB = obtenerCategoriaPorId(idCategoriaObra);
+        categoriaObraRepositorio.delete(categoriaObraFromDB);
     }
 }
