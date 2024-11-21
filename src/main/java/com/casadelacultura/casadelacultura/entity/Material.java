@@ -18,6 +18,7 @@ public class Material {
     private Long idMaterial;
 
     @NonNull
+    @Column(nullable = false)
     private String nombreMaterial;
 
     @NonNull

@@ -1,65 +1,49 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Material;
-import com.casadelacultura.casadelacultura.repositorio.MaterialRepositorio;
+import com.casadelacultura.casadelacultura.servicio.MaterialServicio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 // Controlador para manejar las operaciones CRUD de Material
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/material")
 @CrossOrigin("*")
 public class MaterialControlador {
-
-    @Autowired
-    private MaterialRepositorio materialRepositorio;
+    private final MaterialServicio materialServicio;
 
     // Obtener todos los materiales
     @GetMapping
-    public ResponseEntity<Iterable<Material>> list() {
-        return ResponseEntity.ok(materialRepositorio.findAll());
+    public Iterable<Material> list() {
+        return materialServicio.listarMateriales();
     }
 
     // Obtener un material por ID
     @GetMapping("{idMaterial}")
-    public ResponseEntity<Material> get(@PathVariable Long idMaterial) {
-        Optional<Material> material = materialRepositorio.findById(idMaterial);
-        return material.map(ResponseEntity::ok)
-                       .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Material gerObtenerMaterialId(@PathVariable Long idMaterial) {
+        return materialServicio.obtenerMaterialPorId(idMaterial);
     }
 
     // Crear un nuevo material
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Material create(@RequestBody Material material) {
-        return materialRepositorio.save(material);
+        return materialServicio.crearMaterial(material);
     }
 
     // Actualizar un material existente
     @PutMapping("{idMaterial}")
-    public ResponseEntity<Material> update(@PathVariable Long idMaterial, @RequestBody Material formulario) {
-        Optional<Material> optionalMaterial = materialRepositorio.findById(idMaterial);
-        if (optionalMaterial.isPresent()) {
-            Material materialFromDB = optionalMaterial.get();
-            materialFromDB.setNombreMaterial(formulario.getNombreMaterial());
-            materialFromDB.setDescripcionMaterial(formulario.getDescripcionMaterial());
-            return ResponseEntity.ok(materialRepositorio.save(materialFromDB));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Material no encontrado
+    public Material update(@PathVariable Long idMaterial, @RequestBody Material formulario) {
+        return materialServicio.actualizarMaterial(idMaterial, formulario);
     }
 
     // Eliminar un material
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idMaterial}")
-    public ResponseEntity<Void> delete(@PathVariable Long idMaterial) {
-        Optional<Material> optionalMaterial = materialRepositorio.findById(idMaterial);
-        if (optionalMaterial.isPresent()) {
-            materialRepositorio.delete(optionalMaterial.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Material no encontrado
+    public void delete(@PathVariable Long idMaterial) {
+        materialServicio.eliminarMaterial(idMaterial);
     }
 }

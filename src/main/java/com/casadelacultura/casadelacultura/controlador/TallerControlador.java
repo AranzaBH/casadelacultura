@@ -15,9 +15,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/taller")
 @CrossOrigin("*")
 public class TallerControlador {
-
-    @Autowired
-    private TallerServicio tallerServicio;
+    private final  TallerServicio tallerServicio;
 
     @Autowired
     private S3Service s3Service;
@@ -48,6 +46,7 @@ public class TallerControlador {
         return taller;
     }
 
+    
     // Crear un nuevo taller
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -57,6 +56,8 @@ public class TallerControlador {
                 s3Service.getObjectUrl(taller.getImagenPath()));
         return tallerServicio.crearTaller(taller);
     }
+
+    
 
     // Actualizar un taller existente
 

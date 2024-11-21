@@ -40,7 +40,7 @@ public class TallerServicio {
         tallerFromDB.setFechaInico(formulario.getFechaInico());
         tallerFromDB.setFechaFinal(formulario.getFechaFinal());
         tallerFromDB.setTipoTaller(formulario.getTipoTaller());
-        tallerFromDB.setUrlImagenPortadaTaller(formulario.getUrlImagenPortadaTaller());
+        tallerFromDB.setImagenPath(formulario.getImagenPath());
         tallerFromDB.setEstaActivo(formulario.isEstaActivo());
         return tallerRepositorio.save(tallerFromDB);
         

@@ -1,21 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Material;
 import com.casadelacultura.casadelacultura.repositorio.MaterialRepositorio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class MaterialServicio {
-
-    @Autowired
     private final MaterialRepositorio materialRepositorio;
-
-    public MaterialServicio(MaterialRepositorio materialRepositorio) {
-        this.materialRepositorio = materialRepositorio;
-    }
 
     // Obtener todos los materiales
     public Iterable<Material> listarMateriales() {
@@ -23,8 +17,8 @@ public class MaterialServicio {
     }
 
     // Obtener un material por ID
-    public Optional<Material> obtenerMaterialPorId(Long idMaterial) {
-        return materialRepositorio.findById(idMaterial);
+    public Material obtenerMaterialPorId(Long idMaterial) {
+        return materialRepositorio.findById(idMaterial).orElse(null);
     }
 
     // Crear un nuevo material
@@ -33,21 +27,17 @@ public class MaterialServicio {
     }
 
     // Actualizar un material existente
-    public Optional<Material> actualizarMaterial(Long idMaterial, Material formulario) {
-        return materialRepositorio.findById(idMaterial).map(materialExistente -> {
-            materialExistente.setNombreMaterial(formulario.getNombreMaterial());
-            materialExistente.setDescripcionMaterial(formulario.getDescripcionMaterial());
-            return materialRepositorio.save(materialExistente);
-        });
+    public Material actualizarMaterial(Long idMaterial, Material formulario) {
+        Material materialFromDB = obtenerMaterialPorId(idMaterial);
+        materialFromDB.setNombreMaterial(formulario.getNombreMaterial());
+        materialFromDB.setDescripcionMaterial(formulario.getDescripcionMaterial());
+        return materialRepositorio.save(materialFromDB);
+        
     }
 
     // Eliminar un material
-    public boolean eliminarMaterial(Long idMaterial) {
-        Optional<Material> material = materialRepositorio.findById(idMaterial);
-        if (material.isPresent()) {
-            materialRepositorio.delete(material.get());
-            return true;
-        }
-        return false;
+    public void eliminarMaterial(Long idMaterial) {
+        Material materialFromDB = obtenerMaterialPorId(idMaterial);
+        materialRepositorio.delete(materialFromDB);
     }
 }
