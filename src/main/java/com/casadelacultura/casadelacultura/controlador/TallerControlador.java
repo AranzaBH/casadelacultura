@@ -1,8 +1,9 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.casadelacultura.casadelacultura.entity.Taller;
 import com.casadelacultura.casadelacultura.servicio.S3Service;
 import com.casadelacultura.casadelacultura.servicio.TallerServicio;
@@ -16,9 +17,7 @@ import lombok.AllArgsConstructor;
 @CrossOrigin("*")
 public class TallerControlador {
     private final  TallerServicio tallerServicio;
-
-    @Autowired
-    private S3Service s3Service;
+    private final S3Service s3Service;
 
     // Obtener todos los talleres
     @GetMapping
@@ -51,9 +50,7 @@ public class TallerControlador {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Taller create(@RequestBody Taller taller) {
-
-        taller.setUrlImagenPortadaTaller(
-                s3Service.getObjectUrl(taller.getImagenPath()));
+        taller.setUrlImagenPortadaTaller(s3Service.getObjectUrl(taller.getImagenPath()));
         return tallerServicio.crearTaller(taller);
     }
 
@@ -75,11 +72,35 @@ public class TallerControlador {
     }
 
     // Eliminar un taller
-    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado
-                                           // 204.
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
     @DeleteMapping("{idTaller}")
     public void delate(@PathVariable Long idTaller) {
+        // Obtenemos la imagen desde la base de datos
+        Taller tallerExistente = tallerServicio.obtenerTallerPorId(idTaller);
+        if (tallerExistente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller No Encontrado");
+        }
+        // Eliminamos la imagen de s3
+        s3Service.deleteObject(tallerExistente.getImagenPath());
+        // eliminamos el taller
         tallerServicio.eliminarTaller(idTaller);
     }
 
 }
+
+    /* 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{idTaller}")
+    public void delate(@PathVariable Long idTaller) {
+        // Obtenemos la imagen desde la base de datos
+        Taller tallerExistente = tallerServicio.obtenerTallerPorId(idTaller);
+        if (tallerExistente == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller No Encontrado");
+        }
+        //Eliminamos la imagen de s3
+        s3Service.deleteObject(tallerExistente.getImagenPath());
+        //eliminamos el taller
+        tallerServicio.eliminarTaller(idTaller);
+    }*/
+
+
