@@ -1,72 +1,83 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.casadelacultura.casadelacultura.entity.Obra;
-import com.casadelacultura.casadelacultura.repositorio.ObraRepositorio;
+import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
+import com.casadelacultura.casadelacultura.entity.Obra;
+import com.casadelacultura.casadelacultura.servicio.ObraServicio;
+import com.casadelacultura.casadelacultura.servicio.S3Service;
+
+import lombok.AllArgsConstructor;
 
 // Controlador para manejar las operaciones CRUD de Obra
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/obra")
 @CrossOrigin("*")
 public class ObraControlador {
-
-    @Autowired
-    private ObraRepositorio obraRepositorio;
+    private final ObraServicio obraServicio;
+    private final S3Service s3Service;
 
     // Obtener todas las obras
     @GetMapping
-    public ResponseEntity<Iterable<Obra>> list() {
-        return ResponseEntity.ok(obraRepositorio.findAll());
+    public Iterable<Obra> list() {
+        Iterable<Obra> obras = obraServicio.listarObras();
+        for (Obra obra : obras){
+            if (obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()){
+                String imagenUrl = s3Service.getObjectUrl(obra.getImagenPath());
+                obra.setIdUrlImagenPortada(imagenUrl);
+
+            }
+
+        }
+       return obras;
     }
 
     // Obtener una obra por ID
     @GetMapping("{idObra}")
-    public ResponseEntity<Obra> get(@PathVariable Long idObra) {
-        Optional<Obra> obra = obraRepositorio.findById(idObra);
-        return obra.map(ResponseEntity::ok)
-                   .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Obra get(@PathVariable Long idObra) {
+        Obra obra = obraServicio.obtenerObraPorId(idObra);
+        if (obra != null && obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()){
+            String imagenUrl = s3Service.getObjectUrl(obra.getImagenPath());
+            obra.setIdUrlImagenPortada(imagenUrl);
+
+        }
+        return obra;
     }
 
     // Crear una nueva obra
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Obra create(@RequestBody Obra obra) {
-        return obraRepositorio.save(obra);
+        obra.setIdUrlImagenPortada(s3Service.getObjectUrl(obra.getImagenPath()));
+        return obraServicio.crearObra(obra);
     }
 
     // Actualizar una obra existente
     @PutMapping("{idObra}")
-    public ResponseEntity<Obra> update(@PathVariable Long idObra, @RequestBody Obra formulario) {
-        Optional<Obra> optionalObra = obraRepositorio.findById(idObra);
-        if (optionalObra.isPresent()) {
-            Obra obraFromDB = optionalObra.get();
-            obraFromDB.setNombreObra(formulario.getNombreObra());
-            obraFromDB.setEstadoActivo(formulario.isEstadoActivo());
-            obraFromDB.setFechaCreacion(formulario.getFechaCreacion());
-            obraFromDB.setDimension(formulario.getDimension());
-            obraFromDB.setIdUrlImagenPortada(formulario.getIdUrlImagenPortada());
-            obraFromDB.setNombreUbicacionCreacion(formulario.getNombreUbicacionCreacion());
-            obraFromDB.setTecnica(formulario.getTecnica());
-            obraFromDB.setMaterial(formulario.getMaterial());
-            obraFromDB.setCategoriaObra(formulario.getCategoriaObra());
-            return ResponseEntity.ok(obraRepositorio.save(obraFromDB));
+    public Obra update(@PathVariable Long idObra, @RequestBody Obra formulario) {
+        if (formulario.getImagenPath() != null && !formulario.getImagenPath().isEmpty()) {
+            formulario.setImagenPath(formulario.getImagenPath());
+
+            // Obtener la URL de la imagen de S3, si es necesario
+            String imagenUrl = s3Service.getObjectUrl(formulario.getImagenPath());
+            formulario.setIdUrlImagenPortada(imagenUrl);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Obra no encontrada
+        return obraServicio.actualizarObra(idObra, formulario);
+        
     }
 
     // Eliminar una obra
+    @ResponseStatus(HttpStatus.NO_CONTENT) 
     @DeleteMapping("{idObra}")
-    public ResponseEntity<Void> delete(@PathVariable Long idObra) {
-        Optional<Obra> optionalObra = obraRepositorio.findById(idObra);
-        if (optionalObra.isPresent()) {
-            obraRepositorio.delete(optionalObra.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
+    public void delete(@PathVariable Long idObra) {
+        Obra obraExistente = obraServicio.obtenerObraPorId(idObra);
+        if (obraExistente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obra No Encontrado");
+            
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Obra no encontrada
+        s3Service.deleteObject(obraExistente.getImagenPath());
+        obraServicio.eliminarObra(idObra);
     }
 }

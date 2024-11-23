@@ -1,14 +1,9 @@
 package com.casadelacultura.casadelacultura.entity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-
-
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 @Entity
 @Getter
@@ -21,24 +16,36 @@ public class Obra {
     private Long idObra;
 
     @lombok.NonNull
-    private String nombreObra;
+    private String tituloObra;
 
-   
+    @lombok.NonNull
+    @Column(nullable = false)
+    private String tituloOriginalObra;
+
+    @lombok.NonNull
+    @Column(nullable = false, length = 10000)
+    private String descripcion;
+
+    @NonNull
+    @Column(nullable = false)
+    private String dimension;
+
+    @NonNull
+    private String localizacion;
+
+    @NonNull
+    private LocalDate fechaObra;
+
+    @Transient
+    private String idUrlImagenPortada;
+
+    private String imagenPath;
+
     private boolean estadoActivo;
 
     @NonNull
     private LocalDateTime fechaCreacion;
 
-    @NonNull
-    private String dimension;
-
-    @NonNull
-    private String idUrlImagenPortada;
-
-    @NonNull
-    private String nombreUbicacionCreacion;
-
-    
     @OneToOne
     @JoinColumn(name = "idTecnica", nullable = false)
     private Tecnica tecnica;
@@ -52,8 +59,4 @@ public class Obra {
     @OneToOne
     @JoinColumn(name = "idCategoriaObra", nullable = false)
     private CategoriaObra categoriaObra;
-
-
-
-    
 }

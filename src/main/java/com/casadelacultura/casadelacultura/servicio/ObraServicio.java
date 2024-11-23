@@ -1,17 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Obra;
 import com.casadelacultura.casadelacultura.repositorio.ObraRepositorio;
+import lombok.AllArgsConstructor;
 
-import java.util.Optional;
-
+@AllArgsConstructor
 @Service
 public class ObraServicio {
-
-    @Autowired
-    private ObraRepositorio obraRepositorio;
+    private final ObraRepositorio obraRepositorio;
 
     // Obtener todas las obras
     public Iterable<Obra> listarObras() {
@@ -19,38 +17,36 @@ public class ObraServicio {
     }
 
     // Obtener una obra por ID
-    public Optional<Obra> obtenerObraPorId(Long idObra) {
-        return obraRepositorio.findById(idObra);
+    public Obra obtenerObraPorId(Long idObra) {
+        return obraRepositorio.findById(idObra).orElse(null);
     }
 
     // Crear una nueva obra
     public Obra crearObra(Obra obra) {
+        obra.setFechaCreacion(LocalDateTime.now());
         return obraRepositorio.save(obra);
     }
 
     // Actualizar una obra existente
-    public Optional<Obra> actualizarObra(Long idObra, Obra formulario) {
-        return obraRepositorio.findById(idObra).map(obraExistente -> {
-            obraExistente.setNombreObra(formulario.getNombreObra());
-            obraExistente.setEstadoActivo(formulario.isEstadoActivo());
-            obraExistente.setFechaCreacion(formulario.getFechaCreacion());
-            obraExistente.setDimension(formulario.getDimension());
-            obraExistente.setIdUrlImagenPortada(formulario.getIdUrlImagenPortada());
-            obraExistente.setNombreUbicacionCreacion(formulario.getNombreUbicacionCreacion());
-            obraExistente.setTecnica(formulario.getTecnica());
-            obraExistente.setMaterial(formulario.getMaterial());
-            obraExistente.setCategoriaObra(formulario.getCategoriaObra());
-            return obraRepositorio.save(obraExistente);
-        });
+    public Obra actualizarObra(Long idObra, Obra formulario) {
+        Obra obraFromDB = obtenerObraPorId(idObra);
+        obraFromDB.setTituloObra(formulario.getTituloObra());
+        obraFromDB.setTituloOriginalObra(formulario.getTituloOriginalObra());
+        obraFromDB.setDescripcion(formulario.getDescripcion());
+        obraFromDB.setEstadoActivo(formulario.isEstadoActivo());
+        obraFromDB.setDimension(formulario.getDimension());
+        obraFromDB.setFechaObra(formulario.getFechaObra());
+        obraFromDB.setImagenPath(formulario.getImagenPath());
+        obraFromDB.setLocalizacion(formulario.getLocalizacion());
+        obraFromDB.setTecnica(formulario.getTecnica());
+        obraFromDB.setMaterial(formulario.getMaterial());
+        obraFromDB.setCategoriaObra(formulario.getCategoriaObra());
+        return obraRepositorio.save(obraFromDB);
     }
 
     // Eliminar una obra
-    public boolean eliminarObra(Long idObra) {
-        Optional<Obra> obra = obraRepositorio.findById(idObra);
-        if (obra.isPresent()) {
-            obraRepositorio.delete(obra.get());
-            return true;
-        }
-        return false;
+    public void eliminarObra(Long idObra) {
+        Obra obraFromDB = obtenerObraPorId(idObra);
+        obraRepositorio.delete(obraFromDB);
     }
 }
