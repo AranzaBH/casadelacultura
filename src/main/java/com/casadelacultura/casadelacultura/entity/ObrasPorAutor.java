@@ -12,7 +12,7 @@ import lombok.Setter;
 public class ObrasPorAutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAutor;
+    private Long idObrasPorAutor;
 
     @OneToOne
     @JoinColumn(name = "idAutores", nullable = false)

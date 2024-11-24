@@ -21,8 +21,8 @@ public class ObrasPorAutorServicio {
     }
 
     // Obtener una relación específica entre obra y autor por ID
-    public ObrasPorAutor obtenerRelacionPorId(Long idAutor) {
-        return obrasPorAutorRepositorio.findById(idAutor).orElse(null);
+    public ObrasPorAutor obtenerRelacionPorId(Long idObrasPorAutor) {
+        return obrasPorAutorRepositorio.findById(idObrasPorAutor).orElse(null);
     }
 
     // Crear una nueva relación entre una obra y un autor
@@ -39,8 +39,9 @@ public class ObrasPorAutorServicio {
     }
 
     // Actualizar una relación existente entre una obra y un autor
-    public ObrasPorAutor actualizarRelacion(Long idAutor, ObrasPorAutor formulario) {
-        ObrasPorAutor obrasPorAutorFromDB = obtenerRelacionPorId(idAutor);
+    public ObrasPorAutor actualizarRelacion(Long idObrasPorAutor, ObrasPorAutor formulario) {
+        ObrasPorAutor obrasPorAutorFromDB = obtenerRelacionPorId(idObrasPorAutor);
+        
         // Validar que el autor existe
         if (!autorRepositorio.existsById(formulario.getAutor().getIdAutor())) {
             throw new IllegalArgumentException("El autor no existe.");
@@ -50,14 +51,15 @@ public class ObrasPorAutorServicio {
         if (!obraRepositorio.existsById(formulario.getObra().getIdObra())) {
             throw new IllegalArgumentException("La obra no existe.");
         }
+        
         obrasPorAutorFromDB.setAutor(formulario.getAutor());
         obrasPorAutorFromDB.setObra(formulario.getObra());
         return obrasPorAutorRepositorio.save(obrasPorAutorFromDB);
     }
 
     // Eliminar una relación entre una obra y un autor
-    public void eliminarRelacion(Long idAutor) {
-        ObrasPorAutor obrasPorAutorFromDB = obtenerRelacionPorId(idAutor);
+    public void eliminarRelacion(Long idObrasPorAutor) {
+        ObrasPorAutor obrasPorAutorFromDB = obtenerRelacionPorId(idObrasPorAutor);
         obrasPorAutorRepositorio.delete(obrasPorAutorFromDB);
         
     }

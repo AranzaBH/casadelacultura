@@ -23,9 +23,9 @@ public class ObrasPorAutorControlador {
     }
 
     // Obtener una relación por ID de autor
-    @GetMapping("{idAutor}")
-    public ObrasPorAutor get(@PathVariable Long idAutor) {
-        return obrasPorAutorServicio.obtenerRelacionPorId(idAutor);
+    @GetMapping("{idObrasPorAutor}")
+    public ObrasPorAutor get(@PathVariable Long idObrasPorAutor) {
+        return obrasPorAutorServicio.obtenerRelacionPorId(idObrasPorAutor);
     }
 
     // Crear una nueva relación entre obra y autor
@@ -36,15 +36,15 @@ public class ObrasPorAutorControlador {
     }
 
     // Actualizar una relación existente
-    @PutMapping("{idAutor}")
-    public ObrasPorAutor update(@PathVariable Long idAutor, @RequestBody ObrasPorAutor formulario) {
-        return obrasPorAutorServicio.actualizarRelacion(idAutor, formulario);
+    @PutMapping("{idObrasPorAutor}")
+    public ObrasPorAutor update(@PathVariable Long idObrasPorAutor, @RequestBody ObrasPorAutor formulario) {
+        return obrasPorAutorServicio.actualizarRelacion(idObrasPorAutor, formulario);
     }
 
     // Eliminar una relación
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("{idAutor}")
-    public void delete(@PathVariable Long idAutor) {
-        obrasPorAutorServicio.eliminarRelacion(idAutor);
+    @DeleteMapping("{idObrasPorAutor}")
+    public void delete(@PathVariable Long idObrasPorAutor) {
+        obrasPorAutorServicio.eliminarRelacion(idObrasPorAutor);
     }
 }
