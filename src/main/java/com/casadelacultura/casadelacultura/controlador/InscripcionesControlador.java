@@ -48,6 +48,8 @@ public class InscripcionesControlador {
         inscripcionesServicio.eliminarInscripcion(idInscripcion);
     }
 
+    //Obtener los talleres inscritos por usuarios
+    //http://localhost:8080/api/inscripciones/usuario/2
     @GetMapping("/usuario/{idUsuario}")
     public List<Inscripciones> obtenerInscripcionesPorUsuario(@PathVariable("idUsuario") Long idUsuario) {
         return inscripcionesServicio.obtenerInscripcionesPorUsuario(idUsuario);

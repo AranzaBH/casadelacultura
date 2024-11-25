@@ -48,6 +48,7 @@ public class ActividadesControlador {
     }
 
     // Obtener actividades por id del taller
+    //http://localhost:8080/api/actividades/taller/20
     @GetMapping("/taller/{idTaller}")
     public List<Actividades> obtenerActividadesPorTaller(@PathVariable Long idTaller) {
         // Llama al servicio para obtener las actividades asociadas al taller
