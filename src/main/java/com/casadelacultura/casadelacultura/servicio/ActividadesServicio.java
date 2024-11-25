@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Actividades;
 import com.casadelacultura.casadelacultura.repositorio.ActividadesRepositorio;
@@ -44,5 +46,10 @@ public class ActividadesServicio {
     public void eliminarActividad(Long idActividad) {
         Actividades actividadesFromDB = obtenerActividadPorId(idActividad);
         actividadesRepositorio.delete(actividadesFromDB);
+    }
+
+    public List<Actividades> listarActividadesPorTaller(Long idTaller) {
+        // Utiliza el repositorio para obtener las actividades asociadas al taller
+        return (List<Actividades>) actividadesRepositorio.findActividadesByTallerId(idTaller);
     }
 }

@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Actividades;
@@ -44,4 +46,12 @@ public class ActividadesControlador {
     public void eliminarActividad(@PathVariable Long idActividad) {
         actividadesServicio.eliminarActividad(idActividad);
     }
+
+    // Obtener actividades por id del taller
+    @GetMapping("/taller/{idTaller}")
+    public List<Actividades> obtenerActividadesPorTaller(@PathVariable Long idTaller) {
+        // Llama al servicio para obtener las actividades asociadas al taller
+        return actividadesServicio.listarActividadesPorTaller(idTaller);
+    }
+
 }

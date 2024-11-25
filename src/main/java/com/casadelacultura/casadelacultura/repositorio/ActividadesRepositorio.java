@@ -12,4 +12,9 @@ public interface ActividadesRepositorio extends CrudRepository<Actividades, Long
 
     @Query("SELECT a FROM Actividades a JOIN FETCH a.taller t")
     Iterable<Actividades> findAllActividadesWithTaller();
+
+    //Recupera las actividades asociadas a un taller
+    @Query("SELECT a FROM Actividades a WHERE a.taller.idTaller = :idTaller")
+    Iterable<Actividades> findActividadesByTallerId(@Param("idTaller") Long idTaller);
+
 }

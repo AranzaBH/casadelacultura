@@ -42,6 +42,4 @@ public class Taller {
 
     @Transient
     private String urlImagenPortadaTaller;
-
-    
 }
