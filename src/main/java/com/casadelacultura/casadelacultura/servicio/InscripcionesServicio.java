@@ -6,6 +6,7 @@ import com.casadelacultura.casadelacultura.entity.Inscripciones;
 import com.casadelacultura.casadelacultura.repositorio.InscripcionesRepositorio;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -38,7 +39,7 @@ public class InscripcionesServicio {
         inscripcionesFromDB.setTaller(formulario.getTaller());
         inscripcionesFromDB.setAvanceGeneral(formulario.getAvanceGeneral());
         return inscripcionesRepositorio.save(inscripcionesFromDB);
-        
+
     }
 
     // Eliminar una inscripción por ID
@@ -46,4 +47,9 @@ public class InscripcionesServicio {
         Inscripciones inscripcionesFromDB = obtenerInscripcionPorId(idInscripcion);
         inscripcionesRepositorio.delete(inscripcionesFromDB);
     }
+
+    public List<Inscripciones> obtenerInscripcionesPorUsuario(Long idUsuario) {
+        return (List<Inscripciones>) inscripcionesRepositorio.findByUsuarioId(idUsuario);
+    }
+
 }

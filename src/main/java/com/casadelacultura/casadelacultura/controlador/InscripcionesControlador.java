@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,5 +46,10 @@ public class InscripcionesControlador {
     @DeleteMapping("{idInscripcion}")
     public void eliminarInscripcion(@PathVariable Long idInscripcion) {
         inscripcionesServicio.eliminarInscripcion(idInscripcion);
+    }
+
+    @GetMapping("/usuario/{idUsuario}")
+    public List<Inscripciones> obtenerInscripcionesPorUsuario(@PathVariable("idUsuario") Long idUsuario) {
+        return inscripcionesServicio.obtenerInscripcionesPorUsuario(idUsuario);
     }
 }
