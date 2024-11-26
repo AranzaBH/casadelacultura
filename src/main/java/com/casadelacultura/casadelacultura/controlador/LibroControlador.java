@@ -1,74 +1,84 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.validation.*;
+
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
 import com.casadelacultura.casadelacultura.entity.Libro;
-import com.casadelacultura.casadelacultura.repositorio.LibroRepositorio;
+import com.casadelacultura.casadelacultura.servicio.LibroServicio;
+import com.casadelacultura.casadelacultura.servicio.S3Service;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
-// Controlador para manejar las operaciones CRUD de Libro
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/libro")
 @CrossOrigin("*")
 public class LibroControlador {
-
-    @Autowired
-    private LibroRepositorio libroRepositorio;
+    private final LibroServicio libroServicio;
+    private final S3Service s3Service;
 
     // Obtener todos los libros
     @GetMapping
-    public ResponseEntity<Iterable<Libro>> list() {
-        return ResponseEntity.ok(libroRepositorio.findAll());
+    public Iterable<Libro> list() {
+        Iterable<Libro> libros = libroServicio.listarLibros();
+        for(Libro libro : libros){
+            if (libro.getImagenPath() != null && !libro.getImagenPath().isEmpty()) {
+                String imagenURL = s3Service.getObjectUrl(libro.getImagenPath());
+                libro.setIdUrlImagenPortada(imagenURL);
+            }
+
+        }
+        return libros;
+        
     }
 
     // Obtener un libro por ID
     @GetMapping("{idLibro}")
-    public ResponseEntity<Libro> get(@PathVariable Long idLibro) {
-        Optional<Libro> libro = libroRepositorio.findById(idLibro);
-        return libro.map(ResponseEntity::ok)
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public Libro getLibroId(@PathVariable Long idLibro) {
+        Libro libro = libroServicio.obtenerLibroPorId(idLibro);
+        if (libro != null && libro.getImagenPath() != null && !libro.getImagenPath().isEmpty()){
+            String imagenUrl = s3Service.getObjectUrl(libro.getImagenPath());
+            libro.setIdUrlImagenPortada(imagenUrl);
+
+        }
+        return libro;
     }
 
     // Crear un nuevo libro
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Libro create(@RequestBody Libro libro) {
-        return libroRepositorio.save(libro);
+    public Libro create(@Valid @RequestBody Libro libro) {
+        return libroServicio.crearLibro(libro);
     }
 
     // Actualizar un libro existente
     @PutMapping("{idLibro}")
-    public ResponseEntity<Libro> update(@PathVariable Long idLibro, @RequestBody Libro formulario) {
-        Optional<Libro> optionalLibro = libroRepositorio.findById(idLibro);
-        if (optionalLibro.isPresent()) {
-            Libro libroFromDB = optionalLibro.get();
-            libroFromDB.setAsin(formulario.getAsin());
-            libroFromDB.setTituloLibro(formulario.getTituloLibro());
-            libroFromDB.setNombreEditorial(formulario.getNombreEditorial());
-            libroFromDB.setLugarProsedenciaLibro(formulario.getLugarProsedenciaLibro());
-            libroFromDB.setCantidadPaginas(formulario.getCantidadPaginas());
-            libroFromDB.setDescripcion(formulario.getDescripcion());
-            libroFromDB.setIdUrlImagenPortada(formulario.getIdUrlImagenPortada());
-            libroFromDB.setEstaActivo(formulario.getEstaActivo());
-            libroFromDB.setFechaCreacion(formulario.getFechaCreacion());
-            libroFromDB.setCategoriaLibro(formulario.getCategoriaLibro());
-            libroFromDB.setTipoLibro(formulario.getTipoLibro());
-            return ResponseEntity.ok(libroRepositorio.save(libroFromDB));
+    public Libro updateLibro(@PathVariable Long idLibro, @RequestBody @Valid Libro formulario) {
+        if (formulario.getImagenPath() != null && !formulario.getImagenPath().isEmpty()) {
+            formulario.setImagenPath(formulario.getImagenPath());
+
+            // Obtener la URL de la imagen de S3, si es necesario
+            String imagenUrl = s3Service.getObjectUrl(formulario.getImagenPath());
+            formulario.setIdUrlImagenPortada(imagenUrl);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Libro no encontrado
+        return libroServicio.actualizarLibro(idLibro, formulario);
     }
 
     // Eliminar un libro
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Long idLibro) {
-        Optional<Libro> optionalLibro = libroRepositorio.findById(idLibro);
-        if (optionalLibro.isPresent()) {
-            libroRepositorio.delete(optionalLibro.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
+    public void delete(@PathVariable Long idLibro) {
+        Libro libroExistente = libroServicio.obtenerLibroPorId(idLibro);
+
+        if (libroExistente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obra No Encontrado");
+            
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Libro no encontrado
+        s3Service.deleteObject(libroExistente.getImagenPath());
+        libroServicio.eliminarLibro(idLibro);
+
     }
 }

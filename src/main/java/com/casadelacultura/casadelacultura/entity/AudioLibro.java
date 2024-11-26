@@ -27,9 +27,7 @@ public class AudioLibro {
     @JoinColumn(name = "idCategoriaLibro", nullable = false)
     private CategoriaLibro categoriaLibro;
 
-    @ManyToOne
-    @JoinColumn(name = "idTipoLibro", nullable = false)
-    private TipoLibro tipoLibro;
+    
 
     @ManyToOne
     @JoinColumn(name = "idObrasFonograficas", nullable = false)

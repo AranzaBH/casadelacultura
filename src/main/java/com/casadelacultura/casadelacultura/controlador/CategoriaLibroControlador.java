@@ -1,65 +1,49 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
-import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
+import com.casadelacultura.casadelacultura.servicio.CategoriaLibroServicio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
 // Controlador para manejar las operaciones CRUD de CategoriaLibro
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/categoriaLibro")
+@RequestMapping("/api/categorialibro")
 @CrossOrigin("*")
 public class CategoriaLibroControlador {
-
-    @Autowired
-    private CategoriaLibroRepositorio categoriaLibroRepositorio;
+    private final CategoriaLibroServicio categoriaLibroServicio;
 
     // Obtener todas las categorías de libros
     @GetMapping
-    public ResponseEntity<Iterable<CategoriaLibro>> list() {
-        return ResponseEntity.ok(categoriaLibroRepositorio.findAll());
+    public Iterable<CategoriaLibro> list() {
+        return categoriaLibroServicio.listarCategorias();
     }
 
     // Obtener una categoría de libro por ID
     @GetMapping("{idCategoriaLibro}")
-    public ResponseEntity<CategoriaLibro> get(@PathVariable Long idCategoriaLibro) {
-        Optional<CategoriaLibro> categoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
-        return categoria.map(ResponseEntity::ok)
-                        .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public CategoriaLibro getCategoriaLibroId(@PathVariable Long idCategoriaLibro) {
+        return categoriaLibroServicio.obtenerCategoriaPorId(idCategoriaLibro);
     }
 
     // Crear una nueva categoría de libro
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public CategoriaLibro create(@RequestBody CategoriaLibro categoriaLibro) {
-        return categoriaLibroRepositorio.save(categoriaLibro);
+        return categoriaLibroServicio.crearCategoria(categoriaLibro);
     }
 
     // Actualizar una categoría de libro existente
     @PutMapping("{idCategoriaLibro}")
-    public ResponseEntity<CategoriaLibro> update(@PathVariable Long idCategoriaLibro, @RequestBody CategoriaLibro formulario) {
-        Optional<CategoriaLibro> optionalCategoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
-        if (optionalCategoria.isPresent()) {
-            CategoriaLibro categoriaFromDB = optionalCategoria.get();
-            categoriaFromDB.setNombreCategoria(formulario.getNombreCategoria());
-            categoriaFromDB.setDescripcionCategoria(formulario.getDescripcionCategoria());
-            return ResponseEntity.ok(categoriaLibroRepositorio.save(categoriaFromDB));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Categoría no encontrada
+    public CategoriaLibro update(@PathVariable Long idCategoriaLibro, @RequestBody CategoriaLibro formulario) {
+        return categoriaLibroServicio.actualizarCategoria(idCategoriaLibro, formulario);
     }
 
     // Eliminar una categoría de libro
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idCategoriaLibro}")
-    public ResponseEntity<Void> delete(@PathVariable Long idCategoriaLibro) {
-        Optional<CategoriaLibro> optionalCategoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
-        if (optionalCategoria.isPresent()) {
-            categoriaLibroRepositorio.delete(optionalCategoria.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Categoría no encontrada
+    public void delete(@PathVariable Long idCategoriaLibro) {
+        categoriaLibroServicio.eliminarCategoria(idCategoriaLibro);
     }
 }

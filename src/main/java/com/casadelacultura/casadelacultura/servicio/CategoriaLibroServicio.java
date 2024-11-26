@@ -1,21 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
 import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
 
-import java.util.Optional;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class CategoriaLibroServicio {
-
-    @Autowired
     private final CategoriaLibroRepositorio categoriaLibroRepositorio;
-
-    public CategoriaLibroServicio(CategoriaLibroRepositorio categoriaLibroRepositorio) {
-        this.categoriaLibroRepositorio = categoriaLibroRepositorio;
-    }
 
     // Obtener todas las categorías de libros
     public Iterable<CategoriaLibro> listarCategorias() {
@@ -23,8 +17,8 @@ public class CategoriaLibroServicio {
     }
 
     // Obtener una categoría de libro por ID
-    public Optional<CategoriaLibro> obtenerCategoriaPorId(Long idCategoriaLibro) {
-        return categoriaLibroRepositorio.findById(idCategoriaLibro);
+    public CategoriaLibro obtenerCategoriaPorId(Long idCategoriaLibro) {
+        return categoriaLibroRepositorio.findById(idCategoriaLibro).orElse(null);
     }
 
     // Crear una nueva categoría de libro
@@ -33,21 +27,16 @@ public class CategoriaLibroServicio {
     }
 
     // Actualizar una categoría de libro existente
-    public Optional<CategoriaLibro> actualizarCategoria(Long idCategoriaLibro, CategoriaLibro formulario) {
-        return categoriaLibroRepositorio.findById(idCategoriaLibro).map(categoriaExistente -> {
-            categoriaExistente.setNombreCategoria(formulario.getNombreCategoria());
-            categoriaExistente.setDescripcionCategoria(formulario.getDescripcionCategoria());
-            return categoriaLibroRepositorio.save(categoriaExistente);
-        });
+    public CategoriaLibro actualizarCategoria(Long idCategoriaLibro, CategoriaLibro formulario) {
+        CategoriaLibro categoriaLibroFromDB = obtenerCategoriaPorId(idCategoriaLibro);
+        categoriaLibroFromDB.setNombreCategoria(formulario.getNombreCategoria());
+        categoriaLibroFromDB.setDescripcionCategoria(formulario.getDescripcionCategoria());
+        return categoriaLibroRepositorio.save(categoriaLibroFromDB);
     }
 
     // Eliminar una categoría de libro
-    public boolean eliminarCategoria(Long idCategoriaLibro) {
-        Optional<CategoriaLibro> categoria = categoriaLibroRepositorio.findById(idCategoriaLibro);
-        if (categoria.isPresent()) {
-            categoriaLibroRepositorio.delete(categoria.get());
-            return true;
-        }
-        return false;
+    public void eliminarCategoria(Long idCategoriaLibro) {
+        CategoriaLibro categoriaLibroFromDB = obtenerCategoriaPorId(idCategoriaLibro);
+        categoriaLibroRepositorio.delete(categoriaLibroFromDB);
     }
 }
