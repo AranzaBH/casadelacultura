@@ -28,5 +28,28 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
 
-    // Otros manejadores de excepciones (si los necesitas)
+    //Manejar la exepcion de libro por autor no encontrado
+    @ExceptionHandler(LibroPorAutorNoEncontradoException.class)
+    public ResponseEntity<String> manejarLibroPorAutorNoEncontrado(LibroPorAutorNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    //Manejar la exepcion de obra por autor no encontrado 
+    @ExceptionHandler(ObrasPorAutorNoEncontradoException.class)
+    public ResponseEntity<String> manejarObraPorAutorNoEncontrado(ObrasPorAutorNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    //Manejar la exepcion del autor no encontrado
+    @ExceptionHandler(AutorNoEncontradoException.class)
+    public ResponseEntity<String> manejarAutorNoEncontrado(AutorNoEncontradoException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
+    //Menejar la Exepcion de obra no encontrada
+    @ExceptionHandler(ObraNoEncontradoException.class)
+    public ResponseEntity<String> manejarObraNoEncontrada(ObraNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+
 }

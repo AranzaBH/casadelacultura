@@ -1,6 +1,8 @@
 
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.ObrasPorAutor;
@@ -31,13 +33,13 @@ public class ObrasPorAutorControlador {
     // Crear una nueva relación entre obra y autor
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ObrasPorAutor create(@RequestBody ObrasPorAutor obrasPorAutor) {
+    public ObrasPorAutor create(@Valid @RequestBody ObrasPorAutor obrasPorAutor) {
         return obrasPorAutorServicio.crearRelacion(obrasPorAutor);
     }
 
     // Actualizar una relación existente
     @PutMapping("{idObrasPorAutor}")
-    public ObrasPorAutor update(@PathVariable Long idObrasPorAutor, @RequestBody ObrasPorAutor formulario) {
+    public ObrasPorAutor update(@PathVariable Long idObrasPorAutor, @RequestBody @Valid ObrasPorAutor formulario) {
         return obrasPorAutorServicio.actualizarRelacion(idObrasPorAutor, formulario);
     }
 
