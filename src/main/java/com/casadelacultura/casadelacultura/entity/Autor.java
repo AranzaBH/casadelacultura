@@ -3,6 +3,7 @@ package com.casadelacultura.casadelacultura.entity;
 import java.time.LocalDate;
 import javax.persistence.*;
 import lombok.*;
+import javax.validation.constraints.*;
 
 @Getter
 @Setter
@@ -15,11 +16,13 @@ public class Autor {
     private Long idAutor;
 
     @NonNull
-    @Column(nullable = false)
+    @NotBlank(message = "El nombre del Autor es obligatorio")
+    @Column(nullable = false, length = 100)
     private String nombreAutor;
 
     @NonNull
-    @Column(nullable = false)
+    @NotBlank(message = "El Apellido Paterno del Autor es obligatorio")
+    @Column(nullable = false, length = 100)
     private String apellidoPaterno;
 
     

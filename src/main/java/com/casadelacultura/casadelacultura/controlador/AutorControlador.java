@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Autor;
@@ -30,13 +32,13 @@ public class AutorControlador {
     // Creación de un nuevo autor
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Autor createAutor(@RequestBody Autor autor) {
+    public Autor createAutor(@Valid @RequestBody Autor autor) {
         return autorServicio.crearAutor(autor);
     }
 
     // Actualización de un autor
     @PutMapping("{idAutor}")
-    public Autor actualizarAutor(@PathVariable Long idAutor, @RequestBody Autor formulario) {
+    public Autor actualizarAutor(@PathVariable Long idAutor, @RequestBody @Valid Autor formulario) {
         return autorServicio.actualizarAutor(idAutor, formulario);
     }
 
