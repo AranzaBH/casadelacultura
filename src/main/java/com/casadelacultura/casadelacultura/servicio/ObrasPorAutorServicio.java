@@ -2,9 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.ObrasPorAutor;
-import com.casadelacultura.casadelacultura.excepciones.AutorNoEncontradoException;
-import com.casadelacultura.casadelacultura.excepciones.LibroNoEncontradoException;
-import com.casadelacultura.casadelacultura.excepciones.ObrasPorAutorNoEncontradoException;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.AutorRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.ObraRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.ObrasPorAutorRepositorio;
@@ -25,19 +23,19 @@ public class ObrasPorAutorServicio {
 
     // Obtener una relación específica entre obra y autor por ID
     public ObrasPorAutor obtenerRelacionPorId(Long idObrasPorAutor) {
-        return obrasPorAutorRepositorio.findById(idObrasPorAutor).orElseThrow(() -> new ObrasPorAutorNoEncontradoException("No se encontro la relacion de obra por autor con el ID"+idObrasPorAutor));
+        return obrasPorAutorRepositorio.findById(idObrasPorAutor).orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro la relacion de obra por autor con el ID"+idObrasPorAutor));
     }
 
     // Crear una nueva relación entre una obra y un autor
     public ObrasPorAutor crearRelacion(ObrasPorAutor obrasPorAutor) {
         //Valida la existencia del autor
         if (obrasPorAutor.getAutor() == null || !autorRepositorio.existsById(obrasPorAutor.getAutor().getIdAutor())) {
-            throw new AutorNoEncontradoException(
+            throw new GlobalExceptionNoEncontrada(
                     "Autor con ID " + obrasPorAutor.getAutor().getIdAutor() + " no encontrado.");
         }
         // Validar la existencia del Obra
         if (obrasPorAutor.getObra() == null || !obraRepositorio.existsById(obrasPorAutor.getObra().getIdObra())) {
-            throw new LibroNoEncontradoException(
+            throw new GlobalExceptionNoEncontrada(
                     "Obra con ID " + obrasPorAutor.getObra().getIdObra() + " no encontrado.");
         }
         return obrasPorAutorRepositorio.save(obrasPorAutor);
@@ -48,13 +46,13 @@ public class ObrasPorAutorServicio {
         ObrasPorAutor obrasPorAutorFromDB = obtenerRelacionPorId(idObrasPorAutor);
         // Validar la existencia del Autor
         if (formulario.getAutor() == null || !autorRepositorio.existsById(formulario.getAutor().getIdAutor())) {
-            throw new AutorNoEncontradoException(
+            throw new GlobalExceptionNoEncontrada(
                     "Autor con ID " + formulario.getAutor().getIdAutor() + " no encontrado.");
         }
 
         // Validar la existencia del Obra
         if (formulario.getObra() == null || !obraRepositorio.existsById(formulario.getObra().getIdObra())) {
-            throw new LibroNoEncontradoException(
+            throw new GlobalExceptionNoEncontrada(
                     "Obra con ID " + formulario.getObra().getIdObra() + " no encontrado.");
         }
         

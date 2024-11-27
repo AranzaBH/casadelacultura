@@ -1,14 +1,10 @@
 package com.casadelacultura.casadelacultura.entity;
 
-
 import javax.persistence.*;
 import lombok.*;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import javax.validation.constraints.*;
-
-
 
 @Getter
 @Setter
@@ -24,7 +20,7 @@ public class Libro {
     @NotBlank(message = "El título del libro es obligatorio")
     private String tituloLibro;
 
-    @NonNull
+    
     private String asin;
 
     @NonNull
@@ -35,7 +31,7 @@ public class Libro {
     @Min(value = 1, message = "La edición debe ser al menos 1")
     private Integer edicionlibro;
 
-    @NonNull
+    
     private String lugarProsedenciaLibro;
 
     @NonNull
@@ -46,16 +42,14 @@ public class Libro {
     @NotBlank(message = "La descripción es obligatoria")
     private String descripcion;
 
-    @NonNull
+    
     private String imagenPath;
 
     @Transient
     private String idUrlImagenPortada;
 
-    @NonNull
     private Boolean estaActivo;
 
-    @NonNull
     private LocalDate fechaLibro;
 
     @NonNull

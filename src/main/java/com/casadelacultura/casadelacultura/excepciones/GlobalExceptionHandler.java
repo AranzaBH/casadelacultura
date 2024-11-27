@@ -22,6 +22,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errores);
     }
 
+    //Manejo la exepcion de Tabla no encontrada 
+    @ExceptionHandler(GlobalExceptionNoEncontrada.class)
+    public ResponseEntity<String>manejoTablaGlobalExceptionNoEncontrada(GlobalExceptionNoEncontrada ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
+    /* 
+
     // Manejar la excepción de libro no encontrado
     @ExceptionHandler(LibroNoEncontradoException.class)
     public ResponseEntity<String> manejarLibroNoEncontrado(LibroNoEncontradoException ex) {
@@ -51,5 +58,11 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> manejarObraNoEncontrada(ObraNoEncontradoException ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
     }
+
+    //Manejra la Exepcion de la Categori por libro no encontrada 
+    @ExceptionHandler(CategoriaLibroNoEncontradoException.class)
+    public ResponseEntity<String> mejorarCategoriaLibroNoEncontrado(CategoriaLibroNoEncontradoException ex){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }*/
 
 }

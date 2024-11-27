@@ -2,7 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Autor;
-import com.casadelacultura.casadelacultura.excepciones.AutorNoEncontradoException;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.AutorRepositorio;
 
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ public class AutorServicio {
     // Obtener un autor por ID
     public Autor obtenerAutorPorId(Long idAutor) {
         return autorRepositorio.findById(idAutor)
-                .orElseThrow(() -> new AutorNoEncontradoException(
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada(
                         "No se encontro el autor con el ID " + idAutor));
     }
 
@@ -31,7 +31,7 @@ public Autor crearAutor(Autor autor) {
     if (autorRepositorio.existsByNombreAutorAndApellidoPaternoAndApellidoMaternoAndFechaNacimientoAndFechaFallecimiento(
             autor.getNombreAutor(), autor.getApellidoPaterno(), autor.getApellidoMaterno(),
             autor.getFechaNacimiento(), autor.getFechaFallecimiento())) {
-        throw new AutorNoEncontradoException("Ya existe un autor con el nombre: "
+        throw new GlobalExceptionNoEncontrada("Ya existe un autor con el nombre: "
                 + autor.getNombreAutor() + ", apellido paterno: " + autor.getApellidoPaterno()
                 + ", apellido materno: " + autor.getApellidoMaterno()
                 + ", fecha de nacimiento: " + autor.getFechaNacimiento()
@@ -50,7 +50,7 @@ public Autor actualizarAutor(Long idAutor, Autor formulario) {
     if (autorRepositorio.existsByNombreAutorAndApellidoPaternoAndApellidoMaternoAndFechaNacimientoAndFechaFallecimientoAndIdAutorNot(
             formulario.getNombreAutor(), formulario.getApellidoPaterno(), formulario.getApellidoMaterno(),
             formulario.getFechaNacimiento(), formulario.getFechaFallecimiento(), idAutor)) {
-        throw new AutorNoEncontradoException("Ya existe un autor con el nombre: "
+        throw new GlobalExceptionNoEncontrada("Ya existe un autor con el nombre: "
                 + formulario.getNombreAutor() + ", apellido paterno: " + formulario.getApellidoPaterno()
                 + ", apellido materno: " + formulario.getApellidoMaterno()
                 + ", fecha de nacimiento: " + formulario.getFechaNacimiento()
