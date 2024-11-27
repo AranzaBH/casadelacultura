@@ -1,6 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
+
 import com.casadelacultura.casadelacultura.entity.Libro;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
@@ -8,6 +9,7 @@ import com.casadelacultura.casadelacultura.repositorio.LibroRepositorio;
 
 import lombok.AllArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
@@ -30,6 +32,7 @@ public class LibroServicio {
     // Crear un nuevo libro
     // Crear un nuevo libro
     public Libro crearLibro(Libro libro) {
+        validarFechas(libro);
         // Validar si ya existe un libro con los mismos datos
         if (libroRepositorio.existsByTituloLibroAndAsinAndNombreEditorialAndEdicionlibroAndCantidadPaginas(
                 libro.getTituloLibro(), libro.getAsin(), libro.getNombreEditorial(),
@@ -56,7 +59,7 @@ public class LibroServicio {
     // Actualizar un libro existente
     public Libro actualizarLibro(Long idLibro, Libro formulario) {
         Libro libroFromDB = obtenerLibroPorId(idLibro);
-
+        validarFechas(formulario);
         // Validar si ya existe un libro con los mismos datos, excluyendo el actual
         if (libroRepositorio.existsByTituloLibroAndAsinAndNombreEditorialAndEdicionlibroAndCantidadPaginasAndIdLibroNot(
                 formulario.getTituloLibro(), formulario.getAsin(), formulario.getNombreEditorial(),
@@ -92,4 +95,14 @@ public class LibroServicio {
         Libro libroFromDB = obtenerLibroPorId(idLibro);
         libroRepositorio.delete(libroFromDB);
     }
+
+    public void validarFechas(Libro libro) {
+        LocalDate hoy = LocalDate.now();
+        // Validar si la fecha de nacimiento es mayor a la fecha de hoy
+        if (libro.getFechaLibro() != null && libro.getFechaLibro().isAfter(hoy)) {
+            throw new GlobalExceptionNoEncontrada("La fecha de publicacion del libro no puede ser mayor al día de hoy.");
+        }
+    }
+
+    
 }
