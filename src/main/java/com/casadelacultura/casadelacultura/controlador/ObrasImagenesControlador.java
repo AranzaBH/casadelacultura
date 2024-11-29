@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +29,13 @@ public class ObrasImagenesControlador {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ObrasImagenes create (@RequestBody ObrasImagenes obrasImagenes){
+    public ObrasImagenes create (@Valid @RequestBody ObrasImagenes obrasImagenes){
         return obrasImagenesServicio.crearRealacionObrasImagenes(obrasImagenes);
     }
 
     // Actualizar una relación existente
     @PutMapping("{idObrasImagenes}")
-    public ObrasImagenes update(@PathVariable Long idObrasImagenes, @RequestBody ObrasImagenes formulario){
+    public ObrasImagenes update(@PathVariable Long idObrasImagenes, @RequestBody @Valid ObrasImagenes formulario){
         return obrasImagenesServicio.actualizarRelacionObraImagenes(idObrasImagenes, formulario);
 
     }

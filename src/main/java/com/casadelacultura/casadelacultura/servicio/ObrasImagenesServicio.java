@@ -1,6 +1,5 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-
 import org.springframework.stereotype.Service;
 
 import com.casadelacultura.casadelacultura.entity.Obra;
@@ -24,7 +23,9 @@ public class ObrasImagenesServicio {
     }
 
     public ObrasImagenes obtenerRelacionPorId(Long idObrasImagenes) {
-        return obrasImagenesRepositorio.findById(idObrasImagenes).orElse(null);
+        return obrasImagenesRepositorio.findById(idObrasImagenes)
+        .orElseThrow(() -> new GlobalExceptionNoEncontrada(
+                "No se encontro la relacion libro por autor con el ID " + idObrasImagenes));
     }
 
     public ObrasImagenes crearRealacionObrasImagenes(ObrasImagenes obrasImagenes) {
@@ -41,6 +42,7 @@ public class ObrasImagenesServicio {
             throw new GlobalExceptionNoEncontrada(
                     "Imagene con ID " + obrasImagenes.getImagenes().getIdImagen() + " no encontrado.");
         }
+        // Valida si la obra ya existe
         if (obrasImagenes.getObra() == null
                 || !obraRepositorio.existsById(obrasImagenes.getObra().getIdObra())) {
             throw new GlobalExceptionNoEncontrada(
@@ -94,15 +96,20 @@ public class ObrasImagenesServicio {
         obrasImagenesRepositorio.delete(obrasImagenesFromDB);
     }
 
-   /*  // Validaciones
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleIllegalArgumentException(IllegalArgumentException ex) {
-        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
-    }
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity<String> handleGeneralException(Exception ex) {
-        return new ResponseEntity<>("Ocurrió un error interno: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
-    }*/
+    /*
+     * // Validaciones
+     * 
+     * @ExceptionHandler(IllegalArgumentException.class)
+     * public ResponseEntity<String>
+     * handleIllegalArgumentException(IllegalArgumentException ex) {
+     * return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+     * }
+     * 
+     * @ExceptionHandler(Exception.class)
+     * public ResponseEntity<String> handleGeneralException(Exception ex) {
+     * return new ResponseEntity<>("Ocurrió un error interno: " + ex.getMessage(),
+     * HttpStatus.INTERNAL_SERVER_ERROR);
+     * }
+     */
 
 }
