@@ -44,7 +44,8 @@ public class LibrosImagenesServicio {
         }
 
         // Validar la existencia del Libro
-        if (librosImagenes.getLibro() == null || !libroRepositorio.existsById(librosImagenes.getLibro().getIdLibro())) {
+        if (librosImagenes.getLibro() == null 
+                || !libroRepositorio.existsById(librosImagenes.getLibro().getIdLibro())) {
             throw new GlobalExceptionNoEncontrada(
                     "Libro con ID " + librosImagenes.getLibro().getIdLibro() + " no encontrado.");
         }
@@ -61,20 +62,20 @@ public class LibrosImagenesServicio {
                 formulario.getLibro().getIdLibro(),
                 formulario.getImagenes().getIdImagen(),
                 idLibrosImagenes)) {
-           // Obtener el libro correspondiente al ID
-        Libro libro = libroRepositorio.findById(formulario.getLibro().getIdLibro())
-                .orElseThrow(() -> new GlobalExceptionNoEncontrada("Libro no encontrado"));
+            // Obtener el libro correspondiente al ID
+            Libro libro = libroRepositorio.findById(formulario.getLibro().getIdLibro())
+                    .orElseThrow(() -> new GlobalExceptionNoEncontrada("Libro no encontrado"));
 
-        // Lanzar la excepción con el nombre del libro en el mensaje
-        throw new GlobalExceptionNoEncontrada(
-                "Ya existe una relación para el libro con título: " + libro.getTituloLibro() +
-                        " (ID: " + formulario.getLibro().getIdLibro() +
-                        ") y la imagen con ID: " + formulario.getImagenes().getIdImagen());
-    }
-        
+            // Lanzar la excepción con el nombre del libro en el mensaje
+            throw new GlobalExceptionNoEncontrada(
+                    "Ya existe una relación para el libro con título: " + libro.getTituloLibro() +
+                            " (ID: " + formulario.getLibro().getIdLibro() +
+                            ") y la imagen con ID: " + formulario.getImagenes().getIdImagen());
+        }
 
         // Validar la existencia del Libro
-        if (formulario.getLibro() == null || !libroRepositorio.existsById(formulario.getLibro().getIdLibro())) {
+        if (formulario.getLibro() == null 
+                || !libroRepositorio.existsById(formulario.getLibro().getIdLibro())) {
             throw new GlobalExceptionNoEncontrada(
                     "Libro con ID " + formulario.getLibro().getIdLibro() + " no encontrado.");
         }
