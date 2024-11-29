@@ -1,6 +1,5 @@
 package com.casadelacultura.casadelacultura.entity;
 
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -25,6 +24,5 @@ public class ObrasPorAutor {
     @NotNull(message = "El ID de obra es abligatoria")
     @JoinColumn(name = "idObra", nullable = false)
     private Obra obra;
-    
 
 }
