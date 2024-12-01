@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Cuestionario;
@@ -29,13 +31,13 @@ public class CuestionarioControlador {
     // Crear un nuevo cuestionario
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Cuestionario crearCuestionario(@RequestBody Cuestionario cuestionario) {
+    public Cuestionario crearCuestionario(@Valid @RequestBody Cuestionario cuestionario) {
         return cuestionarioServicio.crearCuestionario(cuestionario);
     }
 
     // Actualizar un cuestionario existente
     @PutMapping("{idCuestionario}")
-    public Cuestionario actualizarCuestionario(@PathVariable Long idCuestionario, @RequestBody Cuestionario formulario) {
+    public Cuestionario actualizarCuestionario(@PathVariable Long idCuestionario, @RequestBody @Valid Cuestionario formulario) {
         return cuestionarioServicio.actualizarCuestionario(idCuestionario, formulario);
     }
 

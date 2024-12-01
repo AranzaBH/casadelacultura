@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +32,13 @@ public class ReactivoControlador {
     // Crear un nuevo reactivo
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Reactivo crearReactivo(@RequestBody Reactivo reactivo) {
+    public Reactivo crearReactivo(@Valid @RequestBody Reactivo reactivo) {
         return reactivoServicio.crearReactivo(reactivo);
     }
 
     // Actualizar un reactivo existente
     @PutMapping("{idReactivo}")
-    public Reactivo actualizarReactivo(@PathVariable Long idReactivo, @RequestBody Reactivo formulario) {
+    public Reactivo actualizarReactivo(@PathVariable Long idReactivo, @RequestBody @Valid Reactivo formulario) {
         return reactivoServicio.actualizarReactivo(idReactivo, formulario);
     }
 

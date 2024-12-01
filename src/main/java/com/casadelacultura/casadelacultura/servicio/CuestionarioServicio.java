@@ -40,6 +40,8 @@ public class CuestionarioServicio {
     public Cuestionario actualizarCuestionario(Long idCuestionario, Cuestionario formulario) {
         Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
         cuestionarioFromDB.setCalificacion(formulario.getCalificacion());
+        cuestionarioFromDB.setNombreCuestionario(formulario.getNombreCuestionario());
+        cuestionarioFromDB.setInstrucciones(formulario.getInstrucciones());
         return cuestionarioRepositorio.save(cuestionarioFromDB);
 
     }

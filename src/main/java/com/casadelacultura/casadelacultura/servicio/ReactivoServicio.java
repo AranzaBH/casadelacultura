@@ -36,6 +36,7 @@ public class ReactivoServicio {
         reactivoFromDB.setRespuesta3(formulario.getRespuesta3());
         reactivoFromDB.setRespuesta4(formulario.getRespuesta4());
         reactivoFromDB.setRespuesta5(formulario.getRespuesta5());
+        reactivoFromDB.setCuestionario(formulario.getCuestionario());
         return reactivoRepositorio.save(reactivoFromDB);
         
     }
