@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,14 +51,14 @@ public class ObraControlador {
     // Crear una nueva obra
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Obra create(@RequestBody Obra obra) {
+    public Obra create(@Valid @RequestBody Obra obra) {
         obra.setIdUrlImagenPortada(s3Service.getObjectUrl(obra.getImagenPath()));
         return obraServicio.crearObra(obra);
     }
 
     // Actualizar una obra existente
     @PutMapping("{idObra}")
-    public Obra update(@PathVariable Long idObra, @RequestBody Obra formulario) {
+    public Obra update(@PathVariable Long idObra, @RequestBody @Valid Obra formulario) {
         if (formulario.getImagenPath() != null && !formulario.getImagenPath().isEmpty()) {
             formulario.setImagenPath(formulario.getImagenPath());
 
