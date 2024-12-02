@@ -7,12 +7,11 @@ import javax.validation.constraints.Size;
 
 import lombok.*;
 
-
 @Getter
 @Setter
-@Entity 
-@RequiredArgsConstructor 
-@NoArgsConstructor 
+@Entity
+@RequiredArgsConstructor
+@NoArgsConstructor
 public class Reactivo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // Autogenera el valor del ID.
@@ -23,7 +22,6 @@ public class Reactivo {
     @Column(nullable = false, length = 200)
     private String pregunta;
 
-    
     @NotBlank(message = "La respuesta correcta es obligatorio")
     @Size(max = 100, message = "La respuesta correcta no puede tener más de 200 caracteres")
     @Column(nullable = false, length = 100)

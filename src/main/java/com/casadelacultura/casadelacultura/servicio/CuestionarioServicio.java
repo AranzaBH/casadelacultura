@@ -54,7 +54,7 @@ public class CuestionarioServicio {
         Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
     
         // Validar si ya existe un cuestionario con el mismo nombre e instrucciones
-        if (cuestionarioRepositorio.existsByNombreCuestionarioAndInstruccionesAndIdCuestionario(
+        if (cuestionarioRepositorio.existsByNombreCuestionarioAndInstruccionesAndIdCuestionarioNot(
                 formulario.getNombreCuestionario(),
                 formulario.getInstrucciones(),
                 idCuestionario)) {
@@ -78,14 +78,7 @@ public class CuestionarioServicio {
     
         // Registrar auditoría solo si los valores han cambiado
         if (!valorAnteriorNombre.equals(valorNuevoNombre)) {
-            registrarAuditoria(
-                    "Cuestionario",
-                    idCuestionario,
-                    "ACTUALIZAR",
-                    "nombreCuestionario",
-                    valorAnteriorNombre,
-                    valorNuevoNombre
-            );
+            registrarAuditoria("Cuestionario",idCuestionario,"ACTUALIZAR","nombreCuestionario",valorAnteriorNombre,valorNuevoNombre);
         }
     
         if (!valorAnteriorInstrucciones.equals(valorNuevoInstrucciones)) {

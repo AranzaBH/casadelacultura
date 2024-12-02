@@ -7,7 +7,7 @@ public interface CuestionarioRepositorio extends CrudRepository<Cuestionario, Lo
     //Valida si ya existe un cuestionario con los mismos datos
     boolean existsByNombreCuestionarioAndInstrucciones(
         String nombreCuestionario,String instrucciones);
-    boolean existsByNombreCuestionarioAndInstruccionesAndIdCuestionario(String nombreCuestionario,String instrucciones, Long idCuestionario);
+    boolean existsByNombreCuestionarioAndInstruccionesAndIdCuestionarioNot(String nombreCuestionario,String instrucciones, Long idCuestionario);
 
     
 }
