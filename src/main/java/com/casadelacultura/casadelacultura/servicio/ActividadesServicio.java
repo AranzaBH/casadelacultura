@@ -75,7 +75,7 @@ public class ActividadesServicio {
 
         // Registra auditoria
         registrarAuditoria("Actividad", nuevaActividad.getIdActividades(), "CREAR", "idActividades", null,
-                actividad.getNombreActividad());
+                actividad.getIdActividades().toString(), "Tabla");
 
         return actividadesRepositorio.save(nuevaActividad);
     }
@@ -141,20 +141,21 @@ public class ActividadesServicio {
         // Registrar auditoría si hubo cambios
         if (!valorAnteriorNombreActividad.equals(valorNuevoNombreActividad)) {
             registrarAuditoria("Actividad", idActividad, "ACTUALIZAR", "nombreActividad", valorAnteriorNombreActividad,
-                    valorNuevoNombreActividad);
+                    valorNuevoNombreActividad, "nombreActividad");
         }
         if (!valorAnteriorVideoId.equals(valorNuevoVideoId)) {
-            registrarAuditoria("Actividad", idActividad, "ACTUALIZAR", "videoId", "idVideo: "+valorAnteriorVideoId.toString(),
-                    "idVideo: "+valorNuevoVideoId.toString());
+            registrarAuditoria("Actividad", idActividad, "ACTUALIZAR", "videoId",
+                    "idVideo: " + valorAnteriorVideoId.toString(),
+                    "idVideo: " + valorNuevoVideoId.toString(), "idVideo");
         }
         if (!Objects.equals(valorAnteriorCuestionarioId, valorNuevoCuestionarioId)) {
             registrarAuditoria("Actividad", idActividad, "ACTUALIZAR", "cuestionarioId",
                     valorAnteriorCuestionarioId != null ? valorAnteriorCuestionarioId.toString() : "null",
-                    valorNuevoCuestionarioId != null ? valorNuevoCuestionarioId.toString() : "null");
+                    valorNuevoCuestionarioId != null ? valorNuevoCuestionarioId.toString() : "null", "idCuestionario");
         }
         if (!valorAnteriorTallerId.equals(valorNuevoTallerId)) {
             registrarAuditoria("Actividad", idActividad, "ACTUALIZAR", "tallerId", valorAnteriorTallerId.toString(),
-                    valorNuevoTallerId.toString());
+                    valorNuevoTallerId.toString(), "idTaller");
         }
 
         return actividadActualizada;
@@ -164,19 +165,21 @@ public class ActividadesServicio {
     // Eliminar una actividad por ID
     public void eliminarActividad(Long idActividad) {
         Actividades actividadesFromDB = obtenerActividadPorId(idActividad);
-        registrarAuditoria("Actividad", actividadesFromDB.getIdActividades(), "ELIMINAR", null, actividadesFromDB.getNombreActividad(), null);
+        registrarAuditoria("Actividad", actividadesFromDB.getIdActividades(), "ELIMINAR", null,
+                actividadesFromDB.getIdActividades().toString(), null, "Tabla");
         actividadesRepositorio.delete(actividadesFromDB);
     }
 
-    //Listar actividades por taller
+    // Listar actividades por taller
     public List<Actividades> listarActividadesPorTaller(Long idTaller) {
         // Utiliza el repositorio para obtener las actividades asociadas al taller
         return (List<Actividades>) actividadesRepositorio.findActividadesByTallerId(idTaller);
     }
 
     private void registrarAuditoria(String entidad, Long idEntidad, String accion, String campo, String valorAnterior,
-            String valorNuevo) {
-        Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo);
+            String valorNuevo, String nombreColumna) {
+        Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo,
+                nombreColumna);
         auditoriaRepositorio.save(auditoria);
     }
 }

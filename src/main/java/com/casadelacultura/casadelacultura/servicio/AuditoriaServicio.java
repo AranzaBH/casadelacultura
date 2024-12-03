@@ -14,7 +14,7 @@ public class AuditoriaServicio {
 
     // Método para registrar auditoría con los valores anteriores y nuevos
     public void registrarAuditoria(String entidad, Long idEntidad, String accion, String campo, String valorAnterior,
-            String valorNuevo) {
+            String valorNuevo, String nombreColumna) {
         Auditoria auditoria = new Auditoria();
         auditoria.setEntidad(entidad);
         auditoria.setIdEntidad(idEntidad);
@@ -22,6 +22,7 @@ public class AuditoriaServicio {
         auditoria.setFechaHora(LocalDateTime.now());
         auditoria.setValorAnterior(valorAnterior);
         auditoria.setValorNuevo(valorNuevo);
+        auditoria.setNombreColumna(nombreColumna);
         auditoriaRepositorio.save(auditoria);
     }
 }

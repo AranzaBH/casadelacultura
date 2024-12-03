@@ -43,16 +43,15 @@ public class CuestionarioServicio {
 
         // Registrar la auditoría para la creación del cuestionario
         registrarAuditoria("Cuestionario", nuevoCuestionario.getIdCuestionario(), "CREAR", null, null,
-                nuevoCuestionario.getNombreCuestionario());
+                nuevoCuestionario.getIdCuestionario().toString(), "Tabla");
 
         return nuevoCuestionario;
     }
 
-    
     public Cuestionario actualizarCuestionario(Long idCuestionario, Cuestionario formulario) {
         // Obtener el cuestionario existente
         Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
-    
+
         // Validar si ya existe un cuestionario con el mismo nombre e instrucciones
         if (cuestionarioRepositorio.existsByNombreCuestionarioAndInstruccionesAndIdCuestionarioNot(
                 formulario.getNombreCuestionario(),
@@ -61,26 +60,27 @@ public class CuestionarioServicio {
             throw new GlobalExceptionNoEncontrada("Ya existe un cuestionario con el nombre: " +
                     formulario.getNombreCuestionario() + " y las instrucciones " + formulario.getInstrucciones());
         }
-    
+
         // Comparar valores anteriores y nuevos para la auditoría
         String valorAnteriorNombre = cuestionarioFromDB.getNombreCuestionario();
         String valorNuevoNombre = formulario.getNombreCuestionario();
         String valorAnteriorInstrucciones = cuestionarioFromDB.getInstrucciones();
         String valorNuevoInstrucciones = formulario.getInstrucciones();
-    
+
         // Actualizar los campos
         cuestionarioFromDB.setCalificacion(formulario.getCalificacion());
         cuestionarioFromDB.setNombreCuestionario(formulario.getNombreCuestionario());
         cuestionarioFromDB.setInstrucciones(formulario.getInstrucciones());
-    
+
         // Guardar los cambios en la base de datos
         Cuestionario cuestionarioActualizado = cuestionarioRepositorio.save(cuestionarioFromDB);
-    
+
         // Registrar auditoría solo si los valores han cambiado
         if (!valorAnteriorNombre.equals(valorNuevoNombre)) {
-            registrarAuditoria("Cuestionario",idCuestionario,"ACTUALIZAR","nombreCuestionario",valorAnteriorNombre,valorNuevoNombre);
+            registrarAuditoria("Cuestionario", idCuestionario, "ACTUALIZAR", "nombreCuestionario", valorAnteriorNombre,
+                    valorNuevoNombre, "nombreCuestionario");
         }
-    
+
         if (!valorAnteriorInstrucciones.equals(valorNuevoInstrucciones)) {
             registrarAuditoria(
                     "Cuestionario",
@@ -88,10 +88,10 @@ public class CuestionarioServicio {
                     "ACTUALIZAR",
                     "instrucciones",
                     valorAnteriorInstrucciones,
-                    valorNuevoInstrucciones
-            );
+                    valorNuevoInstrucciones,
+                    "instrucciones");
         }
-    
+
         return cuestionarioActualizado;
     }
 
@@ -102,15 +102,16 @@ public class CuestionarioServicio {
 
         // Registrar la auditoría para la eliminación del cuestionario
         registrarAuditoria("Cuestionario", cuestionarioFromDB.getIdCuestionario(), "ELIMINAR", null,
-                cuestionarioFromDB.getNombreCuestionario(), null);
+                cuestionarioFromDB.getIdCuestionario().toString(), null, "Tabla");
 
         // Eliminar el cuestionario
         cuestionarioRepositorio.delete(cuestionarioFromDB);
     }
 
     private void registrarAuditoria(String entidad, Long idEntidad, String accion, String campo, String valorAnterior,
-            String valorNuevo) {
-        Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo);
+            String valorNuevo, String nombreColumna) {
+        Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo,
+                nombreColumna);
         auditoriaRepositorio.save(auditoria);
     }
 }

@@ -16,7 +16,8 @@ public class Auditoria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @NonNull
+    private String nombreColumna;
     @NonNull
     private String entidad; // Nombre de la entidad (por ejemplo, Cuestionario)
     @NonNull
@@ -31,12 +32,13 @@ public class Auditoria {
 
     // Constructor personalizado para poder pasar todos los parámetros
     public Auditoria(String entidad, Long idEntidad, String accion, LocalDateTime fechaHora,
-            String valorAnterior, String valorNuevo) {
+            String valorAnterior, String valorNuevo, String nombreColumna) {
         this.entidad = entidad;
         this.idEntidad = idEntidad;
         this.accion = accion;
         this.fechaHora = fechaHora;
         this.valorAnterior = valorAnterior;
         this.valorNuevo = valorNuevo;
+        this.nombreColumna = nombreColumna;
     }
 }
