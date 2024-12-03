@@ -2,6 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Video;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.VideoRepositorio;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +19,7 @@ public class VideoServicio {
 
     // Obtener un video por ID
     public Video obtenerVideoPorId(Long idVideo) {
-        return videoRepositorio.findById(idVideo).orElse(null);
+        return videoRepositorio.findById(idVideo).orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el reactivo con el ID: " + idVideo));
     }
 
     // Crear un nuevo video

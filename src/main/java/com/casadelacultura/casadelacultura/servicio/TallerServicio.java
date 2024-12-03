@@ -3,6 +3,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Taller;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.TallerRepositorio;
 
 import lombok.AllArgsConstructor;
@@ -22,7 +23,8 @@ public class TallerServicio {
 
     // Obtener un taller por su ID
     public Taller obtenerTallerPorId(Long idTaller) {
-        return tallerRepositorio.findById(idTaller).orElse(null);
+        return tallerRepositorio.findById(idTaller).orElseThrow(
+                () -> new GlobalExceptionNoEncontrada("No se encontro el Taller con el ID: " + idTaller));
     }
 
     // Crear un nuevo taller

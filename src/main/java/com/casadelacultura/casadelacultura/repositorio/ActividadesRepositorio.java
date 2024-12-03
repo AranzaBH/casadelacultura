@@ -13,8 +13,20 @@ public interface ActividadesRepositorio extends CrudRepository<Actividades, Long
     @Query("SELECT a FROM Actividades a JOIN FETCH a.taller t")
     Iterable<Actividades> findAllActividadesWithTaller();
 
-    //Recupera las actividades asociadas a un taller
+    // Recupera las actividades asociadas a un taller
     @Query("SELECT a FROM Actividades a WHERE a.taller.idTaller = :idTaller")
     Iterable<Actividades> findActividadesByTallerId(@Param("idTaller") Long idTaller);
 
+    boolean existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(
+            String nombreActividad,
+            Long idVideo,
+            Long idCuestionario,
+            Long idTaller);
+
+    boolean existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTallerAndIdActividadesNot(
+            String nombreActividad,
+            Long idVideo,
+            Long idCuestionario,
+            Long idTaller,
+            Long idActividades);
 }

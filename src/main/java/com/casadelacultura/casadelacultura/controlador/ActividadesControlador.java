@@ -2,6 +2,8 @@ package com.casadelacultura.casadelacultura.controlador;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Actividades;
@@ -30,13 +32,13 @@ public class ActividadesControlador {
     // Crear una nueva actividad
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Actividades crearActividad(@RequestBody Actividades actividad) {
+    public Actividades crearActividad(@Valid @RequestBody Actividades actividad) {
         return actividadesServicio.crearActividad(actividad);
     }
 
     // Actualizar una actividad existente
     @PutMapping("{idActividad}")
-    public Actividades actualizarActividad(@PathVariable Long idActividad, @RequestBody Actividades formulario) {
+    public Actividades actualizarActividad(@PathVariable Long idActividad, @RequestBody @Valid Actividades formulario) {
         return actividadesServicio.actualizarActividad(idActividad, formulario);
     }
 
