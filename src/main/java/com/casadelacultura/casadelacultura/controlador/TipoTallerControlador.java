@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
 import com.casadelacultura.casadelacultura.servicio.TipoTallerServicio;
@@ -44,7 +46,7 @@ public class TipoTallerControlador {
      */
     @ResponseStatus(HttpStatus.CREATED) // Indica que, si se crea correctamente, se devuelve el código de estado 201.
     @PostMapping
-    public TipoTaller create(@RequestBody TipoTaller tipoTaller){
+    public TipoTaller create(@Valid @RequestBody TipoTaller tipoTaller){
         return tipoTallerServicio.create(tipoTaller); 
     }
  
@@ -55,7 +57,7 @@ public class TipoTallerControlador {
      * @return La entidad TipoTaller actualizada.
      */
     @PutMapping("{idTipoTaller}") // Se utiliza para actualizaciones completas de entidades existentes.
-    public TipoTaller update(@PathVariable Long idTipoTaller, @RequestBody TipoTaller formulario){
+    public TipoTaller update(@PathVariable Long idTipoTaller, @RequestBody @Valid TipoTaller formulario){
         return tipoTallerServicio.update(idTipoTaller,formulario); 
 
     }
