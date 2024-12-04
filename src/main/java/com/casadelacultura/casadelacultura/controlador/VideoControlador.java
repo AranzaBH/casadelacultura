@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,13 +32,13 @@ public class VideoControlador {
     // Crear un nuevo video
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Video crearVideo(@RequestBody Video video) {
+    public Video crearVideo(@Valid @RequestBody Video video) {
         return videoServicio.crearVideo(video);
     }
 
     // Actualizar un video existente
     @PutMapping("{idVideo}")
-    public Video actualizarVideo(@PathVariable Long idVideo, @RequestBody Video formulario) {
+    public Video actualizarVideo(@PathVariable Long idVideo, @RequestBody @Valid Video formulario) {
         return videoServicio.actualizarVideo(idVideo, formulario);
     }
 
