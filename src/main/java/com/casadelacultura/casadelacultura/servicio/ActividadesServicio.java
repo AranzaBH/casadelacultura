@@ -41,7 +41,7 @@ public class ActividadesServicio {
     public Actividades crearActividad(Actividades actividad) {
         // Valida si ya existe una actividad con esos mismos datos
         if (actividadesRepositorio
-                .existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(
+                .existsByNombreActividadIgnoreCaseAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(
                         actividad.getNombreActividad(),
                         actividad.getVideo().getIdVideo(),
                         actividad.getCuestionario() != null ? actividad.getCuestionario().getIdCuestionario() : null,
@@ -85,7 +85,7 @@ public class ActividadesServicio {
         Actividades actividadesFromDB = obtenerActividadPorId(idActividad);
         // Valida si ya existe una actividad con los mismos datos
         if (actividadesRepositorio
-                .existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTallerAndIdActividadesNot(
+                .existsByNombreActividadIgnoreCaseAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTallerAndIdActividadesNot(
                         formulario.getNombreActividad(),
                         formulario.getVideo().getIdVideo(),
                         formulario.getCuestionario() != null ? formulario.getCuestionario().getIdCuestionario() : null,

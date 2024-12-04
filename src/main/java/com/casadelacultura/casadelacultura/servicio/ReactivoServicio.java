@@ -47,7 +47,7 @@ public class ReactivoServicio {
                 .obtenerCuestionarioPorId(reactivo.getCuestionario().getIdCuestionario());
 
         // valida si existe el reactivo
-        if (reactivoRepositorio.existsByPreguntaAndRespuestaCorrectaAndCuestionario_IdCuestionario(
+        if (reactivoRepositorio.existsByPreguntaIgnoreCaseAndRespuestaCorrectaIgnoreCaseAndCuestionario_IdCuestionario(
                 reactivo.getPregunta(),
                 reactivo.getRespuestaCorrecta(),
                 reactivo.getCuestionario().getIdCuestionario())) {
@@ -78,7 +78,7 @@ public class ReactivoServicio {
         // Obtener el reactivo existente de la base de datos
         Reactivo reactivoFromDB = obtenerReactivoPorId(idReactivo);
         // Validar si ya existe un reactivo con los mismos datos (excepto el actual)
-        if (reactivoRepositorio.existsByPreguntaAndRespuestaCorrectaAndCuestionario_IdCuestionarioAndIdReactivoNot(
+        if (reactivoRepositorio.existsByPreguntaIgnoreCaseAndRespuestaCorrectaIgnoreCaseAndCuestionario_IdCuestionarioAndIdReactivoNot(
                 formulario.getPregunta(),
                 formulario.getRespuestaCorrecta(),
                 formulario.getCuestionario().getIdCuestionario(),

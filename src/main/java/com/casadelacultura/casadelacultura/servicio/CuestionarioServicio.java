@@ -31,10 +31,10 @@ public class CuestionarioServicio {
 
     public Cuestionario crearCuestionario(Cuestionario cuestionario) {
         // Valida si ya existe un cuestionario con los mismos datos
-        if (cuestionarioRepositorio.existsByNombreCuestionarioAndInstrucciones(
+        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCase(
                 cuestionario.getNombreCuestionario(), cuestionario.getInstrucciones())) {
             throw new GlobalExceptionNoEncontrada("Ya existe el cuestionario con el nombre: "
-                    + cuestionario.getNombreCuestionario() + "Con instrucciones " + cuestionario.getInstrucciones());
+                    + cuestionario.getNombreCuestionario() + " Con instrucciones " + cuestionario.getInstrucciones());
 
         }
 
@@ -53,7 +53,7 @@ public class CuestionarioServicio {
         Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
 
         // Validar si ya existe un cuestionario con el mismo nombre e instrucciones
-        if (cuestionarioRepositorio.existsByNombreCuestionarioAndInstruccionesAndIdCuestionarioNot(
+        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCaseAndIdCuestionarioNot(
                 formulario.getNombreCuestionario(),
                 formulario.getInstrucciones(),
                 idCuestionario)) {

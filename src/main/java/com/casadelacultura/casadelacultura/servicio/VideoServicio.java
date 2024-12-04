@@ -25,20 +25,22 @@ public class VideoServicio {
 
     // Obtener un video por ID
     public Video obtenerVideoPorId(Long idVideo) {
-        return videoRepositorio.findById(idVideo).orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el reactivo con el ID: " + idVideo));
+        return videoRepositorio.findById(idVideo)
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el reactivo con el ID: " + idVideo));
     }
 
     // Crear un nuevo video
     public Video crearVideo(Video video) {
-        //Valida si ya existe un video 
-        if (videoRepositorio.existsByTituloAndUrlVideo(video.getTitulo(), video.getUrlVideo())) {
+        // Valida si ya existe un video
+        if (videoRepositorio.existsByTituloIgnoreCaseAndUrlVideo(video.getTitulo(), video.getUrlVideo())) {
             throw new GlobalExceptionNoEncontrada("Ya existe el video con el nombre: "
-            + video.getTitulo() + " Con URL: "+video.getUrlVideo());
-            
+                    + video.getTitulo() + " Con URL: " + video.getUrlVideo());
+
         }
         Video nuevoVideo = videoRepositorio.save(video);
-        //Registra una uditoria
-        registrarAuditoria("Video", nuevoVideo.getIdVideo(), "CREAR", null, null, nuevoVideo.getIdVideo().toString(), "Tabla");
+        // Registra una uditoria
+        registrarAuditoria("Video", nuevoVideo.getIdVideo(), "CREAR", null, null, nuevoVideo.getIdVideo().toString(),
+                "Tabla");
         return nuevoVideo;
     }
 
@@ -46,8 +48,9 @@ public class VideoServicio {
     public Video actualizarVideo(Long idVideo, Video formulario) {
         Video videoFronmDB = obtenerVideoPorId(idVideo);
 
-        //Valida si existe un cuestionario con los mismos datos 
-        if (videoRepositorio.existsByTituloAndUrlVideoAndIdVideoNot(formulario.getTitulo(), formulario.getUrlVideo(), idVideo)) {
+        // Valida si existe un cuestionario con los mismos datos
+        if (videoRepositorio.existsByTituloIgnoreCaseAndUrlVideoAndIdVideoNot(formulario.getTitulo(),
+                formulario.getUrlVideo(), idVideo)) {
             throw new GlobalExceptionNoEncontrada("Ya existe un video con el nombre: " +
                     formulario.getTitulo() + " con URL " + formulario.getIdVideo());
         }
@@ -82,8 +85,6 @@ public class VideoServicio {
                     valorNuevoUrlVideo,
                     "urlVideo");
         }
-        
-
 
         videoFronmDB.setTitulo(formulario.getTitulo());
         videoFronmDB.setUrlVideo(formulario.getUrlVideo());
@@ -93,9 +94,11 @@ public class VideoServicio {
     // Eliminar un video por ID
     public void eliminarVideo(Long idVideo) {
         Video videoFromDB = obtenerVideoPorId(idVideo);
-        registrarAuditoria("Video", videoFromDB.getIdVideo(), "ELIMINAR", null, videoFromDB.getIdVideo().toString(), null, "Tabla");
+        registrarAuditoria("Video", videoFromDB.getIdVideo(), "ELIMINAR", null, videoFromDB.getIdVideo().toString(),
+                null, "Tabla");
         videoRepositorio.delete(videoFromDB);
     }
+
     private void registrarAuditoria(String entidad, Long idEntidad, String accion, String campo, String valorAnterior,
             String valorNuevo, String nombreColumna) {
         Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo,

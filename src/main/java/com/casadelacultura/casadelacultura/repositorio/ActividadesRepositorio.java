@@ -17,13 +17,13 @@ public interface ActividadesRepositorio extends CrudRepository<Actividades, Long
     @Query("SELECT a FROM Actividades a WHERE a.taller.idTaller = :idTaller")
     Iterable<Actividades> findActividadesByTallerId(@Param("idTaller") Long idTaller);
 
-    boolean existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(
+    boolean existsByNombreActividadIgnoreCaseAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(
             String nombreActividad,
             Long idVideo,
             Long idCuestionario,
             Long idTaller);
 
-    boolean existsByNombreActividadAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTallerAndIdActividadesNot(
+    boolean existsByNombreActividadIgnoreCaseAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTallerAndIdActividadesNot(
             String nombreActividad,
             Long idVideo,
             Long idCuestionario,
