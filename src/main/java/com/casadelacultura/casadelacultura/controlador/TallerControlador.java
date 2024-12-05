@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -49,7 +51,7 @@ public class TallerControlador {
     // Crear un nuevo taller
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Taller create(@RequestBody Taller taller) {
+    public Taller create(@Valid @RequestBody Taller taller) {
         taller.setUrlImagenPortadaTaller(s3Service.getObjectUrl(taller.getImagenPath()));
         return tallerServicio.crearTaller(taller);
     }
@@ -59,7 +61,7 @@ public class TallerControlador {
     // Actualizar un taller existente
 
     @PutMapping("{idTaller}")
-    public Taller update(@PathVariable Long idTaller, @RequestBody Taller formulario) {
+    public Taller update(@PathVariable Long idTaller, @RequestBody @Valid Taller formulario) {
         if (formulario.getImagenPath() != null && !formulario.getImagenPath().isEmpty()) {
             formulario.setImagenPath(formulario.getImagenPath());
 
@@ -87,20 +89,3 @@ public class TallerControlador {
     }
 
 }
-
-    /* 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("{idTaller}")
-    public void delate(@PathVariable Long idTaller) {
-        // Obtenemos la imagen desde la base de datos
-        Taller tallerExistente = tallerServicio.obtenerTallerPorId(idTaller);
-        if (tallerExistente == null){
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Taller No Encontrado");
-        }
-        //Eliminamos la imagen de s3
-        s3Service.deleteObject(tallerExistente.getImagenPath());
-        //eliminamos el taller
-        tallerServicio.eliminarTaller(idTaller);
-    }*/
-
-
