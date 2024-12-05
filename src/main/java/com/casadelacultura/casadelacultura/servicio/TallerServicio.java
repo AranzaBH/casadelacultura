@@ -109,7 +109,7 @@ public class TallerServicio {
     // Eliminar un taller
     public void eliminarTaller(Long idTaller) {
         Taller tallerFromDB = obtenerTallerPorId(idTaller);
-        //registrarAuditoria("Taller", tallerFromDB.getIdTaller(), "ELIMINAR", null, tallerFromDB.getIdTaller().toString(), null, "Tabla");
+        registrarAuditoria("Taller", tallerFromDB.getIdTaller(), "ELIMINAR", null, tallerFromDB.getIdTaller().toString(), null, "Tabla");
         tallerRepositorio.delete(tallerFromDB);
     }
 
