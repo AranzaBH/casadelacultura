@@ -1,6 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 import org.springframework.stereotype.Service;
@@ -166,5 +167,10 @@ public class ReactivoServicio {
         Auditoria auditoria = new Auditoria(entidad, idEntidad, accion, LocalDateTime.now(), valorAnterior, valorNuevo,
                 nombreColumna);
         auditoriaRepositorio.save(auditoria);
+    }
+
+    //Listar los reactivos por id de cuestionario 
+    public List<Reactivo> obtenerReactivosPorCuestionario(Long idCuestionario) {
+        return reactivoRepositorio.findByCuestionario_IdCuestionario(idCuestionario);
     }
 }

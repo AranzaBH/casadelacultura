@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -48,4 +50,11 @@ public class ReactivoControlador {
     public void eliminarReactivo(@PathVariable Long idReactivo) {
         reactivoServicio.eliminarReactivo(idReactivo);
     }
+
+    //obtener los reactivos por idCuestionario.
+    @GetMapping("/cuestionario/{idCuestionario}")
+    public List<Reactivo> obtenerReactivosPorCuestionario(@PathVariable Long idCuestionario) {
+        return reactivoServicio.obtenerReactivosPorCuestionario(idCuestionario);
+    }
+    
 }
