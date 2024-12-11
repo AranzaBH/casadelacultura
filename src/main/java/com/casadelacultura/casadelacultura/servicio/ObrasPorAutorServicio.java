@@ -18,6 +18,8 @@ public class ObrasPorAutorServicio {
     private final ObrasPorAutorRepositorio obrasPorAutorRepositorio;
     private final AutorRepositorio autorRepositorio; // Repositorio para Autor
     private final ObraRepositorio obraRepositorio;
+    private final AutorServicio autorServicio;
+    private final ObraServicio obraServicio;
 
     // Obtener todas las relaciones entre obras y autores
     public Iterable<ObrasPorAutor> listarObrasPorAutor() {
@@ -41,19 +43,15 @@ public class ObrasPorAutorServicio {
                             " y el autor " + obrasPorAutor.getAutor().getIdAutor());
 
         }
+        
 
         // Valida la existencia del autor
-        if (obrasPorAutor.getAutor() == null
-                || !autorRepositorio.existsById(obrasPorAutor.getAutor().getIdAutor())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Autor con ID " + obrasPorAutor.getAutor().getIdAutor() + " no encontrado.");
-        }
+        Autor autor = autorServicio.obtenerAutorPorId(obrasPorAutor.getAutor().getIdAutor());
+        obrasPorAutor.setAutor(autor);
+        
         // Validar la existencia del Obra
-        if (obrasPorAutor.getObra() == null
-                || !obraRepositorio.existsById(obrasPorAutor.getObra().getIdObra())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Obra con ID " + obrasPorAutor.getObra().getIdObra() + " no encontrado.");
-        }
+        Obra obra = obraServicio.obtenerObraPorId(obrasPorAutor.getObra().getIdObra());
+        obrasPorAutor.setObra(obra);
         return obrasPorAutorRepositorio.save(obrasPorAutor);
     }
 
@@ -75,17 +73,13 @@ public class ObrasPorAutorServicio {
                             " (ID: " + formulario.getAutor().getIdAutor() + " )");
         }
 
-        // Validar la existencia del Autor
-        if (formulario.getAutor() == null || !autorRepositorio.existsById(formulario.getAutor().getIdAutor())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Autor con ID " + formulario.getAutor().getIdAutor() + " no encontrado.");
-        }
-
+        // Valida la existencia del autor
+        Autor autor = autorServicio.obtenerAutorPorId(formulario.getAutor().getIdAutor());
+        formulario.setAutor(autor);
+        
         // Validar la existencia del Obra
-        if (formulario.getObra() == null || !obraRepositorio.existsById(formulario.getObra().getIdObra())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Obra con ID " + formulario.getObra().getIdObra() + " no encontrado.");
-        }
+        Obra obra = obraServicio.obtenerObraPorId(formulario.getObra().getIdObra());
+        formulario.setObra(obra);
 
         obrasPorAutorFromDB.setAutor(formulario.getAutor());
         obrasPorAutorFromDB.setObra(formulario.getObra());

@@ -2,6 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Imagenes;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.ImagenesRepositorio;
 
 import lombok.*;
@@ -16,7 +17,9 @@ public class ImagenesServicio {
     }
 
     public Imagenes obtenerImagenPorId(Long idImagen){
-        return imagenesRepositorio.findById(idImagen).orElse(null);
+        return imagenesRepositorio.findById(idImagen)
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada(
+                        "No se encontro la relacion libro por autor con el ID " + idImagen));
     }
     public Imagenes crearImagen(Imagenes imagenes){
         return imagenesRepositorio.save(imagenes);

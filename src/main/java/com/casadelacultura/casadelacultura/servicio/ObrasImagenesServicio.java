@@ -2,6 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 
+import com.casadelacultura.casadelacultura.entity.Imagenes;
 import com.casadelacultura.casadelacultura.entity.Obra;
 import com.casadelacultura.casadelacultura.entity.ObrasImagenes;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
@@ -17,6 +18,8 @@ public class ObrasImagenesServicio {
     private final ObrasImagenesRepositorio obrasImagenesRepositorio;
     private final ImagenesRepositorio imagenesRepositorio;
     private final ObraRepositorio obraRepositorio;
+    private final ObraServicio obraServicio;
+    private final ImagenesServicio imagenesServicio;
 
     public Iterable<ObrasImagenes> listarObrasImagenes() {
         return obrasImagenesRepositorio.findAll();
@@ -36,18 +39,14 @@ public class ObrasImagenesServicio {
                     "Ya existe una relación para la obra con ID " + obrasImagenes.getObra().getIdObra() +
                             " y la imagen con ID " + obrasImagenes.getImagenes().getIdImagen());
         }
-        // valida si la imagen existe
-        if (obrasImagenes.getImagenes() == null
-                || !imagenesRepositorio.existsById(obrasImagenes.getImagenes().getIdImagen())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Imagene con ID " + obrasImagenes.getImagenes().getIdImagen() + " no encontrado.");
-        }
+        
+        // Valida la existencia de una imagen
+        Imagenes imagenes = imagenesServicio.obtenerImagenPorId(obrasImagenes.getImagenes().getIdImagen());
+        obrasImagenes.setImagenes(imagenes);
+
         // Valida si la obra ya existe
-        if (obrasImagenes.getObra() == null
-                || !obraRepositorio.existsById(obrasImagenes.getObra().getIdObra())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Obra con ID " + obrasImagenes.getObra().getIdObra() + " no encontrado.");
-        }
+        Obra obra = obraServicio.obtenerObraPorId(obrasImagenes.getObra().getIdObra());
+        obrasImagenes.setObra(obra);
 
         return obrasImagenesRepositorio.save(obrasImagenes);
     }
@@ -69,20 +68,13 @@ public class ObrasImagenesServicio {
                             " ) y la imagen con ID " + formulario.getImagenes().getIdImagen());
         }
 
-        // Valida si exsite la imagen
-        if (formulario.getImagenes() == null
-                || !imagenesRepositorio.existsById(formulario.getImagenes().getIdImagen())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Imagen con ID " + formulario.getImagenes().getIdImagen() + " no encontrado.");
+        // Valida la existencia de una imagen
+        Imagenes imagenes = imagenesServicio.obtenerImagenPorId(formulario.getImagenes().getIdImagen());
+        formulario.setImagenes(imagenes);
 
-        }
-
-        if (formulario.getObra() == null
-                || !obraRepositorio.existsById(formulario.getObra().getIdObra())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Obra con ID " + formulario.getObra().getIdObra() + " no encontrado.");
-
-        }
+        // Valida si la obra ya existe
+        Obra obra = obraServicio.obtenerObraPorId(formulario.getObra().getIdObra());
+        formulario.setObra(obra);
 
         // Actualizar los datos de la relación
         obrasImagenesFromDB.setObra(formulario.getObra());

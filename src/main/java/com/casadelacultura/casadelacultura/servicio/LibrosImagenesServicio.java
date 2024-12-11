@@ -2,10 +2,10 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 
+import com.casadelacultura.casadelacultura.entity.Imagenes;
 import com.casadelacultura.casadelacultura.entity.Libro;
 import com.casadelacultura.casadelacultura.entity.LibrosImagenes;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
-import com.casadelacultura.casadelacultura.repositorio.ImagenesRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.LibroRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.LibrosImagenesRepositorio;
 
@@ -16,7 +16,8 @@ import lombok.AllArgsConstructor;
 public class LibrosImagenesServicio {
     private final LibrosImagenesRepositorio librosImagenesRepositorio;
     private final LibroRepositorio libroRepositorio;
-    private final ImagenesRepositorio imagenesRepositorio;
+    private final LibroServicio libroServicio;
+    private final ImagenesServicio imagenesServicio;
 
     public Iterable<LibrosImagenes> listarLibrosImagenes() {
         return librosImagenesRepositorio.findAll();
@@ -28,7 +29,6 @@ public class LibrosImagenesServicio {
     }
 
     public LibrosImagenes crearRealicionLibroImagen(LibrosImagenes librosImagenes) {
-
         // Validar si la relación ya existe
         if (librosImagenesRepositorio.existsByLibro_IdLibroAndImagenes_IdImagen(
                 librosImagenes.getLibro().getIdLibro(), librosImagenes.getImagenes().getIdImagen())) {
@@ -37,26 +37,18 @@ public class LibrosImagenesServicio {
                             " y la imagen con ID " + librosImagenes.getImagenes().getIdImagen());
         }
         // Valida si existe la imagen
-        if (librosImagenes.getImagenes() == null
-                || !imagenesRepositorio.existsById(librosImagenes.getImagenes().getIdImagen())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Imagene con ID " + librosImagenes.getImagenes().getIdImagen() + " no encontrado.");
-        }
+        Imagenes imagenes = imagenesServicio.obtenerImagenPorId(librosImagenes.getImagenes().getIdImagen());
+        librosImagenes.setImagenes(imagenes);
 
         // Validar la existencia del Libro
-        if (librosImagenes.getLibro() == null 
-                || !libroRepositorio.existsById(librosImagenes.getLibro().getIdLibro())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Libro con ID " + librosImagenes.getLibro().getIdLibro() + " no encontrado.");
-        }
+        Libro libro = libroServicio.obtenerLibroPorId(librosImagenes.getLibro().getIdLibro());
+        librosImagenes.setLibro(libro);
         return librosImagenesRepositorio.save(librosImagenes);
     }
 
     // Actualizar
     public LibrosImagenes actualizarRelacionLiborImagen(Long idLibrosImagenes, LibrosImagenes formulario) {
         LibrosImagenes librosImagenesFrom = obtenerRelacionPorId(idLibrosImagenes);
-
-        // Validar si la nueva relación ya existe, excluyendo la actual
         // Validar si la nueva relación ya existe, excluyendo la actual
         if (librosImagenesRepositorio.existsByLibro_IdLibroAndImagenes_IdImagenAndIdLibrosImagenesNot(
                 formulario.getLibro().getIdLibro(),
@@ -73,24 +65,17 @@ public class LibrosImagenesServicio {
                             ") y la imagen con ID: " + formulario.getImagenes().getIdImagen());
         }
 
+        // Valida si existe la imagen
+        Imagenes imagenes = imagenesServicio.obtenerImagenPorId(formulario.getImagenes().getIdImagen());
+        formulario.setImagenes(imagenes);
+
         // Validar la existencia del Libro
-        if (formulario.getLibro() == null 
-                || !libroRepositorio.existsById(formulario.getLibro().getIdLibro())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Libro con ID " + formulario.getLibro().getIdLibro() + " no encontrado.");
-        }
+        Libro libro = libroServicio.obtenerLibroPorId(formulario.getLibro().getIdLibro());
+        formulario.setLibro(libro);
 
-        // Valida si exsite la imagen
-        if (formulario.getImagenes() == null
-                || !imagenesRepositorio.existsById(formulario.getImagenes().getIdImagen())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Imagen con ID " + formulario.getImagenes().getIdImagen() + " no encontrado.");
-
-        }
         librosImagenesFrom.setLibro(formulario.getLibro());
         librosImagenesFrom.setImagenes(formulario.getImagenes());
         return librosImagenesRepositorio.save(librosImagenesFrom);
-
     }
 
     // Eliminar una relacion
