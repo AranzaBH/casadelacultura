@@ -6,7 +6,6 @@ import com.casadelacultura.casadelacultura.entity.Imagenes;
 import com.casadelacultura.casadelacultura.entity.Obra;
 import com.casadelacultura.casadelacultura.entity.ObrasImagenes;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
-import com.casadelacultura.casadelacultura.repositorio.ImagenesRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.ObraRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.ObrasImagenesRepositorio;
 
@@ -16,7 +15,6 @@ import lombok.AllArgsConstructor;
 @Service
 public class ObrasImagenesServicio {
     private final ObrasImagenesRepositorio obrasImagenesRepositorio;
-    private final ImagenesRepositorio imagenesRepositorio;
     private final ObraRepositorio obraRepositorio;
     private final ObraServicio obraServicio;
     private final ImagenesServicio imagenesServicio;
