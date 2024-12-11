@@ -3,21 +3,19 @@ package com.casadelacultura.casadelacultura.servicio;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import org.springframework.stereotype.Service;
-
+import com.casadelacultura.casadelacultura.entity.CategoriaObra;
 import com.casadelacultura.casadelacultura.entity.Obra;
+import com.casadelacultura.casadelacultura.entity.Tecnica;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
-import com.casadelacultura.casadelacultura.repositorio.CategoriaObraRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.ObraRepositorio;
-import com.casadelacultura.casadelacultura.repositorio.TecnicaRepositorio;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
 @Service
 public class ObraServicio {
     private final ObraRepositorio obraRepositorio;
-    private final CategoriaObraRepositorio categoriaObraRepositorio;
-    private final TecnicaRepositorio tecnicaRepositorio;
+    private final CategoriaObraServicio categoriaObraServicio;
+    private final TecnicaServicio tecnicaServicio;
 
     // Obtener todas las obras
     public Iterable<Obra> listarObras() {
@@ -33,21 +31,20 @@ public class ObraServicio {
     // Crear una nueva obra
     public Obra crearObra(Obra obra) {
         validarFechas(obra);
-        //Valida si ya existe una obra con los mismos datos 
-
+        // Valida si ya existe una obra con los mismos datos
+        if (obraRepositorio.existsByCodigoIgnoreCase(obra.getCodigo())) {
+            throw new GlobalExceptionNoEncontrada("Ya existe la obra con  \nTitulo Original: "
+                    + obra.getTituloOriginalObra() + "\nTitulo de la obra: " + obra.getTituloObra() + "\nCodigo: "
+                    + obra.getCodigo());
+        }
         // Valida si la categoria de la obra existe
-        if (obra.getCategoriaObra() == null
-                || !categoriaObraRepositorio.existsById(obra.getCategoriaObra().getIdCategoriaObra())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Categoria de la Obra con ID: " + obra.getCategoriaObra().getIdCategoriaObra() + " No encontrado");
-        }
-        // Valida si la tecnica existe
-        if (obra.getTecnica() == null
-                || !tecnicaRepositorio.existsById(obra.getTecnica().getIdTecnica())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Tecnica de la obra con ID: " + obra.getTecnica().getIdTecnica() + " No encontrado");
-        }
+        CategoriaObra categoriaObra = categoriaObraServicio
+                .obtenerCategoriaPorId(obra.getCategoriaObra().getIdCategoriaObra());
+        obra.setCategoriaObra(categoriaObra);
 
+        // Valida si la tecnica existe
+        Tecnica tecnica = tecnicaServicio.obtenerTecnicaPorId(obra.getTecnica().getIdTecnica());
+        obra.setTecnica(tecnica);
 
         obra.setFechaCreacion(LocalDateTime.now());
         return obraRepositorio.save(obra);
@@ -56,6 +53,20 @@ public class ObraServicio {
     // Actualizar una obra existente
     public Obra actualizarObra(Long idObra, Obra formulario) {
         Obra obraFromDB = obtenerObraPorId(idObra);
+        // Valida si existe una obra con los mismos datos
+        if (obraRepositorio.existsByCodigoIgnoreCaseAndIdObraNot(formulario.getCodigo(), idObra)) {
+            throw new GlobalExceptionNoEncontrada("Ya existe la obra con  \nTitulo Original: "
+                    + formulario.getTituloOriginalObra() + "\nCodigo: " + formulario.getCodigo());
+        }
+
+        // Valida la existencia de la categoria
+        CategoriaObra categoriaObra = categoriaObraServicio.obtenerCategoriaPorId(formulario.getCategoriaObra().getIdCategoriaObra());
+        formulario.setCategoriaObra(categoriaObra);
+
+        // Valida si la tecnica existe
+        Tecnica tecnica = tecnicaServicio.obtenerTecnicaPorId(formulario.getTecnica().getIdTecnica());
+        formulario.setTecnica(tecnica);
+
         obraFromDB.setTituloObra(formulario.getTituloObra());
         obraFromDB.setTituloOriginalObra(formulario.getTituloOriginalObra());
         obraFromDB.setDescripcion(formulario.getDescripcion());

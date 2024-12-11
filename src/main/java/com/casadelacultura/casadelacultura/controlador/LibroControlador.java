@@ -1,15 +1,12 @@
 package com.casadelacultura.casadelacultura.controlador;
 
 import javax.validation.*;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.casadelacultura.casadelacultura.entity.Libro;
 import com.casadelacultura.casadelacultura.servicio.LibroServicio;
 import com.casadelacultura.casadelacultura.servicio.S3Service;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -29,7 +26,6 @@ public class LibroControlador {
                 String imagenURL = s3Service.getObjectUrl(libro.getImagenPath());
                 libro.setUrlImagenPortada(imagenURL);
             }
-
         }
         return libros;
         
@@ -42,7 +38,6 @@ public class LibroControlador {
         if (libro != null && libro.getImagenPath() != null && !libro.getImagenPath().isEmpty()){
             String imagenUrl = s3Service.getObjectUrl(libro.getImagenPath());
             libro.setUrlImagenPortada(imagenUrl);
-
         }
         return libro;
     }
@@ -51,6 +46,7 @@ public class LibroControlador {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Libro create(@Valid @RequestBody Libro libro) {
+        libro.setUrlImagenPortada(s3Service.getObjectUrl(libro.getImagenPath()));
         return libroServicio.crearLibro(libro);
     }
 
@@ -72,7 +68,6 @@ public class LibroControlador {
     @DeleteMapping("{idLibro}")
     public void delete(@PathVariable Long idLibro) {
         Libro libroExistente = libroServicio.obtenerLibroPorId(idLibro);
-
         if (libroExistente == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obra No Encontrado");
             

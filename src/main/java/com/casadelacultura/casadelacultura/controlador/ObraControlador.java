@@ -1,15 +1,12 @@
 package com.casadelacultura.casadelacultura.controlador;
 
 import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-
 import com.casadelacultura.casadelacultura.entity.Obra;
 import com.casadelacultura.casadelacultura.servicio.ObraServicio;
 import com.casadelacultura.casadelacultura.servicio.S3Service;
-
 import lombok.AllArgsConstructor;
 
 // Controlador para manejar las operaciones CRUD de Obra
@@ -25,25 +22,22 @@ public class ObraControlador {
     @GetMapping
     public Iterable<Obra> list() {
         Iterable<Obra> obras = obraServicio.listarObras();
-        for (Obra obra : obras){
-            if (obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()){
+        for (Obra obra : obras) {
+            if (obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()) {
                 String imagenUrl = s3Service.getObjectUrl(obra.getImagenPath());
-                obra.setIdUrlImagenPortada(imagenUrl);
-
+                obra.setUrlImagenPortada(imagenUrl);
             }
-
         }
-       return obras;
+        return obras;
     }
 
     // Obtener una obra por ID
     @GetMapping("{idObra}")
     public Obra get(@PathVariable Long idObra) {
         Obra obra = obraServicio.obtenerObraPorId(idObra);
-        if (obra != null && obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()){
+        if (obra != null && obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()) {
             String imagenUrl = s3Service.getObjectUrl(obra.getImagenPath());
-            obra.setIdUrlImagenPortada(imagenUrl);
-
+            obra.setUrlImagenPortada(imagenUrl);
         }
         return obra;
     }
@@ -52,7 +46,7 @@ public class ObraControlador {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public Obra create(@Valid @RequestBody Obra obra) {
-        obra.setIdUrlImagenPortada(s3Service.getObjectUrl(obra.getImagenPath()));
+        obra.setUrlImagenPortada(s3Service.getObjectUrl(obra.getImagenPath()));
         return obraServicio.crearObra(obra);
     }
 
@@ -64,20 +58,19 @@ public class ObraControlador {
 
             // Obtener la URL de la imagen de S3, si es necesario
             String imagenUrl = s3Service.getObjectUrl(formulario.getImagenPath());
-            formulario.setIdUrlImagenPortada(imagenUrl);
+            formulario.setUrlImagenPortada(imagenUrl);
         }
         return obraServicio.actualizarObra(idObra, formulario);
-        
+
     }
 
     // Eliminar una obra
-    @ResponseStatus(HttpStatus.NO_CONTENT) 
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idObra}")
     public void delete(@PathVariable Long idObra) {
         Obra obraExistente = obraServicio.obtenerObraPorId(idObra);
         if (obraExistente == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obra No Encontrado");
-            
         }
         s3Service.deleteObject(obraExistente.getImagenPath());
         obraServicio.eliminarObra(idObra);

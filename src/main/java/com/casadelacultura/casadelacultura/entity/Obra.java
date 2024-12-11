@@ -28,6 +28,11 @@ public class Obra {
     @Column(nullable = false, length = 200)
     private String tituloOriginalObra;
 
+    @NotBlank(message = "El codigo de la obra es obligatorio")
+    @Size(max = 30, message = "La dimension no pude tener mas de 30 caracteres")
+    @Column(nullable = false, length = 30)
+    private String codigo;
+
     @NotBlank(message = "La descripción es obligatoria")
     @Size(max = 1000, message = "La descripción no puede tener más de 1000 caracteres")
     @Column(nullable = false, length = 1000)
@@ -38,16 +43,10 @@ public class Obra {
     @Column(nullable = false, length = 50)
     private String dimension;
 
-    @NotBlank(message = "El codigo de la obra es obligatorio")
-    @Size(max = 30, message = "La dimension no pude tener mas de 30 caracteres")
-    @Column(nullable = false, length = 30)
-    private String codigo;
-
     @NotBlank(message = "El material es obligatoria")
     @Size(max = 1000, message = "Los materiales no puede tener más de 1000 caracteres")
     @Column(nullable = false, length = 1000)
     private String material;
-
 
     private String localizacion;
 
@@ -56,7 +55,7 @@ public class Obra {
     private LocalDate fechaObra;
 
     @Transient
-    private String idUrlImagenPortada;
+    private String urlImagenPortada;
 
     private String imagenPath;
 
