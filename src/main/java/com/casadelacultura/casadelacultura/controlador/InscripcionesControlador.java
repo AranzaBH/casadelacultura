@@ -13,6 +13,7 @@ import lombok.*;
 @AllArgsConstructor
 @RestController // Marca la clase como un controlador REST que gestiona respuestas en formato JSON.
 @RequestMapping("/api/inscripciones")
+@CrossOrigin("*")
 public class InscripcionesControlador {
     private final InscripcionesServicio inscripcionesServicio;
 

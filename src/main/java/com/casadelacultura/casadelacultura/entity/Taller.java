@@ -12,6 +12,7 @@ import java.time.*;
 @Getter
 @Setter
 @RequiredArgsConstructor
+@NoArgsConstructor
 public class Taller {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,8 +33,10 @@ public class Taller {
     @NotNull(message = "El ID del tipo taller es obligatoria")
     private TipoTaller tipoTaller;
 
+    @NonNull
     private LocalDate  fechaInico;
 
+    @NonNull
     private LocalDate  fechaFinal;
 
     @NotBlank(message = "La es obligatoria")
