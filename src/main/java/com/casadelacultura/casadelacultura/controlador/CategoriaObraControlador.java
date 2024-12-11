@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.CategoriaObra;
@@ -28,13 +30,13 @@ public class CategoriaObraControlador {
     // Crear una nueva categoría de obra
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CategoriaObra create(@RequestBody CategoriaObra categoriaObra) {
+    public CategoriaObra create(@Valid @RequestBody CategoriaObra categoriaObra) {
         return categoriaObraServicio.crearCategoria(categoriaObra);
     }
 
     // Actualizar una categoría de obra existente
     @PutMapping("{idCategoriaObra}")
-    public CategoriaObra update(@PathVariable Long idCategoriaObra, @RequestBody CategoriaObra formulario) {
+    public CategoriaObra update(@PathVariable Long idCategoriaObra, @RequestBody @Valid CategoriaObra formulario) {
         return categoriaObraServicio.actualizarCategoria(idCategoriaObra, formulario);
     }
 
