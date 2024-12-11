@@ -1,10 +1,11 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
 import com.casadelacultura.casadelacultura.servicio.CategoriaLibroServicio;
-
 import lombok.AllArgsConstructor;
 
 // Controlador para manejar las operaciones CRUD de CategoriaLibro
@@ -30,13 +31,13 @@ public class CategoriaLibroControlador {
     // Crear una nueva categoría de libro
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CategoriaLibro create(@RequestBody CategoriaLibro categoriaLibro) {
+    public CategoriaLibro create(@Valid @RequestBody CategoriaLibro categoriaLibro) {
         return categoriaLibroServicio.crearCategoria(categoriaLibro);
     }
 
     // Actualizar una categoría de libro existente
     @PutMapping("{idCategoriaLibro}")
-    public CategoriaLibro update(@PathVariable Long idCategoriaLibro, @RequestBody CategoriaLibro formulario) {
+    public CategoriaLibro update(@PathVariable Long idCategoriaLibro, @RequestBody @Valid CategoriaLibro formulario) {
         return categoriaLibroServicio.actualizarCategoria(idCategoriaLibro, formulario);
     }
 

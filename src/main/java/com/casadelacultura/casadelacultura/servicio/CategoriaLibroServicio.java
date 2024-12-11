@@ -4,7 +4,6 @@ import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
-
 import lombok.AllArgsConstructor;
 
 @AllArgsConstructor
@@ -26,12 +25,19 @@ public class CategoriaLibroServicio {
 
     // Crear una nueva categoría de libro
     public CategoriaLibro crearCategoria(CategoriaLibro categoriaLibro) {
+        if (categoriaLibroRepositorio.existsByNombreCategoriaIgnoreCase(categoriaLibro.getNombreCategoria())) {
+            throw new GlobalExceptionNoEncontrada("Ya existe la categoria con el nombre: "+ categoriaLibro.getNombreCategoria());
+            
+        }
         return categoriaLibroRepositorio.save(categoriaLibro);
     }
 
     // Actualizar una categoría de libro existente
     public CategoriaLibro actualizarCategoria(Long idCategoriaLibro, CategoriaLibro formulario) {
         CategoriaLibro categoriaLibroFromDB = obtenerCategoriaPorId(idCategoriaLibro);
+        if (categoriaLibroRepositorio.existsByNombreCategoriaIgnoreCaseAndIdCategoriaLibroNot(formulario.getNombreCategoria(), idCategoriaLibro)) {
+            throw new GlobalExceptionNoEncontrada("Ya existe la categoria con el nombre: "+ formulario.getNombreCategoria());
+        }
         categoriaLibroFromDB.setNombreCategoria(formulario.getNombreCategoria());
         categoriaLibroFromDB.setDescripcionCategoria(formulario.getDescripcionCategoria());
         return categoriaLibroRepositorio.save(categoriaLibroFromDB);
