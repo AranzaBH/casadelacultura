@@ -2,6 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +19,9 @@ public class CategoriaLibroServicio {
 
     // Obtener una categoría de libro por ID
     public CategoriaLibro obtenerCategoriaPorId(Long idCategoriaLibro) {
-        return categoriaLibroRepositorio.findById(idCategoriaLibro).orElse(null);
+        return categoriaLibroRepositorio.findById(idCategoriaLibro)
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada(
+                        "No se encontro la categoria del libro con el ID " + idCategoriaLibro));
     }
 
     // Crear una nueva categoría de libro

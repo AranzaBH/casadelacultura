@@ -27,7 +27,7 @@ public class LibroControlador {
         for(Libro libro : libros){
             if (libro.getImagenPath() != null && !libro.getImagenPath().isEmpty()) {
                 String imagenURL = s3Service.getObjectUrl(libro.getImagenPath());
-                libro.setIdUrlImagenPortada(imagenURL);
+                libro.setUrlImagenPortada(imagenURL);
             }
 
         }
@@ -41,7 +41,7 @@ public class LibroControlador {
         Libro libro = libroServicio.obtenerLibroPorId(idLibro);
         if (libro != null && libro.getImagenPath() != null && !libro.getImagenPath().isEmpty()){
             String imagenUrl = s3Service.getObjectUrl(libro.getImagenPath());
-            libro.setIdUrlImagenPortada(imagenUrl);
+            libro.setUrlImagenPortada(imagenUrl);
 
         }
         return libro;
@@ -62,7 +62,7 @@ public class LibroControlador {
 
             // Obtener la URL de la imagen de S3, si es necesario
             String imagenUrl = s3Service.getObjectUrl(formulario.getImagenPath());
-            formulario.setIdUrlImagenPortada(imagenUrl);
+            formulario.setUrlImagenPortada(imagenUrl);
         }
         return libroServicio.actualizarLibro(idLibro, formulario);
     }

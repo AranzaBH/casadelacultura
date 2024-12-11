@@ -57,7 +57,7 @@ public class Libro {
     private String imagenPath;
 
     @Transient
-    private String idUrlImagenPortada;
+    private String urlImagenPortada;
 
     private Boolean estaActivo;
 

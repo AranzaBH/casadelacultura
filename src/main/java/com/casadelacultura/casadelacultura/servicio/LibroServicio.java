@@ -2,9 +2,9 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 
+import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
 import com.casadelacultura.casadelacultura.entity.Libro;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
-import com.casadelacultura.casadelacultura.repositorio.CategoriaLibroRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.LibroRepositorio;
 
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Service
 public class LibroServicio {
     private final LibroRepositorio libroRepositorio;
-    private final CategoriaLibroRepositorio categoriaLibroRepositorio;
+    private final CategoriaLibroServicio categoriaLibroServicio;
 
     // Obtener todos los libros
     public Iterable<Libro> listarLibros() {
@@ -30,7 +30,6 @@ public class LibroServicio {
     }
 
     // Crear un nuevo libro
-    // Crear un nuevo libro
     public Libro crearLibro(Libro libro) {
         validarFechas(libro);
         // Validar si ya existe un libro con los mismos datos
@@ -42,17 +41,11 @@ public class LibroServicio {
                     + ", edición: " + libro.getEdicionlibro() + ", y cantidad de páginas: "
                     + libro.getCantidadPaginas());
         }
-
-        // Validar si la categoría del libro existe
-        if (libro.getCategoriaLibro() == null
-                || !categoriaLibroRepositorio.existsById(libro.getCategoriaLibro().getIdCategoriaLibro())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Categoria Libro con ID " + libro.getCategoriaLibro().getIdCategoriaLibro() + " no encontrado.");
-        }
-
-        // Configurar la fecha de creación automáticamente
+        //Valida si ya existe la categoria
+        CategoriaLibro categoriaLibro = categoriaLibroServicio.obtenerCategoriaPorId(libro.getCategoriaLibro().getIdCategoriaLibro());
+        libro.setCategoriaLibro(categoriaLibro);
+        //Define la fecha automaticamente
         libro.setFechaCreacion(LocalDateTime.now());
-
         return libroRepositorio.save(libro);
     }
 
@@ -70,11 +63,12 @@ public class LibroServicio {
                     + formulario.getCantidadPaginas());
         }
 
-        // Validar la existencia del Libro
-        if (formulario.getCategoriaLibro() == null || !categoriaLibroRepositorio.existsById(formulario.getCategoriaLibro().getIdCategoriaLibro())) {
-            throw new GlobalExceptionNoEncontrada(
-                    "Libro con ID " + formulario.getCategoriaLibro().getIdCategoriaLibro() + " no encontrado.");
-        }
+
+        //Valida si ya existe la categoria
+        CategoriaLibro categoriaLibro = categoriaLibroServicio.obtenerCategoriaPorId(formulario.getCategoriaLibro().getIdCategoriaLibro());
+        formulario.setCategoriaLibro(categoriaLibro);
+
+        
 
         libroFromDB.setAsin(formulario.getAsin());
         libroFromDB.setTituloLibro(formulario.getTituloLibro());
