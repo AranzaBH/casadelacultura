@@ -1,5 +1,8 @@
 package com.casadelacultura.casadelacultura.entity;
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 /* 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -22,10 +25,15 @@ public class Tecnica {
     private Long idTecnica;
 
     @NonNull
-    @Column(nullable = false)
+    @NotBlank(message = "El Nombre de la Tecnica es Obligatorio")
+    @Size(max = 100, message = "El Nombre de la Tecnica no puede tener más de 100 caracteres")
+    @Column(nullable = false, length = 100)
     private String nombreTecnica;
 
     
     @NonNull
+    @NotBlank(message = "La Descripción de la Tecnica es Obligatoria")
+    @Size(max = 1000, message = "La Descripción de la Tecnica no puede tener más de 1000 caracteres")
+    @Column(nullable = false, length = 1000)
     private String descripcionTecnica;
 }

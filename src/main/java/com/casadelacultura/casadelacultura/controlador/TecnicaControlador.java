@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Tecnica;
@@ -29,7 +31,7 @@ public class TecnicaControlador {
     // Crear una nueva técnica
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public Tecnica create(@RequestBody Tecnica tecnica) {
+    public Tecnica create(@Valid @RequestBody Tecnica tecnica) {
         return tecnicaServicio.crearTecnica(tecnica);
     }
 
