@@ -1,8 +1,8 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import javax.validation.constraints.NotNull;
+import lombok.*;
 
 @Getter
 @Setter
@@ -10,13 +10,15 @@ import lombok.Setter;
 public class ObrasFonograficasPorAutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idAutor;
+    private Long idObrasFonograficasPorAutor;
 
     @OneToOne
+    @NotNull(message = "El ID del autor es abligatoria")
     @JoinColumn(name = "idAutorFK", nullable = false)
     private Autor autor;
 
     @OneToOne
+    @NotNull(message = "El ID de la obra fonografica es abligatoria")
     @JoinColumn(name = "idObraFonograficas", nullable = false)
     private ObrasFonograficas obrasFonograficas;
 }

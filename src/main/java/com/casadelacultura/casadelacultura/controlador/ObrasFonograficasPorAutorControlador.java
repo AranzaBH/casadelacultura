@@ -1,65 +1,48 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.ObrasFonograficasPorAutor;
-import com.casadelacultura.casadelacultura.repositorio.ObrasFonograficasPorAutorRepositorio;
+import com.casadelacultura.casadelacultura.servicio.ObrasFonograficasPorAutorServicio;
+import lombok.AllArgsConstructor;
 
-import java.util.Optional;
-
-// Controlador para manejar las operaciones CRUD de ObrasFonograficasPorAutor
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/obrasFonograficasPorAutor")
+@RequestMapping("/api/obrasfonograficasporautor")
 @CrossOrigin("*")
 public class ObrasFonograficasPorAutorControlador {
-
-    @Autowired
-    private ObrasFonograficasPorAutorRepositorio obrasFonograficasPorAutorRepositorio;
+    private final ObrasFonograficasPorAutorServicio obrasFonograficasPorAutorServicio;
 
     // Obtener todas las relaciones de obras fonográficas por autor
     @GetMapping
-    public ResponseEntity<Iterable<ObrasFonograficasPorAutor>> list() {
-        return ResponseEntity.ok(obrasFonograficasPorAutorRepositorio.findAll());
+    public Iterable<ObrasFonograficasPorAutor> list() {
+        return obrasFonograficasPorAutorServicio.listarObrasFonograficasPorAutor();
     }
 
     // Obtener una relación por ID de autor
-    @GetMapping("{idAutor}")
-    public ResponseEntity<ObrasFonograficasPorAutor> get(@PathVariable Long idAutor) {
-        Optional<ObrasFonograficasPorAutor> obrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
-        return obrasPorAutor.map(ResponseEntity::ok)
-                            .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    @GetMapping("{idObrasFonograficasPorAutor}")
+    public ObrasFonograficasPorAutor get(@PathVariable Long idObrasFonograficasPorAutor) {
+        return obrasFonograficasPorAutorServicio.obtenerRelacionPorId(idObrasFonograficasPorAutor);
     }
 
     // Crear una nueva relación entre obra fonográfica y autor
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public ObrasFonograficasPorAutor create(@RequestBody ObrasFonograficasPorAutor obrasFonograficasPorAutor) {
-        return obrasFonograficasPorAutorRepositorio.save(obrasFonograficasPorAutor);
+        return obrasFonograficasPorAutorServicio.crearRelacion(obrasFonograficasPorAutor);
     }
 
     // Actualizar una relación existente
-    @PutMapping("{idAutor}")
-    public ResponseEntity<ObrasFonograficasPorAutor> update(@PathVariable Long idAutor, @RequestBody ObrasFonograficasPorAutor formulario) {
-        Optional<ObrasFonograficasPorAutor> optionalObrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
-        if (optionalObrasPorAutor.isPresent()) {
-            ObrasFonograficasPorAutor obrasPorAutorFromDB = optionalObrasPorAutor.get();
-            obrasPorAutorFromDB.setAutor(formulario.getAutor());
-            obrasPorAutorFromDB.setObrasFonograficas(formulario.getObrasFonograficas());
-            return ResponseEntity.ok(obrasFonograficasPorAutorRepositorio.save(obrasPorAutorFromDB));
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Relación no encontrada
+    @PutMapping("{idObrasFonograficasPorAutor}")
+    public ObrasFonograficasPorAutor update(@PathVariable Long idObrasFonograficasPorAutor,
+            @RequestBody ObrasFonograficasPorAutor formulario) {
+        return obrasFonograficasPorAutorServicio.actualizarRelacion(idObrasFonograficasPorAutor, formulario);
     }
 
     // Eliminar una relación
-    @DeleteMapping("{idAutor}")
-    public ResponseEntity<Void> delete(@PathVariable Long idAutor) {
-        Optional<ObrasFonograficasPorAutor> optionalObrasPorAutor = obrasFonograficasPorAutorRepositorio.findById(idAutor);
-        if (optionalObrasPorAutor.isPresent()) {
-            obrasFonograficasPorAutorRepositorio.delete(optionalObrasPorAutor.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Relación no encontrada
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("{idObrasFonograficasPorAutor}")
+    public void delete(@PathVariable Long idObrasFonograficasPorAutor) {
+        obrasFonograficasPorAutorServicio.eliminarRelacion(idObrasFonograficasPorAutor);
     }
 }
