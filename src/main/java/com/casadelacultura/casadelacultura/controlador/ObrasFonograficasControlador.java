@@ -1,69 +1,77 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 import com.casadelacultura.casadelacultura.entity.ObrasFonograficas;
-import com.casadelacultura.casadelacultura.repositorio.ObrasFonograficasRepositorio;
-
-import java.util.Optional;
+import com.casadelacultura.casadelacultura.servicio.ObrasFonograficasServicio;
+import com.casadelacultura.casadelacultura.servicio.S3Service;
+import lombok.AllArgsConstructor;
+import javax.validation.Valid;
 
 // Controlador para manejar las operaciones CRUD de ObrasFonograficas
+@AllArgsConstructor
 @RestController
-@RequestMapping("/api/obrasFonograficas")
+@RequestMapping("/api/obrasfonograficas")
 @CrossOrigin("*")
 public class ObrasFonograficasControlador {
-
-    @Autowired
-    private ObrasFonograficasRepositorio obrasFonograficasRepositorio;
+    private final ObrasFonograficasServicio obrasFonograficasServicio;
+    private final S3Service s3Service;
 
     // Obtener todas las obras fonográficas
     @GetMapping
-    public ResponseEntity<Iterable<ObrasFonograficas>> list() {
-        return ResponseEntity.ok(obrasFonograficasRepositorio.findAll());
+    public Iterable<ObrasFonograficas> listarObrasFonograficas() {
+        Iterable<ObrasFonograficas> obrasFonografica = obrasFonograficasServicio.listarObrasFonograficas();
+        for (ObrasFonograficas obra : obrasFonografica) {
+            if (obra.getImagenPath() != null && !obra.getImagenPath().isEmpty()) {
+                String imagenUrl = s3Service.getObjectUrl(obra.getImagenPath());
+                obra.setUrlImagenPortada(imagenUrl);
+            }
+        }
+        return obrasFonografica;
     }
 
     // Obtener una obra fonográfica por ID
     @GetMapping("{idObrasFonograficas}")
-    public ResponseEntity<ObrasFonograficas> get(@PathVariable Long idObrasFonograficas) {
-        Optional<ObrasFonograficas> obraFonografica = obrasFonograficasRepositorio.findById(idObrasFonograficas);
-        return obraFonografica.map(ResponseEntity::ok)
-                              .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).build());
+    public ObrasFonograficas get(@PathVariable Long idObrasFonograficas) {
+        ObrasFonograficas obrasFonograficas = obrasFonograficasServicio.obtenerObraFonograficaPorId(idObrasFonograficas);
+        if (obrasFonograficas != null && obrasFonograficas.getImagenPath() != null && !obrasFonograficas.getImagenPath().isEmpty()) {
+            String imagenUrl = s3Service.getObjectUrl(obrasFonograficas.getImagenPath());
+            obrasFonograficas.setUrlImagenPortada(imagenUrl);
+        }
+        return obrasFonograficas;
     }
 
     // Crear una nueva obra fonográfica
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public ObrasFonograficas create(@RequestBody ObrasFonograficas obrasFonograficas) {
-        return obrasFonograficasRepositorio.save(obrasFonograficas);
+    public ObrasFonograficas create(@Valid @RequestBody ObrasFonograficas obrasFonograficas) {
+        obrasFonograficas.setUrlImagenPortada(s3Service.getObjectUrl(obrasFonograficas.getImagenPath()));
+        return obrasFonograficasServicio.crearObraFonografica(obrasFonograficas);
     }
 
     // Actualizar una obra fonográfica existente
     @PutMapping("{idObrasFonograficas}")
-    public ResponseEntity<ObrasFonograficas> update(@PathVariable Long idObrasFonograficas, @RequestBody ObrasFonograficas formulario) {
-        Optional<ObrasFonograficas> optionalObraFonografica = obrasFonograficasRepositorio.findById(idObrasFonograficas);
-        if (optionalObraFonografica.isPresent()) {
-            ObrasFonograficas obraFonograficaFromDB = optionalObraFonografica.get();
-            obraFonograficaFromDB.setTituloObraFonografica(formulario.getTituloObraFonografica());
-            obraFonograficaFromDB.setDuracion(formulario.getDuracion());
-            obraFonograficaFromDB.setFechaLanzamiento(formulario.getFechaLanzamiento());
-            obraFonograficaFromDB.setDescripcion(formulario.getDescripcion());
-            obraFonograficaFromDB.setIdUrlImagenPortada(formulario.getIdUrlImagenPortada());
-            obraFonograficaFromDB.setActivo(formulario.getActivo());
-            return ResponseEntity.ok(obrasFonograficasRepositorio.save(obraFonograficaFromDB));
+    public ObrasFonograficas update(@PathVariable Long idObrasFonograficas, @RequestBody @Valid ObrasFonograficas formulario) {
+        if (formulario.getImagenPath() != null && !formulario.getImagenPath().isEmpty()) {
+            formulario.setImagenPath(formulario.getImagenPath());
+
+            // Obtener la URL de la imagen de S3, si es necesario
+            String imagenUrl = s3Service.getObjectUrl(formulario.getImagenPath());
+            formulario.setUrlImagenPortada(imagenUrl);
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Obra fonográfica no encontrada
+        return obrasFonograficasServicio.actualizarObraFonografica(idObrasFonograficas, formulario);
     }
 
     // Eliminar una obra fonográfica
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idObrasFonograficas}")
-    public ResponseEntity<Void> delete(@PathVariable Long idObrasFonograficas) {
-        Optional<ObrasFonograficas> optionalObraFonografica = obrasFonograficasRepositorio.findById(idObrasFonograficas);
-        if (optionalObraFonografica.isPresent()) {
-            obrasFonograficasRepositorio.delete(optionalObraFonografica.get());
-            return ResponseEntity.status(HttpStatus.NO_CONTENT).build(); // Eliminación exitosa
+    public void delete(@PathVariable Long idObrasFonograficas) {
+        ObrasFonograficas obraExistente = obrasFonograficasServicio.obtenerObraFonograficaPorId(idObrasFonograficas);
+        if (obraExistente == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Obra No Encontrado");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build(); // Obra fonográfica no encontrada
+        s3Service.deleteObject(obraExistente.getImagenPath());
+        obrasFonograficasServicio.eliminarObraFonografica(idObrasFonograficas);
     }
 }
