@@ -3,6 +3,7 @@ package com.casadelacultura.casadelacultura.servicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.InscripcionesRepositorio;
 import lombok.*;
 import java.time.LocalDateTime;
@@ -22,7 +23,8 @@ public class InscripcionesServicio {
 
     // Obtener una inscripción por ID
     public Inscripciones obtenerInscripcionPorId(Long idInscripcion) {
-        return inscripcionesRepositorio.findById(idInscripcion).orElse(null);
+        return inscripcionesRepositorio.findById(idInscripcion).orElseThrow(
+                () -> new GlobalExceptionNoEncontrada("No se encontro la inscripcion con el ID: " + idInscripcion));
     }
 
     // Crear una nueva inscripción
