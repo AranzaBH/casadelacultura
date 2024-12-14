@@ -1,39 +1,55 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.AudioLibro;
+import com.casadelacultura.casadelacultura.entity.CategoriaLibro;
+import com.casadelacultura.casadelacultura.entity.ObrasFonograficas;
+import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.AudioLibroRepositorio;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Service
 public class AudioLibroServicio {
-
-    @Autowired
-    private AudioLibroRepositorio audioLibroRepositorio;
+    private final AudioLibroRepositorio audioLibroRepositorio;
+    private final CategoriaLibroServicio categoriaLibroServicio;
+    private final ObrasFonograficasServicio obrasFonograficasServicio;
 
     // Obtener todos los audiolibros
-    public Iterable<AudioLibro> findAll() {
+    public Iterable<AudioLibro> listarAudioLibros() {
         return audioLibroRepositorio.findAll();
     }
 
     // Buscar un audiolibro por su ID
-    public Optional<AudioLibro> findById(Long idAudioLibro) {
-        return audioLibroRepositorio.findById(idAudioLibro);
+    public AudioLibro audioLibrioPorId(Long idAudioLibro) {
+        return audioLibroRepositorio.findById(idAudioLibro)
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el audio libro con el ID: " + idAudioLibro));
     }
 
     // Crear un nuevo audiolibro
-    public AudioLibro create(AudioLibro audioLibro) {
+    public AudioLibro crearAudioLibro(AudioLibro audioLibro) {
+        CategoriaLibro categoriaLibro = categoriaLibroServicio.obtenerCategoriaPorId(audioLibro.getCategoriaLibro().getIdCategoriaLibro());
+        audioLibro.setCategoriaLibro(categoriaLibro);
+
+        ObrasFonograficas obrasFonograficas = obrasFonograficasServicio.obtenerObraFonograficaPorId(audioLibro.getObrasFonograficas().getIdObrasFonograficas());
+        audioLibro.setObrasFonograficas(obrasFonograficas);
+
         return audioLibroRepositorio.save(audioLibro);
     }
 
     // Actualizar un audiolibro existente
-    public AudioLibro update(AudioLibro audioLibro) {
-        return audioLibroRepositorio.save(audioLibro);
+    public AudioLibro actualizarAudioLibro(Long idAudioLibro, AudioLibro formualrio ) {
+        AudioLibro audioLibroFrom = audioLibrioPorId(idAudioLibro);
+        audioLibroFrom.setNombreEditorial(formualrio.getNombreEditorial());
+        audioLibroFrom.setAsin(formualrio.getAsin());
+        audioLibroFrom.setCategoriaLibro(formualrio.getCategoriaLibro());
+        audioLibroFrom.setObrasFonograficas(formualrio.getObrasFonograficas());
+        return audioLibroRepositorio.save(audioLibroFrom);
     }
 
     // Eliminar un audiolibro por su ID
-    public void delete(Long idAudioLibro) {
-        audioLibroRepositorio.deleteById(idAudioLibro);
+    public void eliminarAudioLibro(Long idAudioLibro) {
+        AudioLibro audioLibroFrom = audioLibrioPorId(idAudioLibro);
+        audioLibroRepositorio.delete(audioLibroFrom);
     }
 }
