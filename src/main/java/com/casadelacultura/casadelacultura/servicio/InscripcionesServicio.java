@@ -92,4 +92,17 @@ public class InscripcionesServicio {
     public List<Inscripciones> obtenerInscripcionesPorUsuario(Long idUsuario) {
         return (List<Inscripciones>) inscripcionesRepositorio.findByUsuarioId(idUsuario);
     }
+
+    // busque la inscripción según el idUsuario y el idTaller.
+    public List<Inscripciones> obtenerInscripcionPorUsuarioYTaller(Long idUsuario, Long idTaller) {
+         // Valida la existencia del taller
+    if (tallerServicio.obtenerTallerPorId(idTaller) == null) {
+        throw new GlobalExceptionNoEncontrada("No se encontró el taller con el ID: " + idTaller);
+    }
+    // Valida la existencia del usuario
+    if (!usuarioRepository.existsById(idUsuario)) {
+        throw new GlobalExceptionNoEncontrada("No se encontró el usuario con el ID: " + idUsuario);
+    }
+        return inscripcionesRepositorio.findByUsuarioIdAndTallerId(idUsuario, idTaller);
+    }
 }
