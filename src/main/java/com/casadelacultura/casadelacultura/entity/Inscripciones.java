@@ -1,9 +1,8 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDateTime;
-
 import javax.persistence.*;
-
+import javax.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -17,6 +16,7 @@ public class Inscripciones {
     private Long idInscripciones;
 
     @OneToOne
+    @NotNull(message = "El ID del usuario es abligatoria")
     @JoinColumn(name = "idusuarios", nullable = false)
     private Usuario usuario;
 
@@ -24,6 +24,7 @@ public class Inscripciones {
     private LocalDateTime fechaInscripcion;
 
     @OneToOne
+    @NotNull(message = "El ID del taller es abligatoria")
     @JoinColumn(name = "idTalleres", nullable = false)
     private  Taller taller;
 

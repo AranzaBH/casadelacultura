@@ -1,13 +1,10 @@
 package com.casadelacultura.casadelacultura.controlador;
 
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
 import com.casadelacultura.casadelacultura.servicio.InscripcionesServicio;
-
 import lombok.*;
 
 @AllArgsConstructor

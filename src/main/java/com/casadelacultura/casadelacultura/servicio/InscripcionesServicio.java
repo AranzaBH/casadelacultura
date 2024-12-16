@@ -1,10 +1,12 @@
 package com.casadelacultura.casadelacultura.servicio;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Inscripciones;
+import com.casadelacultura.casadelacultura.entity.Taller;
+import com.casadelacultura.casadelacultura.entity.Usuario;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.InscripcionesRepositorio;
+import com.casadelacultura.casadelacultura.repositorio.UsuarioRepository;
 import lombok.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,9 +14,9 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class InscripcionesServicio {
-
-    @Autowired
     private final InscripcionesRepositorio inscripcionesRepositorio;
+    private final TallerServicio tallerServicio;
+    private final UsuarioRepository usuarioRepository;
 
     // Obtener todas las inscripciones
     public Iterable<Inscripciones> listarInscripciones() {
@@ -29,6 +31,26 @@ public class InscripcionesServicio {
 
     // Crear una nueva inscripción
     public Inscripciones crearInscripcion(Inscripciones inscripcion) {
+        // Valida duplicado de datos
+        if (inscripcionesRepositorio.existsByUsuario_IdAndTaller_IdTaller(inscripcion.getUsuario().getId(),
+                inscripcion.getTaller().getIdTaller())) {
+            throw new GlobalExceptionNoEncontrada(
+                    "Ya existe una relación para el usuario ID: " + inscripcion.getUsuario().getId() +
+                            " y taller con ID: " + inscripcion.getTaller().getIdTaller());
+
+        }
+
+        // Valida la existencia del taller
+        Taller taller = tallerServicio.obtenerTallerPorId(inscripcion.getTaller().getIdTaller());
+        inscripcion.setTaller(taller);
+
+        // Valida la existencia del usuario
+        Usuario usuario = usuarioRepository.findById(inscripcion.getUsuario().getId())
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada(
+                        "No se encontro el usuario con el ID: " + inscripcion.getUsuario().getId()));
+        inscripcion.setUsuario(usuario);
+
+        // Valida la existencia del usuario por su ID
         inscripcion.setFechaInscripcion(LocalDateTime.now());
         return inscripcionesRepositorio.save(inscripcion);
     }
@@ -36,12 +58,29 @@ public class InscripcionesServicio {
     // Actualizar una inscripción existente
     public Inscripciones actualizarInscripcion(Long idInscripcion, Inscripciones formulario) {
         Inscripciones inscripcionesFromDB = obtenerInscripcionPorId(idInscripcion);
+
+        // Valida duplicado de datos
+        if (inscripcionesRepositorio.existsByUsuario_IdAndTaller_IdTallerAndIdInscripcionesNot(formulario.getUsuario().getId(), formulario.getTaller().getIdTaller(), idInscripcion)) {
+            throw new GlobalExceptionNoEncontrada(
+                    "Ya existe una relación para el usuario ID: " + formulario.getUsuario().getId() +
+                            " y taller con ID: " + formulario.getTaller().getIdTaller());
+
+        }
+
+        // Valida la existencia del taller
+        Taller taller = tallerServicio.obtenerTallerPorId(formulario.getTaller().getIdTaller());
+        formulario.setTaller(taller);
+
+        // Valida la existencia del usuario
+        Usuario usuario = usuarioRepository.findById(formulario.getUsuario().getId())
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada(
+                        "No se encontro el usuario con el ID: " + formulario.getUsuario().getId()));
+        formulario.setUsuario(usuario);
+
         inscripcionesFromDB.setUsuario(formulario.getUsuario());
-        //inscripcionesFromDB.setFechaInscripcion(formulario.getFechaInscripcion());
         inscripcionesFromDB.setTaller(formulario.getTaller());
         inscripcionesFromDB.setAvanceGeneral(formulario.getAvanceGeneral());
         return inscripcionesRepositorio.save(inscripcionesFromDB);
-
     }
 
     // Eliminar una inscripción por ID
@@ -53,5 +92,4 @@ public class InscripcionesServicio {
     public List<Inscripciones> obtenerInscripcionesPorUsuario(Long idUsuario) {
         return (List<Inscripciones>) inscripcionesRepositorio.findByUsuarioId(idUsuario);
     }
-
 }
