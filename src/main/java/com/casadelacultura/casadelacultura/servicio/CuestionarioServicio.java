@@ -1,9 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
-
 import com.casadelacultura.casadelacultura.entity.Auditoria;
 import com.casadelacultura.casadelacultura.entity.Cuestionario;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
@@ -30,11 +28,12 @@ public class CuestionarioServicio {
     }
 
     public Cuestionario crearCuestionario(Cuestionario cuestionario) {
+        cuestionario.setFechaCreacion(LocalDateTime.now());
         // Valida si ya existe un cuestionario con los mismos datos
-        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCase(
-                cuestionario.getNombreCuestionario(), cuestionario.getInstrucciones())) {
+        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionIgnoreCase(
+                cuestionario.getNombreCuestionario(), cuestionario.getInstruccion())) {
             throw new GlobalExceptionNoEncontrada("Ya existe el cuestionario con el nombre: "
-                    + cuestionario.getNombreCuestionario() + " Con instrucciones " + cuestionario.getInstrucciones());
+                    + cuestionario.getNombreCuestionario() + " Con instrucciones " + cuestionario.getInstruccion());
 
         }
 
@@ -53,24 +52,24 @@ public class CuestionarioServicio {
         Cuestionario cuestionarioFromDB = obtenerCuestionarioPorId(idCuestionario);
 
         // Validar si ya existe un cuestionario con el mismo nombre e instrucciones
-        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCaseAndIdCuestionarioNot(
+        if (cuestionarioRepositorio.existsByNombreCuestionarioIgnoreCaseAndInstruccionIgnoreCaseAndIdCuestionarioNot(
                 formulario.getNombreCuestionario(),
-                formulario.getInstrucciones(),
+                formulario.getInstruccion(),
                 idCuestionario)) {
             throw new GlobalExceptionNoEncontrada("Ya existe un cuestionario con el nombre: " +
-                    formulario.getNombreCuestionario() + " y las instrucciones " + formulario.getInstrucciones());
+                    formulario.getNombreCuestionario() + " y las instrucciones " + formulario.getInstruccion());
         }
 
         // Comparar valores anteriores y nuevos para la auditoría
         String valorAnteriorNombre = cuestionarioFromDB.getNombreCuestionario();
         String valorNuevoNombre = formulario.getNombreCuestionario();
-        String valorAnteriorInstrucciones = cuestionarioFromDB.getInstrucciones();
-        String valorNuevoInstrucciones = formulario.getInstrucciones();
+        String valorAnteriorInstrucciones = cuestionarioFromDB.getInstruccion();
+        String valorNuevoInstrucciones = formulario.getInstruccion();
 
         // Actualizar los campos
-        cuestionarioFromDB.setCalificacion(formulario.getCalificacion());
+       
         cuestionarioFromDB.setNombreCuestionario(formulario.getNombreCuestionario());
-        cuestionarioFromDB.setInstrucciones(formulario.getInstrucciones());
+        cuestionarioFromDB.setInstruccion(formulario.getInstruccion());
 
         // Guardar los cambios en la base de datos
         Cuestionario cuestionarioActualizado = cuestionarioRepositorio.save(cuestionarioFromDB);

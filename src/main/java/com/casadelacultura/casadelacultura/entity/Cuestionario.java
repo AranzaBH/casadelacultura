@@ -1,9 +1,10 @@
 package com.casadelacultura.casadelacultura.entity;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
+import javax.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 @Entity
@@ -17,16 +18,19 @@ public class Cuestionario {
     private Long idCuestionario;
 
     @NotBlank(message = "El nombre del cuestionario es obligatorio")
-    @Size(max = 200, message = "El nombre del cuestionario no puede tener más de 200 caracteres")
-    @Column(nullable = false, length = 200)
+    @Size(max = 100, message = "El nombre del cuestionario no puede tener más de 100 caracteres")
+    @Column(nullable = false, length = 100)
     private String nombreCuestionario;
 
-    @NotBlank(message = "La instrcción es obligatoria")
-    @Size(max = 1000, message = "La instruccion no puede tener más de 1000 caracteres")
-    @Column(nullable = false, length = 1000)
-    private String instrucciones;
+    @NotBlank(message = "La instruccion es obligatoria")
+    @Size(max = 100, message = "La instruccion no puede tener más de 100 caracteres")
+    @Column(nullable = false, length = 100)
+    private String instruccion;
 
     @NonNull
-    private Integer calificacion;
+    private LocalDateTime fechaCreacion;
 
+    @OneToMany(mappedBy = "cuestionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("cuestionario")
+    private List<Preguntas> preguntas; 
 }

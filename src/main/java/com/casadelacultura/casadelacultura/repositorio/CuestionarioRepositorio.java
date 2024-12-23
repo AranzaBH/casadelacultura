@@ -1,18 +1,13 @@
 package com.casadelacultura.casadelacultura.repositorio;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+
 import com.casadelacultura.casadelacultura.entity.Cuestionario;
 
-public interface CuestionarioRepositorio extends CrudRepository<Cuestionario, Long> {
-    // Valida si ya existe un cuestionario con los mismos datos
-    // boolean existsByNombreCuestionarioAndInstrucciones(String
-    // nombreCuestionario,String instrucciones);
-    // boolean existsByNombreCuestionarioAndInstruccionesAndIdCuestionarioNot(String
-    // nombreCuestionario,String instrucciones, Long idCuestionario);
-    boolean existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCase(String nombreCuestionario,
-            String instrucciones);
+public interface CuestionarioRepositorio extends JpaRepository<Cuestionario, Long> {
+    boolean existsByNombreCuestionarioIgnoreCaseAndInstruccionIgnoreCase(String nombreCuestionario,
+            String instruccion);
 
-    boolean existsByNombreCuestionarioIgnoreCaseAndInstruccionesIgnoreCaseAndIdCuestionarioNot(
-            String nombreCuestionario, String instrucciones, Long idCuestionario);
-
+    boolean existsByNombreCuestionarioIgnoreCaseAndInstruccionIgnoreCaseAndIdCuestionarioNot(
+            String nombreCuestionario, String instruccion, Long idCuestionario);
 }
