@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
@@ -18,7 +20,7 @@ public class CuestionarioControlador {
 
     // Obtener todos los cuestionarios
     @GetMapping
-    public Iterable<Cuestionario> obtenerTodosLosCuestionarios() {
+    public List<Cuestionario> obtenerTodosLosCuestionarios() {
         return cuestionarioServicio.listarCuestionarios();
     }
 

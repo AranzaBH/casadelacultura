@@ -1,6 +1,8 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Auditoria;
 import com.casadelacultura.casadelacultura.entity.Cuestionario;
@@ -16,7 +18,7 @@ public class CuestionarioServicio {
     private final AuditoriaRepositorio auditoriaRepositorio;
 
     // Obtener todos los cuestionarios
-    public Iterable<Cuestionario> listarCuestionarios() {
+    public List<Cuestionario> listarCuestionarios() {
         return cuestionarioRepositorio.findAll();
     }
 
@@ -34,7 +36,6 @@ public class CuestionarioServicio {
                 cuestionario.getNombreCuestionario(), cuestionario.getInstruccion())) {
             throw new GlobalExceptionNoEncontrada("Ya existe el cuestionario con el nombre: "
                     + cuestionario.getNombreCuestionario() + " Con instrucciones " + cuestionario.getInstruccion());
-
         }
 
         // Guardar el nuevo cuestionario
