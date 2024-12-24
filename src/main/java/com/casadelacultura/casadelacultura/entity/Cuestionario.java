@@ -33,4 +33,8 @@ public class Cuestionario {
     @OneToMany(mappedBy = "cuestionario", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnoreProperties("cuestionario")
     private List<Preguntas> preguntas; 
+
+    @OneToMany(mappedBy = "cuestionario", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("cuestionario") // Evita recursión infinita en serialización
+    private List<Actividades> actividades;
 }

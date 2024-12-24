@@ -1,9 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import java.time.LocalDateTime;
-
 import org.springframework.stereotype.Service;
-
 import com.casadelacultura.casadelacultura.entity.Auditoria;
 import com.casadelacultura.casadelacultura.entity.Video;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;

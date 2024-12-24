@@ -5,8 +5,11 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 import java.time.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -55,4 +58,9 @@ public class Taller {
     private String urlImagenPortadaTaller;
 
     private Integer avanceGeneral;
+
+    // Relación con Actividades: Un taller puede tener varias actividades.
+    @OneToMany(mappedBy = "taller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("taller")  // Evita la recursividad en la serialización
+    private List<Actividades> actividades;
 }

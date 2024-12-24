@@ -5,6 +5,9 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 
 @Getter
@@ -21,18 +24,21 @@ public class Actividades {
     @Column(nullable = false, length = 200)
     private String nombreActividad;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "idVideo", nullable = false)
+    @JsonIgnoreProperties("actividades")
     @NotNull(message = "El ID del video es obligatoria")
     private Video video;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "idCuestionario", nullable = true)
+    @JsonIgnoreProperties("actividades")
     private Cuestionario cuestionario;
 
     @OneToOne
     @JoinColumn(name = "idTaller", nullable = false)
     @NotNull(message = "El ID del taller es obligatoria")
+    @JsonBackReference
     private Taller taller;
 
     private Integer modulo;
