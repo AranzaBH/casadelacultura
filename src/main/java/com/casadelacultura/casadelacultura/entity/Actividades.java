@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.entity;
 
+import java.time.LocalDateTime;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -46,4 +48,7 @@ public class Actividades {
     private Integer avance;
 
     private boolean estatus;
+
+    @NonNull
+    private LocalDateTime fechaCreacion;
 }

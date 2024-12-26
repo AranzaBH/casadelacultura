@@ -24,7 +24,7 @@ public class VideoServicio {
     // Obtener un video por ID
     public Video obtenerVideoPorId(Long idVideo) {
         return videoRepositorio.findById(idVideo)
-                .orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el reactivo con el ID: " + idVideo));
+                .orElseThrow(() -> new GlobalExceptionNoEncontrada("No se encontro el video con el ID: " + idVideo));
     }
 
     // Crear un nuevo video

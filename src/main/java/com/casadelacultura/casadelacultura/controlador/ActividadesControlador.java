@@ -19,7 +19,7 @@ public class ActividadesControlador {
 
     // Obtener todas las actividades
     @GetMapping
-    public Iterable<Actividades> obtenerTodasLasActividades() {
+    public List<Actividades> obtenerTodasLasActividades() {
         return actividadesServicio.listarActividades();
     }
 

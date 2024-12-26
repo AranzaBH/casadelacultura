@@ -1,8 +1,11 @@
 package com.casadelacultura.casadelacultura.controlador;
 
-import javax.validation.Valid;
+import java.util.List;
 
+import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
 import com.casadelacultura.casadelacultura.servicio.TipoTallerServicio;
 
@@ -24,7 +27,7 @@ public class TipoTallerControlador {
      * @return Una lista de todas las entidades TipoTaller almacenadas en la base de datos.
      */
     @GetMapping()
-    public Iterable<TipoTaller> list() {
+    public List<TipoTaller> list() {
         return tipoTallerServicio.findAll();
     }
 
@@ -49,7 +52,6 @@ public class TipoTallerControlador {
     public TipoTaller create(@Valid @RequestBody TipoTaller tipoTaller){
         return tipoTallerServicio.create(tipoTaller); 
     }
- 
     /**
      * Actualiza un tipo de taller existente.
      * @param idTipoTaller ID del tipo de taller a actualizar.
@@ -61,14 +63,20 @@ public class TipoTallerControlador {
         return tipoTallerServicio.update(idTipoTaller,formulario); 
 
     }
-
     /**
      * Elimina un tipo de taller por su ID.
      * @param idTipoTaller ID del tipo de taller que se desea eliminar.
      */
+    /* 
     @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
     @DeleteMapping("{idTipoTaller}") // Se utiliza para eliminar una entidad.
     public void delate(@PathVariable Long idTipoTaller){
-        tipoTallerServicio.delate(idTipoTaller); 
-    }
+        tipoTallerServicio.delate(idTipoTaller);; 
+    }*/
+    @DeleteMapping("{idTipoTaller}")
+public ResponseEntity<String> delate(@PathVariable Long idTipoTaller) {
+    String mensaje = tipoTallerServicio.delate(idTipoTaller);
+    return ResponseEntity.ok(mensaje);  // Enviar el mensaje como respuesta con el código 200 OK
+}
+
 }

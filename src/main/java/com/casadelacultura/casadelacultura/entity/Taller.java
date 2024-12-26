@@ -4,7 +4,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
@@ -34,6 +33,7 @@ public class Taller {
     @OneToOne
     @JoinColumn(name = "idTipoTaller", nullable = false)
     @NotNull(message = "El ID del tipo taller es obligatoria")
+    @JsonIgnoreProperties("taller")
     private TipoTaller tipoTaller;
 
     @NonNull

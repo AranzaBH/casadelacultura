@@ -2,6 +2,7 @@ package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.casadelacultura.casadelacultura.entity.Auditoria;
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
@@ -16,13 +17,12 @@ import lombok.*;
 public class TipoTallerServicio {
     private final TipoTallerRepositorio tipoTallerRepositorio;
     private final AuditoriaRepositorio auditoriaRepositorio;
-
     /**
      * Retorna todos los registros de TipoTaller almacenados en la base de datos.
      * 
      * @return Iterable<TipoTaller> Lista de todos los tipos de talleres.
      */
-    public Iterable<TipoTaller> findAll() {
+    public List<TipoTaller> findAll() {
         return tipoTallerRepositorio.findAll();
 
     }
@@ -109,11 +109,30 @@ public class TipoTallerServicio {
      * 
      * @param idTipoTaller Identificador del tipo de taller que se desea eliminar.
      */
+    /* 
     public void delate(Long idTipoTaller){
         TipoTaller tipoTallerFromDB = findById(idTipoTaller);// Busca el tipo de taller a eliminar.
         registrarAuditoria("tipoTaller", tipoTallerFromDB.getIdTipoTaller(), "ELIMINAR", null, tipoTallerFromDB.getIdTipoTaller().toString(), null, "Tabla");
         tipoTallerRepositorio.delete(tipoTallerFromDB); 
+    }*/
+    public String delate(Long idTipoTaller) {
+        TipoTaller tipoTallerFromDB = findById(idTipoTaller); // Busca el tipo de taller a eliminar.
+        
+        // Verificar si el tipo de taller tiene talleres asociados
+        if (tipoTallerFromDB.getTaller() != null && !tipoTallerFromDB.getTaller().isEmpty()) {
+            // Si tiene talleres asociados, no se puede eliminar
+            return "No se puede eliminar la Categoria "+ tipoTallerFromDB.getNombreTipoTaller()+ "  con ID: "  + idTipoTaller + " porque está vinculado a uno o más talleres.";
+        }
+    
+        // Si no tiene talleres asociados, eliminar el tipo de taller
+        registrarAuditoria("tipoTaller", tipoTallerFromDB.getIdTipoTaller(), "ELIMINAR", null, tipoTallerFromDB.getIdTipoTaller().toString(), null, "Tabla");
+        tipoTallerRepositorio.delete(tipoTallerFromDB); 
+    
+        // Devolver un mensaje indicando que se ha eliminado correctamente
+        return "Se ha eliminado con éxito la categoria " + tipoTallerFromDB.getNombreTipoTaller()+ " con ID: " + idTipoTaller;
     }
+    
+    
 
     //Registra auditoria
     private void registrarAuditoria(String entidad, Long idEntidad, String accion, String campo, String valorAnterior,

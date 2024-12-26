@@ -1,9 +1,13 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.*;
 
@@ -31,4 +35,9 @@ public class TipoTaller {
 
     @NonNull
     private LocalDateTime fechaCreacion;
+
+    // Relación con Talleres: Un Categoria puede tener varios Talleres.
+    @OneToMany(mappedBy = "tipoTaller", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("tipoTaller")
+    private List <Taller>taller;
 }

@@ -100,6 +100,7 @@ public class TallerServicio {
         tallerFromDB.setImagenPath(formulario.getImagenPath());
         tallerFromDB.setEstaActivo(formulario.isEstaActivo());
         tallerFromDB.setAvanceGeneral(formulario.getAvanceGeneral());
+        
 
         Taller tallerActualizado = tallerRepositorio.save(tallerFromDB);
         return tallerActualizado;

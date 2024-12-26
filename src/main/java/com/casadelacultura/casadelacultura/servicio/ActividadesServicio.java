@@ -26,9 +26,9 @@ public class ActividadesServicio {
     private final TallerServicio tallerServicio;
 
     // Obtener todas las actividades
-    public Iterable<Actividades> listarActividades() {
-        return actividadesRepositorio.findAllActividadesWithTaller();
-        // return actividadesRepositorio.findAll();
+    public List<Actividades> listarActividades() {
+        //return actividadesRepositorio.findAllActividadesWithTaller();
+        return actividadesRepositorio.findAll();
     }
 
     // Obtener una actividad por ID
@@ -39,6 +39,7 @@ public class ActividadesServicio {
 
     // Crear una nueva actividad
     public Actividades crearActividad(Actividades actividad) {
+        actividad.setFechaCreacion(LocalDateTime.now());
         // Valida si ya existe una actividad con esos mismos datos
         if (actividadesRepositorio
                 .existsByNombreActividadIgnoreCaseAndVideo_IdVideoAndCuestionario_IdCuestionarioAndTaller_IdTaller(

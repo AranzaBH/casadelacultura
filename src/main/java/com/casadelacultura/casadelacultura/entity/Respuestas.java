@@ -22,7 +22,7 @@ public class Respuestas {
     private String respuesta;
 
     @Column(nullable = false)
-    private boolean esCorrecta;
+    private boolean esCorrecta = false;
 
     @NonNull
     private LocalDateTime fechaCreacion;
