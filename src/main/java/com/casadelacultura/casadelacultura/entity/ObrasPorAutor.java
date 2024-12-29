@@ -2,7 +2,7 @@ package com.casadelacultura.casadelacultura.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,14 +15,16 @@ public class ObrasPorAutor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idObrasPorAutor;
 
-    @OneToOne
+    @ManyToOne
     @NotNull(message = "El ID del autor es abligatoria")
     @JoinColumn(name = "idAutores", nullable = false)
+    @JsonIgnoreProperties({"obrasPorAutor"})
     private Autor autor;
 
-    @OneToOne
+    @ManyToOne
     @NotNull(message = "El ID de obra es abligatoria")
     @JoinColumn(name = "idObra", nullable = false)
+    @JsonIgnoreProperties({"obrasPorAutor"})
     private Obra obra;
 
 }

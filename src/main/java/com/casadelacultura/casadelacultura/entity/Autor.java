@@ -1,9 +1,11 @@
 package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDate;
+import java.util.List;
 import javax.persistence.*;
 import lombok.*;
 import javax.validation.constraints.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Getter
 @Setter
@@ -37,5 +39,8 @@ public class Autor {
     @NonNull
     private LocalDate fechaFallecimiento;
 
-
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("autor")
+    //@JsonManagedReference
+    private List <ObrasPorAutor> obrasPorAutor;
 }

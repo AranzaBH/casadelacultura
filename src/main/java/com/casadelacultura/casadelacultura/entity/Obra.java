@@ -2,6 +2,8 @@ package com.casadelacultura.casadelacultura.entity;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -78,4 +80,10 @@ public class Obra {
     @NotNull(message = "La categoría de la obra es obligatoria")
     @JsonIgnoreProperties("obra")
     private CategoriaObra categoriaObra;
+
+    //Relacion con obras por autor: una obra puede tener varios autores
+    @OneToMany(mappedBy = "obra", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnoreProperties("obra")//evita la recursividad
+    //@JsonManagedReference
+    private List <ObrasPorAutor>obrasPorAutor;
 }
