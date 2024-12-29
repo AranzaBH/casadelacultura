@@ -3,6 +3,7 @@ package com.casadelacultura.casadelacultura.controlador;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.Tecnica;
 import com.casadelacultura.casadelacultura.servicio.TecnicaServicio;
@@ -44,7 +45,8 @@ public class TecnicaControlador {
     // Eliminar una técnica
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idTecnica}")
-    public void delete(@PathVariable Long idTecnica) {
-        tecnicaServicio.eliminarTecnica(idTecnica);
+    public ResponseEntity<String> delete(@PathVariable Long idTecnica) {
+        String mensaje = tecnicaServicio.eliminarTecnica(idTecnica);
+        return ResponseEntity.ok(mensaje);
     }
 }

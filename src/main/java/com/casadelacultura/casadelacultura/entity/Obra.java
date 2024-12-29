@@ -6,6 +6,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import lombok.*;
 
 @Entity
@@ -67,10 +70,12 @@ public class Obra {
     @OneToOne
     @JoinColumn(name = "idTecnica", nullable = false)
     @NotNull(message = "La tecnica de la obra es obligatoria")
+    @JsonIgnoreProperties("obra")
     private Tecnica tecnica;
 
     @OneToOne
     @JoinColumn(name = "idCategoriaObra", nullable = false)
     @NotNull(message = "La categoría de la obra es obligatoria")
+    @JsonIgnoreProperties("obra")
     private CategoriaObra categoriaObra;
 }

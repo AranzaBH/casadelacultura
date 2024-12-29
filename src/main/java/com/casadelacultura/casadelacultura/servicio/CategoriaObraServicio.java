@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.CategoriaObra;
@@ -28,6 +30,7 @@ public class CategoriaObraServicio {
 
     // Crear una nueva categoría de obra
     public CategoriaObra crearCategoria(CategoriaObra categoriaObra) {
+        categoriaObra.setFechaCreacion(LocalDateTime.now());
         if (categoriaObraRepositorio.existsByNombreCategoriaIgnoreCase(categoriaObra.getNombreCategoria())) {
             throw new GlobalExceptionNoEncontrada("Ya existe lla Categoria de obras con el nombre: "+ categoriaObra.getNombreCategoria());
         }
@@ -47,8 +50,14 @@ public class CategoriaObraServicio {
     }
 
     // Eliminar una categoría de obra
-    public void eliminarCategoria(Long idCategoriaObra) {
+    public String eliminarCategoria(Long idCategoriaObra) {
         CategoriaObra categoriaObraFromDB = obtenerCategoriaPorId(idCategoriaObra);
+        //Verifica si la categoria esta asociada a una obra o mas 
+        if (categoriaObraFromDB.getObra()!= null && !categoriaObraFromDB.getObra().isEmpty()) {
+            return "No se pude eliminar la categoria " + categoriaObraFromDB.getNombreCategoria() + " con ID: "+ idCategoriaObra + " porque ésta vinculada a una o más obras.";
+        }
+
         categoriaObraRepositorio.delete(categoriaObraFromDB);
+        return "Se ha eliminado con éxito la categoria " + categoriaObraFromDB.getNombreCategoria() + " con ID: " + idCategoriaObra;
     }
 }

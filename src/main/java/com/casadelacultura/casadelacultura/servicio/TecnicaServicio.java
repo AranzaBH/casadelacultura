@@ -1,5 +1,7 @@
 package com.casadelacultura.casadelacultura.servicio;
 
+import java.time.LocalDateTime;
+
 import org.springframework.stereotype.Service;
 import com.casadelacultura.casadelacultura.entity.Tecnica;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
@@ -26,6 +28,7 @@ public class TecnicaServicio {
 
     // Crear una nueva técnica
     public Tecnica crearTecnica(Tecnica tecnica) {
+        tecnica.setFechaCreacion(LocalDateTime.now());
         //Valida si ya existe una tecnica con el mismo nombre
         if (tecnicaRepositorio.existsByNombreTecnicaIgnoreCase(tecnica.getNombreTecnica())) {
             throw new GlobalExceptionNoEncontrada("Ya existe la tecnica con el nombre: "+ tecnica.getNombreTecnica());
@@ -46,8 +49,13 @@ public class TecnicaServicio {
     }
 
     // Eliminar una técnica
-    public void eliminarTecnica(Long idTecnica) {
+    public String eliminarTecnica(Long idTecnica) {
         Tecnica tecnicaFromDB = obtenerTecnicaPorId(idTecnica);
+        //Verifica si la tecnica tiene obras asociadas
+        if (tecnicaFromDB.getObra() !=null && !tecnicaFromDB.getObra().isEmpty()) {
+            return "No se pude eliminar la tecnica "+tecnicaFromDB.getNombreTecnica() + " con ID: " + idTecnica + " porque está vinculado a uno o más obras.";
+        }
         tecnicaRepositorio.delete(tecnicaFromDB);
+        return "Se ha eliminado con éxito la tecnica: " + tecnicaFromDB.getNombreTecnica() + " con ID: " + idTecnica;
     }
 }

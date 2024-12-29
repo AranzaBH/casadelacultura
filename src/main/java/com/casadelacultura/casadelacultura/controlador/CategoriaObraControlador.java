@@ -3,6 +3,7 @@ package com.casadelacultura.casadelacultura.controlador;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.casadelacultura.casadelacultura.entity.CategoriaObra;
 import com.casadelacultura.casadelacultura.servicio.CategoriaObraServicio;
@@ -43,7 +44,10 @@ public class CategoriaObraControlador {
     // Eliminar una categoría de obra
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("{idCategoriaObra}")
-    public void delete(@PathVariable Long idCategoriaObra) {
-        categoriaObraServicio.eliminarCategoria(idCategoriaObra);
+    public ResponseEntity<String> delete(@PathVariable Long idCategoriaObra) {
+        String  mensaje = categoriaObraServicio.eliminarCategoria(idCategoriaObra);
+        return ResponseEntity.ok(mensaje);
+
     }
+
 }
