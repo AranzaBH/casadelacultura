@@ -1,8 +1,11 @@
 package com.casadelacultura.casadelacultura.controlador;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -18,7 +21,7 @@ import lombok.AllArgsConstructor;
 @RequestMapping("/api/taller")
 @CrossOrigin("*")
 public class TallerControlador {
-    private final  TallerServicio tallerServicio;
+    private final TallerServicio tallerServicio;
     private final S3Service s3Service;
 
     // Obtener todos los talleres
@@ -47,7 +50,6 @@ public class TallerControlador {
         return taller;
     }
 
-    
     // Crear un nuevo taller
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -55,8 +57,6 @@ public class TallerControlador {
         taller.setUrlImagenPortadaTaller(s3Service.getObjectUrl(taller.getImagenPath()));
         return tallerServicio.crearTaller(taller);
     }
-
-    
 
     // Actualizar un taller existente
 
@@ -74,7 +74,8 @@ public class TallerControlador {
     }
 
     // Eliminar un taller
-    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado 204.
+    @ResponseStatus(HttpStatus.NO_CONTENT) // Indica que, si se elimina correctamente, se devuelve el código de estado
+                                           // 204.
     @DeleteMapping("{idTaller}")
     public void delate(@PathVariable Long idTaller) {
         // Obtenemos la imagen desde la base de datos
@@ -87,5 +88,17 @@ public class TallerControlador {
         // eliminamos el taller
         tallerServicio.eliminarTaller(idTaller);
     }
+
+    // Mapea las solicitudes HTTP GET a la URL '/buscar' para buscar talleres por título.
+    //http://localhost:8080/api/taller/buscar?titulo=Musica
+    @GetMapping("/buscar")
+    public ResponseEntity<List<Taller>> buscarTallerPorTitulo(@RequestParam String titulo) {
+        List<Taller> talleres = tallerServicio.buscarTallerPorTitulo(titulo);
+        return ResponseEntity.ok(talleres);
+    }
+
+    
+
+
 
 }

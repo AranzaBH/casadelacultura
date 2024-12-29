@@ -1,17 +1,15 @@
 package com.casadelacultura.casadelacultura.servicio;
 
 import org.springframework.stereotype.Service;
-
 import com.casadelacultura.casadelacultura.entity.Auditoria;
 import com.casadelacultura.casadelacultura.entity.Taller;
 import com.casadelacultura.casadelacultura.entity.TipoTaller;
 import com.casadelacultura.casadelacultura.excepciones.GlobalExceptionNoEncontrada;
 import com.casadelacultura.casadelacultura.repositorio.AuditoriaRepositorio;
 import com.casadelacultura.casadelacultura.repositorio.TallerRepositorio;
-
 import lombok.AllArgsConstructor;
-
 import java.time.LocalDateTime;
+import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -100,8 +98,6 @@ public class TallerServicio {
         tallerFromDB.setImagenPath(formulario.getImagenPath());
         tallerFromDB.setEstaActivo(formulario.isEstaActivo());
         tallerFromDB.setAvanceGeneral(formulario.getAvanceGeneral());
-        
-
         Taller tallerActualizado = tallerRepositorio.save(tallerFromDB);
         return tallerActualizado;
 
@@ -143,4 +139,8 @@ public class TallerServicio {
         }
     }
 
+    // Método que busca talleres por su título, 
+    public List<Taller> buscarTallerPorTitulo(String titulo) {
+        return tallerRepositorio.findByTituloTallerContainingIgnoreCase(titulo);
+    }
 }
