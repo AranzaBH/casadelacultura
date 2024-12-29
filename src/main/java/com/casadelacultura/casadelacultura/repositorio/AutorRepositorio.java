@@ -2,11 +2,10 @@ package com.casadelacultura.casadelacultura.repositorio;
 
 import java.time.LocalDate;
 
-import org.springframework.data.repository.CrudRepository;
-
+import org.springframework.data.jpa.repository.JpaRepository;
 import com.casadelacultura.casadelacultura.entity.Autor;
 
-public interface AutorRepositorio extends CrudRepository<Autor, Long> {
+public interface AutorRepositorio extends JpaRepository<Autor, Long> {
     // Método para verificar si un autor con el mismo nombre y apellido paterno ya existe
     // Validar si ya existe un autor con los mismos datos
     boolean existsByNombreAutorAndApellidoPaternoAndApellidoMaternoAndFechaNacimientoAndFechaFallecimiento(
